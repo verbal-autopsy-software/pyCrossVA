@@ -1,6 +1,6 @@
 # pyCrossVA
 
-Package includes 4 functions currently:
+Package currently includes 4 functions:
 - InSilicoVA
 - InterVA4
 - InterVA5

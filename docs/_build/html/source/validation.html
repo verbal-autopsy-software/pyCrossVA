@@ -1,0 +1,931 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>validation module &mdash; CrossVA 1.0a documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mappings module" href="mappings.html" />
+    <link rel="prev" title="configuration module" href="configuration.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> CrossVA
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0a
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#currently-supported">Currently Supported</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#roadmap">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#style">Style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#license">License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Custom Mappings</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">Configuration Files</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Under the hood</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="transform.html">transform function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">configuration module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">validation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mappings.html">mappings module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CrossVA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>validation module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/validation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-validation">
+<span id="validation-module"></span><h1>validation module<a class="headerlink" href="#module-validation" title="Permalink to this headline">¶</a></h1>
+<p>Module containing Validation class, and Vcheck class and its subclasses</p>
+<dl class="class">
+<dt id="validation.Err">
+<em class="property">class </em><code class="descclassname">validation.</code><code class="descname">Err</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Err"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Err" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#validation.VCheck" title="validation.VCheck"><code class="xref py py-class docutils literal"><span class="pre">validation.VCheck</span></code></a></p>
+<p>VCheck subclass representing a serious problem in data validation
+that prevents validation.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Err</span><span class="p">(</span><span class="s2">&quot;This is a data validation error&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="go">Tier                                 Error</span>
+<span class="go">Bullet                                 [!]</span>
+<span class="go">Level                                    1</span>
+<span class="go">Title                               ERRORS</span>
+<span class="go">Message    This is a data validation error</span>
+<span class="go">dtype: object</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="validation.Err.bullet">
+<code class="descname">bullet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Err.bullet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Err.bullet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="validation.Err.level">
+<code class="descname">level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Err.level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Err.level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="validation.Err.tier">
+<code class="descname">tier</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Err.tier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Err.tier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="validation.Err.title">
+<code class="descname">title</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Err.title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Err.title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="validation.Passing">
+<em class="property">class </em><code class="descclassname">validation.</code><code class="descname">Passing</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Passing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Passing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#validation.VCheck" title="validation.VCheck"><code class="xref py py-class docutils literal"><span class="pre">validation.VCheck</span></code></a></p>
+<p>VCheck subclass representing a passed check in data validation, where
+there is no problem.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;This is a passing data validation check&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="go">Tier                                       Passing</span>
+<span class="go">Bullet                                         [X]</span>
+<span class="go">Level                                            4</span>
+<span class="go">Title                                CHECKS PASSED</span>
+<span class="go">Message    This is a passing data validation check</span>
+<span class="go">dtype: object</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="validation.Passing.bullet">
+<code class="descname">bullet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Passing.bullet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Passing.bullet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="validation.Passing.level">
+<code class="descname">level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Passing.level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Passing.level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="validation.Passing.tier">
+<code class="descname">tier</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Passing.tier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Passing.tier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="validation.Passing.title">
+<code class="descname">title</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Passing.title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Passing.title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="validation.Suggest">
+<em class="property">class </em><code class="descclassname">validation.</code><code class="descname">Suggest</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Suggest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Suggest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#validation.VCheck" title="validation.VCheck"><code class="xref py py-class docutils literal"><span class="pre">validation.VCheck</span></code></a></p>
+<p>VCheck subclass representing a minor problem with data that
+does not prevent data validation.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Suggest</span><span class="p">(</span><span class="s2">&quot;This is a data validation suggestion&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="go">Tier                                 Suggestion</span>
+<span class="go">Bullet                                      [i]</span>
+<span class="go">Level                                         3</span>
+<span class="go">Title                               SUGGESTIONS</span>
+<span class="go">Message    This is a data validation suggestion</span>
+<span class="go">dtype: object</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="validation.Suggest.bullet">
+<code class="descname">bullet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Suggest.bullet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Suggest.bullet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="validation.Suggest.level">
+<code class="descname">level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Suggest.level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Suggest.level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="validation.Suggest.tier">
+<code class="descname">tier</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Suggest.tier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Suggest.tier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="validation.Suggest.title">
+<code class="descname">title</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Suggest.title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Suggest.title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="validation.VCheck">
+<em class="property">class </em><code class="descclassname">validation.</code><code class="descname">VCheck</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#VCheck"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.VCheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Abstract class fior a single validation check</p>
+<dl class="attribute">
+<dt id="validation.VCheck.bullet">
+<code class="descname">bullet</code><a class="headerlink" href="#validation.VCheck.bullet" title="Permalink to this definition">¶</a></dt>
+<dd><p>abstract property, must be overriden.
+Should be a str, representing a bullet point</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="validation.VCheck.expand">
+<code class="descname">expand</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#VCheck.expand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.VCheck.expand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands VCheck information as a Pandas Series</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>None</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">representing VCheck attributes as a Pandas Series</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas Series</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Err</span><span class="p">(</span><span class="s2">&quot;Error Message&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="go">Tier               Error</span>
+<span class="go">Bullet               [!]</span>
+<span class="go">Level                  1</span>
+<span class="go">Title             ERRORS</span>
+<span class="go">Message    Error Message</span>
+<span class="go">dtype: object</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="validation.VCheck.level">
+<code class="descname">level</code><a class="headerlink" href="#validation.VCheck.level" title="Permalink to this definition">¶</a></dt>
+<dd><p>abstract property, must be overriden.
+Should be int ,representing VCheck tier</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="validation.VCheck.tier">
+<code class="descname">tier</code><a class="headerlink" href="#validation.VCheck.tier" title="Permalink to this definition">¶</a></dt>
+<dd><p>abstract property, must be overriden.
+Should be str, representing name of VCheck tier</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="validation.VCheck.title">
+<code class="descname">title</code><a class="headerlink" href="#validation.VCheck.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>abstract property, must be overriden.
+Should be str, representing title of VCheck type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="validation.Validation">
+<em class="property">class </em><code class="descclassname">validation.</code><code class="descname">Validation</code><a class="reference internal" href="../_modules/validation.html#Validation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Validation object represents an organized dataframe of validation checks</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>vchecks</strong> (<em>Pandas DataFrame</em>) – a dataframe containing the expanded form
+of the VCheck instances that have been added.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="validation.Validation.all_valid">
+<code class="descname">all_valid</code><span class="sig-paren">(</span><em>given</em>, <em>valid</em>, <em>definition</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.all_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.all_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a validation check where all values in <cite>given</cite> must be in <cite>valid</cite>
+to pass. <cite>fail_check</cite> is <cite>Err</cite> (fails validation).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>given</strong> (<em>Pandas Series</em>) – the items representing input given</li>
+<li><strong>valid</strong> (<em>Pandas Series</em>) – list of all possible valid items accepted in
+<cite>given</cite></li>
+<li><strong>definition</strong> (<em>str</em>) – string describing what makes an item in <cite>given</cite>
+be in <cite>valid</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">all_valid</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;valid value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;pre-defined&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">all_valid</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;d&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;valid value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;&#39;a&#39; or &#39;d&#39;&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="go"> CHECKS PASSED</span>
+<span class="go">[X]          All values in example input are valid.</span>
+
+<span class="go"> ERRORS</span>
+<span class="go">[!]          2 values in example input were invalid (&#39;b&#39;, and &#39;c&#39;).</span>
+<span class="go">These must be &#39;a&#39; or &#39;d&#39; to be valid.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="validation.Validation.check_na">
+<code class="descname">check_na</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.check_na"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.check_na" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a validation check flagging the rows in every column of <cite>df</cite>
+that are <cite>None</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> (<em>Pandas DataFrame</em>) – a Pandas DataFrame with columns that should
+have no NA values</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot;e&quot;</span><span class="p">,</span><span class="kc">None</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">check_na</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="go"> CHECKS PASSED</span>
+<span class="go">[X]      No NA&#39;s in column A detected.</span>
+
+<span class="go"> ERRORS</span>
+<span class="go">[!]      1 NA&#39;s in column B detected in row(s) #2.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="validation.Validation.fix_alnum">
+<code class="descname">fix_alnum</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.fix_alnum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.fix_alnum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a validation check flagging the rows in every column of <cite>df</cite>
+that contain non-alphanumeric characters. Regex removes all characters
+that are not alpha-numeric, but leaves periods that are part of a
+number.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> (<em>Pandas DataFrame</em>) – a Pandas DataFrame with columns that should
+have only alphanumeric characters</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><cite>df</cite> where alphanumeric characters are removed</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas DataFrame</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;3.0&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span>                                        <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;??.test&quot;</span><span class="p">,</span><span class="s2">&quot;test&lt;&gt;!&quot;</span><span class="p">,</span><span class="s2">&quot;;test_data&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">fix_alnum</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="go">   A          B</span>
+<span class="go">0  a       test</span>
+<span class="go">1  3.0     test</span>
+<span class="go">2  c  test_data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="go"> CHECKS PASSED</span>
+<span class="go">[X]      No non-alphanumeric value(s) in column A detected.</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]      3 non-alphanumeric value(s) in column B detected in row(s)</span>
+<span class="go">#0, #1, and #2. This text should be alphanumeric. Non-alphanumeric</span>
+<span class="go">characters will be removed.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="validation.Validation.fix_lowcase">
+<code class="descname">fix_lowcase</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.fix_lowcase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.fix_lowcase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a validation check flagging the rows in every column of <cite>df</cite>
+that contain lowercase characters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> (<em>Pandas DataFrame</em>) – a Pandas DataFrame with columns that should
+have only uppercase characters</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><cite>df</cite> where all characters are uppercase</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas DataFrame</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot;e&quot;</span><span class="p">,</span><span class="s2">&quot;F&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">fix_lowcase</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="go">   A  B</span>
+<span class="go">0  A  D</span>
+<span class="go">1  B  E</span>
+<span class="go">2  C  F</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]      2 lower case value(s) in  column A detected in row(s) #0,</span>
+<span class="go">and #2. Convention to have this text be uppercase. Lower case text</span>
+<span class="go">will be made uppercase.</span>
+<span class="go">[?]      1 lower case value(s) in  column B detected in row(s) #1.</span>
+<span class="go">Convention to have this text be uppercase. Lower case text will be</span>
+<span class="go">made uppercase.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="validation.Validation.fix_upcase">
+<code class="descname">fix_upcase</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.fix_upcase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.fix_upcase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a validation check flagging the rows in every column of <cite>df</cite>
+that contain uppercase characters</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> (<em>Pandas DataFrame</em>) – a Pandas DataFrame with columns that should
+have only lowercase characters</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><cite>df</cite> where all characters are lowercase</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas DataFrame</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot;e&quot;</span><span class="p">,</span><span class="s2">&quot;F&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">fix_upcase</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="go">   A  B</span>
+<span class="go">0  a  d</span>
+<span class="go">1  b  e</span>
+<span class="go">2  c  f</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]      1 upper case value(s) in column A detected in row(s) #1.</span>
+<span class="go">Convention is to have this text be lowercase. Upper case text will</span>
+<span class="go">be made lowercase.</span>
+<span class="go">[?]      2 upper case value(s) in column B detected in row(s) #0,</span>
+<span class="go">and #2. Convention is to have this text be lowercase. Upper case</span>
+<span class="go">text will be made lowercase.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="validation.Validation.fix_whitespace">
+<code class="descname">fix_whitespace</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.fix_whitespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.fix_whitespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a validation check flagging the rows in every column of <cite>df</cite>
+that contain whitespace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> (<em>Pandas DataFrame</em>) – a Pandas DataFrame with columns that should
+have no whitespace</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt><cite>df</cite> where whitespace is replaced with an</dt>
+<dd>underscore</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas DataFrame</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot; B &quot;</span><span class="p">,</span><span class="s2">&quot;Test Data&quot;</span><span class="p">],</span>                                        <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot; e&quot;</span><span class="p">,</span><span class="s2">&quot;F &quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">fix_whitespace</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="go">           A  B</span>
+<span class="go">0          a  D</span>
+<span class="go">1          B  e</span>
+<span class="go">2  Test_Data  F</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="go"> CHECKS PASSED</span>
+<span class="go">[X]      No whitespace in column B detected.</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]      1 leading/trailing spaces column A detected in row(s)</span>
+<span class="go">#1. Leading or trailing spaces will be removed.</span>
+<span class="go">[?]      2 leading/trailing spaces column B detected in row(s)</span>
+<span class="go">#1, and #2. Leading/trailing spaces will be removed.</span>
+<span class="go">[?]      1 whitespace in column A detected in row(s) #2. Whitespace</span>
+<span class="go">will be converted to &#39;_&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="validation.Validation.flag_rows">
+<code class="descname">flag_rows</code><span class="sig-paren">(</span><em>flag_where</em>, <em>flag_criteria</em>, <em>flag_action=''</em>, <em>flag_tier=&lt;class 'validation.Warn'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.flag_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.flag_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a validation check seeing if any values in flag_where are true,
+where fail_check is of type flag_tier. Note that rows are reported
+counting from 0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>flag_where</strong> (<em>Pandas Series</em>) – a boolean Pandas Series where True
+represents a failed check.</li>
+<li><strong>flag_criteria</strong> (<em>str</em>) – a noun clause describing the criteria for an
+item to be flagged in <cite>flag_where</cite></li>
+<li><strong>flag_action</strong> (<em>str</em>) – string describing the action to be taken if
+an item is flagged. Defaults to “”.</li>
+<li><strong>flag_tier</strong> (<a class="reference internal" href="#validation.VCheck" title="validation.VCheck"><em>VCheck</em></a>) – should be either Suggest, Warn, or Err, is
+the seriousness of the failed check.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">flag_rows</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>                                      <span class="n">flag_criteria</span><span class="o">=</span><span class="s2">&quot;true values&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">flag_rows</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>                                      <span class="n">flag_criteria</span><span class="o">=</span><span class="s2">&quot;true values&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="go">CHECKS PASSED</span>
+<span class="go">[X]      No true values detected.</span>
+
+<span class="go">WARNINGS</span>
+<span class="go">[?]      1 true values detected in row(s) #1.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="validation.Validation.is_valid">
+<code class="descname">is_valid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.is_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks to see if instance is valid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>None</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>True if is valid (has no errors in vchecks) and False if</dt>
+<dd>instance has errors or where vchecks is empty.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Validation</span><span class="p">()</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">must_contain</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]),</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;B&quot;</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">must_contain</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]),</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;C&quot;</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="validation.Validation.must_contain">
+<code class="descname">must_contain</code><span class="sig-paren">(</span><em>given</em>, <em>required</em>, <em>passing_msg=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.must_contain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.must_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a validation check where <cite>given</cite> must contain every item in
+<cite>required</cite> at least once to pass, and <cite>fail_check</cite> is <cite>Err</cite>,
+(fails validation).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>given</strong> (<em>Pandas Series</em>) – the items representing input given</li>
+<li><strong>required</strong> (<em>Pandas Series</em>) – the items required to be in <cite>given</cite></li>
+<li><strong>passing_msg</strong> (<em>str</em>) – Message to return if all items in <cite>expected</cite> are
+listed in <cite>given</cite>. Defaults to “”.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">must_contain</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example requirement(s)&quot;</span><span class="p">),</span>                               <span class="s2">&quot;all included&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">must_contain</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;d&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example requirement(s)&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">CHECKS PASSED</span>
+<span class="go">[X]      all included</span>
+
+<span class="go">ERRORS</span>
+<span class="go">[!]      1 (&#39;d&#39;) example requirement(s) were missing</span>
+<span class="go">from example input. These must be included.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="validation.Validation.no_extraneous">
+<code class="descname">no_extraneous</code><span class="sig-paren">(</span><em>given</em>, <em>relevant</em>, <em>value_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.no_extraneous"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.no_extraneous" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a validation check where all values in <cite>given</cite> should also be
+in <cite>relevant</cite> to pass. <cite>fail_check</cite> is <cite>Warn</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>given</strong> (<em>Pandas Series</em>) – the items representing input given</li>
+<li><strong>relevant</strong> (<em>Pandas Series</em>) – all items in <cite>given</cite> that will be used</li>
+<li><strong>value_type</strong> (<em>str</em>) – string describing the kind of noun that is
+listed in <cite>given</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">no_extraneous</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;relevant value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;example&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">no_extraneous</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;d&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;relevant value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;example&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="go">CHECKS PASSED</span>
+<span class="go">[X]      No extraneous example found in example input.</span>
+
+<span class="go">ERRORS</span>
+<span class="go">[!]      2 extraneous example(s) found in example input</span>
+<span class="go">(&#39;b&#39;, and &#39;c&#39;) Extraneous example(s) will be ommitted.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="validation.Validation.report">
+<code class="descname">report</code><span class="sig-paren">(</span><em>verbose=2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the checks in the vchecks attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verbose</strong> (<em>int</em>) – Parameter controlling how much to print by filtering
+for the level in each vchecks row to be less than or equal to
+verbose. Defaults to 2 (print only converted <cite>Warn</cite> and <cite>Err</cite>
+checks)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>                                 <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test&quot;</span><span class="p">),</span> <span class="n">Err</span><span class="p">(</span><span class="s2">&quot;Failed test&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>                                 <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test 2&quot;</span><span class="p">),</span> <span class="n">Err</span><span class="p">(</span><span class="s2">&quot;Failed test&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>                                 <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test&quot;</span><span class="p">),</span> <span class="n">Err</span><span class="p">(</span><span class="s2">&quot;Error test&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>                                 <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test&quot;</span><span class="p">),</span> <span class="n">Warn</span><span class="p">(</span><span class="s2">&quot;Warn test&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>                                 <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">Suggest</span><span class="p">(</span><span class="s2">&quot;Suggest test&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="go"> ERRORS</span>
+<span class="go">[!]      Error test</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="go"> CHECKS PASSED</span>
+<span class="go">[X]      Passed test</span>
+<span class="go">[X]      Passed test 2</span>
+
+<span class="go"> ERRORS</span>
+<span class="go">[!]      Error test</span>
+
+<span class="go"> SUGGESTIONS</span>
+<span class="go">[i]      Suggest test</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]      Warn test</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="validation.Warn">
+<em class="property">class </em><code class="descclassname">validation.</code><code class="descname">Warn</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Warn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Warn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#validation.VCheck" title="validation.VCheck"><code class="xref py py-class docutils literal"><span class="pre">validation.VCheck</span></code></a></p>
+<p>VCheck subclass representing a problem in data validation that
+can be fixed in place, but would otherwise prevent validation.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Warn</span><span class="p">(</span><span class="s2">&quot;This is a data validation warning&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="go">Tier                                 Warning</span>
+<span class="go">Bullet                                   [?]</span>
+<span class="go">Level                                      2</span>
+<span class="go">Title                               WARNINGS</span>
+<span class="go">Message    This is a data validation warning</span>
+<span class="go">dtype: object</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="validation.Warn.bullet">
+<code class="descname">bullet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Warn.bullet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Warn.bullet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="validation.Warn.level">
+<code class="descname">level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Warn.level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Warn.level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="validation.Warn.tier">
+<code class="descname">tier</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Warn.tier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Warn.tier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="validation.Warn.title">
+<code class="descname">title</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Warn.title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Warn.title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="validation.report_row">
+<code class="descclassname">validation.</code><code class="descname">report_row</code><span class="sig-paren">(</span><em>flag_where</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#report_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.report_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper method to return an english explanation of what rows have been
+flagged with a failed validation check.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>flag_where</strong> (<em>Pandas Series</em>) – boolean Pandas Series representing failed
+validation checks.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a string reporting the index of the flagged rows</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">report_row</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]))</span>
+<span class="go">&#39;#0, #1, and #3&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="mappings.html" class="btn btn-neutral float-right" title="mappings module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="configuration.html" class="btn btn-neutral" title="configuration module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, MITRE
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'1.0a',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,440 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>CrossVA documentation &mdash; CrossVA 1.0a documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Background" href="about.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> CrossVA
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0a
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#currently-supported">Currently Supported</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#roadmap">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#style">Style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#license">License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Custom Mappings</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration Files</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Under the hood</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="source/transform.html">transform function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/configuration.html">configuration module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/validation.html">validation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/mappings.html">mappings module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">CrossVA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>CrossVA documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="crossva-documentation">
+<h1>CrossVA documentation<a class="headerlink" href="#crossva-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">Background</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#about-verbal-autopsy">About Verbal Autopsy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#crossva">CrossVA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#project-status">Project Status</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#currently-supported">Currently Supported</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#inputs">Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#outputs">Outputs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#roadmap">Roadmap</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#supporting-more-inputs">Supporting more inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#expanding-outputs">Expanding outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#expanding-user-facing-features">Expanding user-facing features</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#style">Style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#license">License</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Custom Mappings</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration Files</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Under the hood</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="source/transform.html">transform function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/configuration.html">configuration module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/validation.html">validation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/mappings.html">mappings module</a></li>
+</ul>
+</div>
+<div class="section" id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="about-verbal-autopsy">
+<h3>About Verbal Autopsy<a class="headerlink" href="#about-verbal-autopsy" title="Permalink to this headline">¶</a></h3>
+<p>From <a class="reference external" href="https://en.wikipedia.org/wiki/Verbal_autopsy">Wikipedia</a>:</p>
+<blockquote>
+<div><p>A verbal autopsy (VA) is a method of gathering health information about a deceased
+individual to determine his or her cause of death. Health information and a
+description of events prior to death are acquired from conversations or
+interviews with a person or persons familiar with the deceased and analyzed by
+health professional or computer algorithms to assign a probable cause of death.</p>
+<p>Verbal autopsy is used in settings where most deaths are undocumented. Estimates
+suggest a majority of the 60 million annual global deaths occur without medical
+attention or official medical certification of the cause of death. The VA method
+attempts to establish causes of death for previously undocumented subjects,
+allowing scientists to analyze disease patterns and direct public health policy
+decisions.</p>
+<p>Noteworthy uses of the verbal autopsy method include the Million Death Study in
+India, China’s national program to document causes of death in rural areas, and
+the Global Burden of Disease Study 2010.</p>
+</div></blockquote>
+</div>
+<div class="section" id="crossva">
+<h3>CrossVA<a class="headerlink" href="#crossva" title="Permalink to this headline">¶</a></h3>
+<p>CrossVA is a python package for transforming verbal autopsy data collected using
+the 2016 WHO VA instrument (currently, only version 1.5.1) into a format suitable
+for openVA.</p>
+<p>The flagship function of this package is the transform() function, which
+prepares raw data from a verbal autopsy questionnaire for use in a
+verbal autopsy algorithm. The user can either choose to use a default mapping,
+or create a custom one of their own design. The default mappings are listed in
+<a class="reference internal" href="#currently-supported">Currently Supported</a> and can be invoked by passing in a tuple as the mapping
+argument in <code class="docutils literal"><span class="pre">(input,</span> <span class="pre">output)</span></code> format.</p>
+</div>
+<div class="section" id="project-status">
+<h3>Project Status<a class="headerlink" href="#project-status" title="Permalink to this headline">¶</a></h3>
+<p>This package is a fleshed out prototype of the framework MTIRE is
+proposing for the open source CrossVA project going forward. This is an
+alpha version (as of Jan 7, 2018) intended to demonstrate full concept
+and flexibility, not for use in research or verbal autopsy evaluations.</p>
+</div>
+</div>
+<div class="section" id="simple-usage">
+<h2>Simple Usage<a class="headerlink" href="#simple-usage" title="Permalink to this headline">¶</a></h2>
+<p>The simplest way to get started with CrossVA is to invoke the <code class="docutils literal"><span class="pre">transform</span></code> function
+with a default mapping, and the path to a csv containing your raw verbal autopsy
+data.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transform</span> <span class="kn">import</span> <span class="n">transform</span>
+
+<span class="n">transform</span><span class="p">((</span><span class="s2">&quot;2016WHOv151&quot;</span><span class="p">,</span> <span class="s2">&quot;InterVA4&quot;</span><span class="p">),</span> <span class="s2">&quot;path/to/data.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also call the transform function on a Pandas DataFrame, if you wanted to
+read in and process the data before calling the function.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transform</span> <span class="kn">import</span> <span class="n">transform</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;path/to/data.csv&quot;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">some_special_function</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">transform</span><span class="p">((</span><span class="s2">&quot;2016WHOv151&quot;</span><span class="p">,</span> <span class="s2">&quot;InterVA4&quot;</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="currently-supported">
+<h2>Currently Supported<a class="headerlink" href="#currently-supported" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="inputs">
+<h3>Inputs<a class="headerlink" href="#inputs" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>2016 WHO Questionnaire from ODK export, v1.5.1</li>
+</ul>
+<p>2016 WHO documentation can be found
+<a class="reference external" href="https://www.who.int/healthinfo/statistics/verbalautopsystandards/en/">here.</a></p>
+</div>
+<div class="section" id="outputs">
+<h3>Outputs<a class="headerlink" href="#outputs" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>InSillicoVA</li>
+<li>InterVA</li>
+</ul>
+</div>
+</div>
+<div class="section" id="roadmap">
+<h2>Roadmap<a class="headerlink" href="#roadmap" title="Permalink to this headline">¶</a></h2>
+<p>This is an alpha version of package functionality, with only limited support.
+Future versions and updates will include expanding inputs and outputs, as well as
+creating more user-facing features.</p>
+<div class="section" id="supporting-more-inputs">
+<h3>Supporting more inputs<a class="headerlink" href="#supporting-more-inputs" title="Permalink to this headline">¶</a></h3>
+<p>One component of moving to a production version will be to offer additional
+mapping files to support more input formats. The package currently supports
+the 2016 WHO v1.5.1 odk export.</p>
+<p>The following is a list of four additional
+inputs already in our sights:</p>
+<ul class="simple">
+<li>PHRMC short</li>
+<li>PHRMC long</li>
+<li>WHO 2012</li>
+<li>WHO 2016 v1.4.1</li>
+</ul>
+</div>
+<div class="section" id="expanding-outputs">
+<h3>Expanding outputs<a class="headerlink" href="#expanding-outputs" title="Permalink to this headline">¶</a></h3>
+<p>One component of moving to a production version will be to offer additional
+mapping files to support more output formats. The package currently supports
+mapping to the InterVA4 and InsillicoVA format.</p>
+<p>The following is a list of
+additional outputs for other algorithms to be supported in future versions:</p>
+<ul class="simple">
+<li>Tarrif</li>
+<li>Tarrif 2.0</li>
+<li>InterVA5</li>
+</ul>
+</div>
+<div class="section" id="expanding-user-facing-features">
+<h3>Expanding user-facing features<a class="headerlink" href="#expanding-user-facing-features" title="Permalink to this headline">¶</a></h3>
+<p>Some of the user-facing features in this version are sparser than we would like
+for a production-level package. In this vein, we want to prioritize creating
+both good documentation and intuitive features for the user, so that the package
+is easy to understand and use.</p>
+<ul>
+<li><p class="first">Better error messages</p>
+<blockquote>
+<div><p>Adding exception classes to distinguish between mapping, configuration, and
+data errors, so that it will be more immediately obvious to the user what
+the root cause of the error is.</p>
+</div></blockquote>
+</li>
+<li><p class="first">Improving speed</p>
+<blockquote>
+<div><p>Adding additional validation checks has slowed down the algorithm from its
+original proof of concept speed. We believe this can be further improved
+before the package is in a production version.</p>
+</div></blockquote>
+</li>
+<li><p class="first">More - and more detail - in validation checks</p>
+<blockquote>
+<div><p>Being able to convey to the end-user when the data has unexpected properties
+or an incorrect format will be essential to allow the user to understand and
+correct the issue.</p>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="style">
+<h2>Style<a class="headerlink" href="#style" title="Permalink to this headline">¶</a></h2>
+<p>This package was written using google style guide for Python and PEP8 standards.
+Tests have been written using doctest.</p>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>This package is licensed under the GNU GENERAL PUBLIC LICENSE (v3, 2007).
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.</p>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="about.html" class="btn btn-neutral float-right" title="Background" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, MITRE
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'./',
+              VERSION:'1.0a',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

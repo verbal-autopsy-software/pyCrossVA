@@ -1,0 +1,388 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Configuration Files &mdash; CrossVA 1.0a documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="transform module" href="source/transform.html" />
+    <link rel="prev" title="Background" href="about.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CrossVA
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0a
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#currently-supported">Currently Supported</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#roadmap">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#style">Style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html#license">License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Custom Mappings</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration Files</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Under the hood</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="source/transform.html">transform function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/configuration.html">configuration module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/validation.html">validation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/mappings.html">mappings module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CrossVA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Configuration Files</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/config.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="configuration-files">
+<h1>Configuration Files<a class="headerlink" href="#configuration-files" title="Permalink to this headline">¶</a></h1>
+<p>CrossVA runs by applying the specified mappings in its configuration files to
+the raw data provided. The package comes with some default configurations
+which map common inputs to common outputs.</p>
+<p>These files have the following columns:</p>
+<blockquote>
+<div><ul class="simple">
+<li>New Column Name</li>
+<li>New Column Documentation</li>
+<li>Source Column ID</li>
+<li>Source Column Documentation</li>
+<li>Relationship</li>
+<li>Condition</li>
+<li>Prerequisite</li>
+</ul>
+</div></blockquote>
+<p>Of those, only <cite>New Column Name</cite>, <cite>Source Column ID</cite>, <cite>Relationship</cite>, and
+<cite>Condition</cite> must be filled out in every row.</p>
+<p>Each row in the configuration mapping gives instructions to map information from
+a single column in the raw input data into a new column in the final transformed
+data.</p>
+<p>Each row can be read as roughly:
+The new column <cite>New Column Name</cite> will get the value True in rows where the column
+<cite>Source Column ID</cite> in the input data is <cite>Relationship</cite> to <cite>Condition</cite>,
+and, optionally, the <cite>Prerequisite</cite> column in the output data is also True.</p>
+<p>When the input data is NA, the NAs will be preserved through the transformation.
+That is, no matter the <cite>Relationship</cite> and <cite>Condition</cite>, if the value in the source
+column is NA, then the result will be NA, instead of a boolean.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If there are other conditions with the same name specified,
+then this will only update the pre-existing column. False and NA values in the
+transformed data will be overwritten if a prior condition was false, but a new
+condition was true.</p>
+<p class="last">This creates an implicit <cite>OR</cite> relationship between the different conditions
+listed.</p>
+</div>
+<p>Example:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="31%" />
+<col width="9%" />
+<col width="18%" />
+<col width="7%" />
+<col width="19%" />
+<col width="7%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">New Column Name</th>
+<th class="head">New Column Documentation</th>
+<th class="head">Source Column ID</th>
+<th class="head">Source Column Documentation</th>
+<th class="head">Relationship</th>
+<th class="head">Condition</th>
+<th class="head">Prerequisite</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>DEL_ELSE</td>
+<td>Did she give birth elsewhere, e.g. on the way to a facility?</td>
+<td>Id10337</td>
+<td>(Id10337) Where did she give birth?</td>
+<td>eq</td>
+<td>other</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>DEL_ELSE</td>
+<td>Did she give birth elsewhere, e.g. on the way to a facility?</td>
+<td>Id10337</td>
+<td>(Id10337) Where did she give birth?</td>
+<td>eq</td>
+<td>on_route_to_hospital_or_facility</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>The first row indicates that where the column Id10337 is equal to other in the input data,
+then DEL_ELSE is true in the output data.</li>
+<li>The first row indicates that where the column Id10337 is equal to
+on_route_to_hospital_or_facility in the input data,
+then DEL_ELSE is true in the output data.</li>
+</ul>
+<p>In this sense, if Id10337 is <cite>on_route_to_hospital_or_facility</cite>, DEL_ELSE will be set
+to False on the first condition, and then updated to True on the second condition.
+However, if Id10337 is <cite>other</cite>, then DEL_ELSE will be set to True on the first
+condition, and remain True (not updated!) on the second condition, since it
+has already been satisfied.</p>
+<div class="topic">
+<p class="topic-title first">New Column Name</p>
+<p>The <cite>New Column Name</cite> column is required. It should contain the name of the
+new column to be created in the final data.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">New Column Documentation</p>
+<p>The <cite>New Column Documentation</cite> column is optional. It should
+contain a brief statement explaining what the new column is meant to represent.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">Source Column ID</p>
+<p>The <cite>Source Column ID</cite> column is required. It should contain the unique
+identifier at the end of the column name in the input data.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">Source Column Documentation</p>
+<p>The <cite>Source Column Documentation</cite> column is optional. It should contain a
+brief statement explaining what information the source column contains. This,
+along with the <cite>New Column Documentation</cite> column, makes it much easier to
+at-a-glance check the logic behind these mappings.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">Relationship</p>
+<p>The <cite>Relationship</cite> column is required. It should contain one of 8 valid
+relationships, which use the value in the <cite>Condition</cite> column to return a
+boolean value for the output data. The currently supported relationships are:</p>
+<ul class="simple">
+<li>eq: is equal to</li>
+<li>gt: is greater than</li>
+<li>ge: is greater than or equal to</li>
+<li>lt: is less than</li>
+<li>le: is less than or equal to</li>
+<li>ne: is not equal to</li>
+<li>contains: contains the substring</li>
+<li>between: is between 2 numbers, inclusive</li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title first">Condition</p>
+<p>The <cite>Condition</cite> column is required. It should contain the condition being
+applied to the source column. For example, <cite>yes</cite>, <cite>5</cite> or <cite>15 to 30</cite>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Conditions in the form ## to ## should only be used when the relationship is
+between, in order to give the two numbers that make up the low and high end
+of the acceptable range.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">Prerequisite</p>
+<p>The <cite>Prerequisite</cite> column is optional. It should be left blank if there is
+no prerequisite. If there is a prerequisite condition, then this column should
+contain the name of the column in the final data to reference.</p>
+<p>For example, the new column <cite>MAGEGP1</cite> is created based on the condition of if
+the source column <cite>ageInYears</cite> is <cite>between</cite> <cite>12 to 19</cite>. It also lists a prerequisite
+of <cite>FEMALE</cite>, which is a previously created column in the output data,
+containing its own boolean, which checks to see if Id10019 is equal to “female”.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="source/transform.html" class="btn btn-neutral float-right" title="transform module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="about.html" class="btn btn-neutral" title="Background" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, MITRE
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'./',
+              VERSION:'1.0a',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

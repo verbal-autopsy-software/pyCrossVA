@@ -1,0 +1,356 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>transform &mdash; CrossVA 1.0a documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> CrossVA
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0a
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#currently-supported">Currently Supported</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#roadmap">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#style">Style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#license">License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Custom Mappings</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">Configuration Files</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Under the hood</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../source/transform.html">transform function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/configuration.html">configuration module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/validation.html">validation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/mappings.html">mappings module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CrossVA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>transform</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for transform</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Defines main CrossVA function, `transform` which maps raw VA data into data</span>
+<span class="sd">for use with a VA algorithm in OpenVA.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">configuration</span> <span class="k">import</span> <span class="n">Configuration</span><span class="p">,</span> <span class="n">CrossVA</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="k">import</span> <span class="n">flexible_read</span>
+
+
+<div class="viewcode-block" id="transform"><a class="viewcode-back" href="../source/transform.html#transform.transform">[docs]</a><span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="n">mapping</span><span class="p">,</span> <span class="n">raw_data</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">preserve_na</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;transforms raw VA data (`raw_data`) into data suitable for use with a VA</span>
+<span class="sd">    algorithm, according to the specified transformations given in `mapping`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mapping (string, tuple or Pandas DataFrame): Should be either a tuple</span>
+<span class="sd">            in form (input, output), a path to csv containing a configuration</span>
+<span class="sd">            data file, or a Pandas DataFrame containing configuration data</span>
+<span class="sd">        raw_data (string or Pandas DataFrame): raw verbal autopsy data to</span>
+<span class="sd">            process</span>
+<span class="sd">        verbose (int): integer from 0 to 5, controlling how much status detail</span>
+<span class="sd">            is printed to console. Silent if 0. Defaults to 2.</span>
+<span class="sd">        preserve_na (bool): whether to preserve NAs in data, or to count them</span>
+<span class="sd">            as FALSE. Overridden with True for InsillicoVA, False for InterVA4</span>
+<span class="sd">            when mapping is given as a tuple.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Pandas DataFrame: the raw data transformed according to specifications</span>
+<span class="sd">        given in mapping data.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        You can specify the mapping as (input, output) and the path to csv:</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; transform((&quot;2016WHOv151&quot;, &quot;InterVA4&quot;), &quot;resources/sample_data/mock_data_1.csv&quot;).iloc[:5,:5]</span>
+<span class="sd">           AB_POSIT  AB_SIZE  ABD_MASS  ABD_PAIN  ABDOM</span>
+<span class="sd">        0     False     True     False      True  False</span>
+<span class="sd">        1     False    False      True     False   True</span>
+<span class="sd">        2     False    False      True     False  False</span>
+<span class="sd">        3      True    False     False     False  False</span>
+<span class="sd">        4     False    False     False      True  False</span>
+<span class="sd">    </span>
+<span class="sd">        &gt;&gt;&gt; transform((&quot;2016WHOv151&quot;, &quot;InsillicoVA&quot;), &quot;resources/sample_data/mock_data_1.csv&quot;).iloc[:5,:5]</span>
+<span class="sd">          AB_POSIT AB_SIZE ABD_MASS ABD_PAIN  ABDOM</span>
+<span class="sd">        0    False    True    False     True  False</span>
+<span class="sd">        1      NaN     NaN     True      NaN   True</span>
+<span class="sd">        2      NaN   False     True    False    NaN</span>
+<span class="sd">        3     True   False      NaN    False    NaN</span>
+<span class="sd">        4      NaN     NaN      NaN     True  False</span>
+<span class="sd">        </span>
+<span class="sd">        Or you can give the data and mapping as Pandas DataFrames:</span>
+<span class="sd">            </span>
+<span class="sd">        &gt;&gt;&gt; my_special_data = pd.read_csv(&quot;resources/sample_data/mock_data_1.csv&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; my_special_mapping = pd.read_csv(&quot;resources/mapping_configuration_files/example_config_1.csv&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; transform(my_special_mapping, my_special_data).iloc[:5,:5]</span>
+<span class="sd">          AB_POSIT AB_SIZE AC_BRL AC_CONV AC_COUGH</span>
+<span class="sd">        0    False    True   True   False     True</span>
+<span class="sd">        1      NaN     NaN   True   False    False</span>
+<span class="sd">        2      NaN   False   True    True    False</span>
+<span class="sd">        3     True   False   True   False     True</span>
+<span class="sd">        4      NaN     NaN   True    True     True</span>
+<span class="sd">    </span>
+<span class="sd">        However, the mapping-data relationship must be valid.</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; bad_mapping = pd.read_csv(&quot;resources/mapping_configuration_files/example_config_2.csv&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; transform(bad_mapping, my_special_data).iloc[:5,:5]</span>
+<span class="sd">        Traceback (most recent call last):</span>
+<span class="sd">        ValueError: Configuration from mapping file must be valid before</span>
+<span class="sd">        transform.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mapping_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="c1"># TODO - this is clunky in current form, could stand to be more elegant</span>
+    <span class="c1"># read in mapping data</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mapping</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>  <span class="c1"># if mapping is in (input, output) format</span>
+        <span class="n">internal_path</span> <span class="o">=</span> <span class="s2">&quot;resources/mapping_configuration_files/&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">supported_outputs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;InterVA4&quot;</span><span class="p">,</span> <span class="s2">&quot;InsillicoVA&quot;</span><span class="p">]</span>
+            <span class="n">supported_inputs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;2016WHOv151&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">mapping</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">supported_inputs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">mapping</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">supported_outputs</span><span class="p">:</span>
+                    <span class="n">preserve_na</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;InsillicoVA&quot;</span> <span class="c1">#overides given</span>
+                    <span class="n">mapping_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">((</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{internal_path}</span><span class="s2">&quot;</span>
+                                                <span class="n">f</span><span class="s2">&quot;</span><span class="si">{mapping[0]}</span><span class="s2">_to_&quot;</span>
+                                                <span class="n">f</span><span class="s2">&quot;</span><span class="si">{mapping[1]}</span><span class="s2">.csv&quot;</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s2">&quot;Output not supported. Expected one of&quot;</span>
+                                      <span class="n">f</span><span class="s2">&quot; </span><span class="si">{supported_outputs}</span><span class="s2">, but received &quot;</span>
+                                      <span class="n">f</span><span class="s2">&quot;&#39;</span><span class="si">{mapping[1]}</span><span class="s2">&#39;&quot;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s2">&quot;Input not supported. Expected one of&quot;</span>
+                                  <span class="n">f</span><span class="s2">&quot; </span><span class="si">{supported_inputs}</span><span class="s2">, but received &quot;</span>
+                                  <span class="n">f</span><span class="s2">&quot;&#39;</span><span class="si">{mapping[0]}</span><span class="s2">&#39;&quot;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s2">&quot;If mapping is tuple, input should be of length &quot;</span>
+                              <span class="s2">&quot;two in the form (input type, output type)&quot;</span><span class="p">))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mapping_data</span> <span class="o">=</span> <span class="n">flexible_read</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mapping_data</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>  <span class="c1"># this shouldn&#39;t happen; if it does, raise</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s2">&quot;No valid mapping data provided to transform. Should be&quot;</span>
+                       <span class="s2">&quot; either a tuple in form (input, output), a path to csv&quot;</span>
+                       <span class="s2">&quot; or a Pandas DataFrame.&quot;</span><span class="p">))</span>
+
+    <span class="c1"># init configuration obj from given mapping data</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">Configuration</span><span class="p">(</span><span class="n">mapping_data</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">process_strings</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># if the configuration isn&#39;t valid, or if the data isn&#39;t valid for the</span>
+    <span class="c1"># config file, then raise error</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">validate</span><span class="p">():</span>
+        <span class="c1"># Raise Error</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s2">&quot;Configuration from mapping file must be valid &quot;</span>
+                           <span class="s2">&quot;before transform.&quot;</span><span class="p">))</span>
+
+    <span class="c1"># TODO adds args to init based on data type?</span>
+    <span class="n">input_data</span> <span class="o">=</span> <span class="n">flexible_read</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)</span>
+    <span class="n">cross_va</span> <span class="o">=</span> <span class="n">CrossVA</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cross_va</span><span class="o">.</span><span class="n">validate</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s2">&quot;Cannot transform if provided raw data and &quot;</span>
+                           <span class="s2">&quot;configuration file are not a valid match.&quot;</span><span class="p">))</span>
+    <span class="n">final_data</span> <span class="o">=</span> <span class="n">cross_va</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">preserve_na</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">final_data</span>
+    <span class="k">return</span> <span class="n">final_data</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+<span class="c1"># transform((&quot;2016WHOv151&quot;, &quot;InterVA4&quot;), &quot;resources/sample_data/mock_data_1.csv&quot;)</span>
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, MITRE
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'1.0a',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

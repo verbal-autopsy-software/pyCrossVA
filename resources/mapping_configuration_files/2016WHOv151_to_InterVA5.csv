@@ -1,4 +1,4 @@
-﻿New Column Name,New Column Documentation,Source Lookup,Source Column Documentation,Relationship,Condition,Prerequisite,Meta: Notes
+﻿New Column Name,New Column Documentation,Source Column ID,Source Column Documentation,Relationship,Condition,Prerequisite,Meta: Notes
 i004a, Did s(he) die during the wet season? d wet,Id10004,(Id10004) [During which season did (s)he die?],eq,wet,,
 i004b, Did s(he) die during the dry season? d dry,Id10004,(Id10004) [During which season did (s)he die?],eq,dry,,
 i019a, Was he male? male,Id10019,(Id10019) What was the sex of the deceased?,eq,male,,

@@ -75,6 +75,7 @@ class Configuration():
             Nothing
 
         Examples:
+            >>> MAP_PATH = "resources/mapping_configuration_files/"
             >>> EX_MAP_1 = pd.read_csv(MAP_PATH + "example_config_1.csv")
             >>> Configuration(EX_MAP_1)
             Unvalidated Configuration instance with 16 mapping conditions
@@ -123,6 +124,8 @@ class Configuration():
             created from a row of processed mapping data.
 
         Examples:
+            >>> MAP_PATH = "resources/mapping_configuration_files/"
+            >>> EX_MAP_1 = pd.read_csv(MAP_PATH + "example_config_1.csv")
             >>> c = Configuration(EX_MAP_1)
             >>> c.list_conditions()[:5]
             [<StrMapCondition:     AB_POSIT = [column Id10403].eq(yes)>,
@@ -159,8 +162,10 @@ class Configuration():
                 prevent validation
 
         Examples:
+            >>> MAP_PATH = "resources/mapping_configuration_files/"
+            >>> EX_MAP_2 = pd.read_csv(MAP_PATH + "example_config_2.csv")
             >>> c = Configuration(EX_MAP_2)
-            >>> c.validate(verbose=5)
+            >>> c.validate(verbose=4)
             Validating Mapping Configuration . . .
             <BLANKLINE>
              CHECKS PASSED
@@ -299,6 +304,8 @@ class Configuration():
             None
 
         Examples:
+            >>> MAP_PATH = "resources/mapping_configuration_files/"
+            >>> EX_MAP_1 = pd.read_csv(MAP_PATH + "example_config_1.csv")
             >>> Configuration(EX_MAP_1).describe()
             MAPPING STATS
             <BLANKLINE>
@@ -357,6 +364,8 @@ class CrossVA():
             type: Description of returned object.
 
         Examples
+            >>> MAP_PATH = "resources/mapping_configuration_files/"
+            >>> EX_MAP_1 = pd.read_csv(MAP_PATH + "example_config_1.csv")
             >>> EX_DATA_1 = pd.read_csv("resources/sample_data/mock_data_2016WHO151.csv")
             >>> CrossVA(EX_DATA_1, Configuration(EX_MAP_1))
             <CrossVA with (4, 12) raw data and Validated Configuration instance
@@ -454,6 +463,9 @@ class CrossVA():
             boolean: True if valid, False if not.
 
         Examples:
+            >>> MAP_PATH = "resources/mapping_configuration_files/"
+            >>> EX_MAP_1 = pd.read_csv(MAP_PATH + "example_config_1.csv")
+            >>> EX_DATA_1 = pd.read_csv("resources/sample_data/mock_data_2016WHO151.csv")
             >>> CrossVA(EX_DATA_1, Configuration(EX_MAP_1)).validate(verbose=0)
             True
 

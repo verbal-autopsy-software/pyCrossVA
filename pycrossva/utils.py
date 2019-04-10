@@ -5,8 +5,9 @@ Convenience functions for the CrossVA module, which help to provide a more
 user-friendly experience with inputs and error messages across different files.
 """
 import re
-import pandas as pd
 
+import pandas as pd
+import numpy as np
 
 def report_list(alist, limit=10, paren=True):
     """Converts alist into a user-friendly string for clearer error messages.

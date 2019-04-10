@@ -20,6 +20,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../'))
+sys.path.insert(0, os.path.abspath('../pycrossva/'))
 
 # -- General configuration ------------------------------------------------
 
@@ -31,11 +32,11 @@ sys.path.insert(0, os.path.abspath('../'))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages',
-    'sphinx.ext.napoleon',
-    ]
+              'sphinx.ext.doctest',
+              'sphinx.ext.viewcode',
+              'sphinx.ext.githubpages',
+              'sphinx.ext.napoleon',
+              ]
 
 # napolean settings
 napoleon_google_docstring = True

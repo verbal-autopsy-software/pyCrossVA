@@ -3,13 +3,13 @@
 """
 Defines MapCondition class and its subclasses, each represent a single condition
 that uses a relationship to transform raw data into a boolean column while
-preserving the NA values. 
+preserving the NA values.
 """
-from utils import english_relationship
-
 from abc import ABCMeta, abstractmethod
-import pandas as pd
 import numpy as np
+import pandas as pd
+
+from utils import english_relationship
 
 
 class MapCondition(metaclass=ABCMeta):
@@ -55,7 +55,7 @@ class MapCondition(metaclass=ABCMeta):
         self.preq_column = condition_row["Prerequisite"]
         self.source_name = condition_row["Source Column ID"]
 
-    def factory(relationship):
+    def factory(relationship, condition=""):
         """static class factory method, which determines which subclass to
         return
 
@@ -63,6 +63,9 @@ class MapCondition(metaclass=ABCMeta):
             relationship (str): a relationship in (gt, ge, lt, le, ne, eq,
                 contains, between) that represents a comparison to be
                 made to the raw data
+            condition (str or int): the condition being matched. if
+                relationship is ambiguous, then this determins if condition
+                is numerical or string. Defaults to empty string.
 
         Returns:
             MapCondition: returns specific subclass that corresponds to the
@@ -71,16 +74,19 @@ class MapCondition(metaclass=ABCMeta):
         Examples:
             >>> MapCondition.factory("ge")
             <class '__main__.NumMapCondition'>
-    
+
+            >>> MapCondition.factory("eq", 0)
+            <class '__main__.NumMapCondition'>
+
             >>> MapCondition.factory("eq")
             <class '__main__.StrMapCondition'>
-    
+
             >>> MapCondition.factory("contains")
             <class '__main__.ContainsCondition'>
-    
+
             >>> MapCondition.factory("between")
             <class '__main__.BetweenCondition'>
-    
+
             >>> MapCondition.factory("eqq")
             Traceback (most recent call last):
             AssertionError: No defined Condition class for eqq type
@@ -89,6 +95,8 @@ class MapCondition(metaclass=ABCMeta):
         if relationship in ["gt", "ge", "lt", "le"]:
             return NumMapCondition
         if relationship in ["ne", "eq"]:
+            if str(condition).isdigit():
+                return NumMapCondition
             return StrMapCondition
         if relationship == "contains":
             return ContainsCondition
@@ -101,39 +109,25 @@ class MapCondition(metaclass=ABCMeta):
         them back afterward.
 
         Args:
-            input_data (Pandas DataFrame): a dataframe containing a created
+            prepared_data (Pandas DataFrame): a dataframe containing a created
                 column with the name specified in self.source_dtype
 
         Returns:
-            Pandas Series: returns a bolean series where the condition is met
+            Array: returns a boolean array where the condition is met (as float)
 
-        Examples:
-            >>> test_df = pd.DataFrame({"source_test_str": ["test condition",\
-                                                            "test condition 2",\
-                                                            np.nan],\
-                                        "source_test_num": [4, 5, np.nan]})
-            >>> StrMapCondition({"Condition" : "test condition",\
-                                 "New Column Name" : "test new column name",\
-                                 "Relationship" : "eq", "Prerequisite" : None,\
-                                 "Source Column ID" : "source_test"}).check(test_df)
-            0     True
-            1    False
-            2      NaN
-            Name: source_test_str, dtype: object
+        Examples: 
+            >>> test_df = pd.DataFrame({"source_test_str": ["test condition", "test condition 2", np.nan], "source_test_num": [4, 5, np.nan]})
+            >>> StrMapCondition({"Condition" : "test condition", "New Column Name" : "test new column name", "Relationship" : "eq", "Prerequisite" : None, "Source Column ID" : "source_test"}).check(test_df)
+            array([ 1., 0., nan])
     
-            >>> NumMapCondition({"Condition" : 4.5,\
-                                "New Column Name" : "test new column name",\
-                                "Relationship" : "ge",\
-                                "Prerequisite" : None,\
-                                "Source Column ID" : "source_test"}).check(test_df)
-            0    False
-            1     True
-            2      NaN
-            Name: source_test_num, dtype: object
+            >>> NumMapCondition({"Condition" : 4.5, "New Column Name" : "test new column name", "Relationship" : "ge", "Prerequisite" : None, "Source Column ID" : "source_test"}).check(test_df)
+            array([ 0., 1., nan])
         """
         eval_col = prepared_data[self.source_dtype]
-        return self._run_check(eval_col).where(eval_col.notnull(),
-                                               eval_col)
+
+        return np.where(eval_col.notnull(),
+                        self._run_check(eval_col),
+                        np.nan)
 
     def _run_check(self, eval_col):
         """internal method to check the condition on a given column with no NAs
@@ -146,23 +140,14 @@ class MapCondition(metaclass=ABCMeta):
 
         Examples:
             >>> test = pd.Series(["A","B","C"])
-            >>> StrMapCondition({"Condition" : "B",\
-                                 "New Column Name" : "test new column name",\
-                                 "Relationship" : "eq", "Prerequisite" : None,\
-                                 "Source Column ID" : "source_test"}\
-                                )._run_check(test)
+            >>> StrMapCondition({"Condition" : "B", "New Column Name" : "test new column name", "Relationship" : "eq", "Prerequisite" : None, "Source Column ID" : "source_test"})._run_check(test)
             0    False
             1     True
             2    False
             dtype: bool
-    
+
             >>> test = pd.Series([1, 2, 3])
-            >>> NumMapCondition({"Condition" : 3,\
-                                "New Column Name" : "test new column name",\
-                                "Relationship" : "ge",\
-                                "Prerequisite" : None,\
-                                "Source Column ID" : "source_test"}\
-                                )._run_check(test)
+            >>> NumMapCondition({"Condition" : 3,  "New Column Name" : "test new column name",  "Relationship" : "ge",  "Prerequisite" : None,  "Source Column ID" : "source_test"})._run_check(test)
             0    False
             1    False
             2     True
@@ -183,42 +168,26 @@ class MapCondition(metaclass=ABCMeta):
                 satisfied
 
         Examples:
-            >>> test_df = pd.DataFrame({"preq_one": np.repeat(True,5),\
-                                "preq_two": np.repeat(False, 5)})
+            >>> test_df = pd.DataFrame({"preq_one": np.repeat(True,5),  "preq_two": np.repeat(False, 5)})
 
-            If there is no pre-req, simply returns True (Pandas can interpret this
-            in boolean indexing)
-            
-            >>> NumMapCondition({"Condition" : 4.5,\
-                                 "New Column Name" : "test new column name",\
-                                 "Relationship" : "ge",\
-                                 "Prerequisite" : None,\
-                                 "Source Column ID" : "source_test"}\
-                                    ).check_prereq(test_df)
-            True
-    
+            If there is no pre-req, simply returns True (1) Pandas can
+            interpret this in boolean indexing.
+
+            >>> NumMapCondition({"Condition" : 4.5,  "New Column Name" : "test new column name",  "Relationship" : "ge",  "Prerequisite" : None,  "Source Column ID" : "source_test"}  ).check_prereq(test_df)
+            1
+
             If there is a pre-req, then returns the value of transformed_data
             with that column.
-            
-            >>> NumMapCondition({"Condition" : 4.5,\
-                                 "New Column Name" : "test new column name",\
-                                 "Relationship" : "ge",\
-                                 "Prerequisite" : "preq_one",\
-                                 "Source Column ID" : "source_test"}\
-                                    ).check_prereq(test_df)
+
+            >>> NumMapCondition({"Condition" : 4.5,  "New Column Name" : "test new column name",  "Relationship" : "ge",  "Prerequisite" : "preq_one",  "Source Column ID" : "source_test"}  ).check_prereq(test_df)
             0    True
             1    True
             2    True
             3    True
             4    True
             Name: preq_one, dtype: bool
-    
-            >>> NumMapCondition({"Condition" : 4.5,\
-                                 "New Column Name" : "test new column name",\
-                                 "Relationship" : "ge",\
-                                 "Prerequisite" : "preq_two",\
-                                 "Source Column ID" : "source_test"}\
-                                    ).check_prereq(test_df)
+
+            >>> NumMapCondition({"Condition" : 4.5,  "New Column Name" : "test new column name",  "Relationship" : "ge",  "Prerequisite" : "preq_two",  "Source Column ID" : "source_test"}  ).check_prereq(test_df)
             0    False
             1    False
             2    False
@@ -227,7 +196,7 @@ class MapCondition(metaclass=ABCMeta):
             Name: preq_two, dtype: bool
         """
         if pd.isnull(self.preq_column) or self.preq_column == "":
-            return True
+            return 1
         return transformed_data[self.preq_column]
 
     @property
@@ -245,13 +214,13 @@ class MapCondition(metaclass=ABCMeta):
                 the column given in self.source_name.
 
         Returns:
-            Pandas Series: the column in `raw_data` named in self.source_name,\
-                with the attribute self.prep_func applied to it.
+            Pandas Series: the column in `raw_data` named in self.source_name,  with the attribute self.prep_func applied to it.
 
         """
-        return self.prep_func(raw_data[self.source_name]).where(
-                raw_data[self.source_name].notnull(), np.nan)
-                        
+        return np.where(raw_data[self.source_name].notnull(),
+                        self.prep_func(raw_data[self.source_name]),
+                        np.nan)
+
     def describe(self):
         """ just a wrapper for the __str__ function """
         return self.__str__()
@@ -260,16 +229,12 @@ class MapCondition(metaclass=ABCMeta):
         """console representation for class
 
         Examples:
-        >>> NumMapCondition({"Condition" : 4,\
-                             "New Column Name" : "test new name",\
-                             "Relationship" : "ge",\
-                             "Prerequisite" : "preq_two",\
-                             "Source Column ID" : "source_test"})
+        >>> NumMapCondition({"Condition" : 4,  "New Column Name" : "test new name",  "Relationship" : "ge",  "Prerequisite" : "preq_two",  "Source Column ID" : "source_test"})
         <NumMapCondition:	 test new name = [column source_test].ge(4.0)>
 """
-        return " ".join(["<"+self.__class__.__name__+":\t",
+        return " ".join(["<" + self.__class__.__name__ + ":\t",
                          self.name, "=",
-                         "[column "+self.source_name + "]." +
+                         "[column " + self.source_name + "]." +
                          self.relationship + "(" + str(self.condition) + ")>"
                          ])
 
@@ -277,16 +242,11 @@ class MapCondition(metaclass=ABCMeta):
         """str representation
 
         Examples:
-        >>> print(NumMapCondition({"Condition" : 4,\
-                                   "New Column Name" : "test new column name",\
-                                   "Relationship" : "ge",\
-                                   "Prerequisite" : "preq_two",\
-                                   "Source Column ID" : "source_test"}))
-        NumMapCondition: New column test new column name is true where input
-        data column source_test is greater than or equal to 4.0
+            >>> print(NumMapCondition({"Condition" : 4,  "New Column Name" : "test new column name",  "Relationship" : "ge",  "Prerequisite" : "preq_two",  "Source Column ID" : "source_test"}))
+            NumMapCondition: New column test new column name is true where   input data column source_test is greater than or equal to 4.0 and   the new column preq_two is true.
 
         """
-        report_as_list = [self.__class__.__name__+":",
+        report_as_list = [self.__class__.__name__ + ":",
                           "New column", self.name,
                           "is true where input data column",
                           self.source_name,
@@ -294,8 +254,8 @@ class MapCondition(metaclass=ABCMeta):
                           str(self.condition)]
         report_as = " ".join(report_as_list)
 
-        if self.preq_column is None:
-            return (report_as + "and the new column " +
+        if not self.preq_column is "":
+            return (report_as + " and the new column " +
                     str(self.preq_column) + " is true.")
         return report_as
 
@@ -319,17 +279,12 @@ class StrMapCondition(MapCondition):
             condition_row (Pandas Series or dict): see MapCondition's __init__
 
         Examples:
-            >>> StrMapCondition({"Condition" : "test cond",\
-                         "New Column Name" : "test new name",\
-                         "Relationship" : "eq",\
-                         "Prerequisite" : None,\
-                         "Source Column ID" : "source_test"}\
-                        )
+            >>> StrMapCondition({"Condition" : "test cond",  "New Column Name" : "test new name",  "Relationship" : "eq",  "Prerequisite" : None,  "Source Column ID" : "source_test"}  )
             <StrMapCondition:	 test new name = [column source_test].eq(test cond)>
         """
         super().__init__(condition_row)
         self.source_dtype = self.source_name + "_str"
-        self.prep_func  = lambda x: x.astype(str)
+        self.prep_func = lambda x: x.astype(str)
 
     def possible_values(self):
         """generate a non-exhaustive list possible values implied by condition
@@ -342,12 +297,7 @@ class StrMapCondition(MapCondition):
                 this condition
 
         Examples:
-            >>> StrMapCondition({"Condition" : "test condition",\
-                                 "New Column Name" : "test new column name",\
-                                 "Relationship" : "eq",\
-                                 "Prerequisite" : None,\
-                                 "Source Column ID" : "source_test"}\
-                                ).possible_values()
+            >>> StrMapCondition({"Condition" : "test condition",  "New Column Name" : "test new column name",  "Relationship" : "eq",  "Prerequisite" : None,  "Source Column ID" : "source_test"}  ).possible_values()
             ['', nan, None, 'test condition', 'yes', 'no', 'dk', 'ref']
 
         """
@@ -374,11 +324,7 @@ class NumMapCondition(MapCondition):
                 float. Defaults to True.
 
         Examples:
-            >>> NumMapCondition({"Condition" : 3,\
-                                 "New Column Name" : "test new name",\
-                                 "Relationship" : "ge",\
-                                 "Prerequisite" : None,\
-                                 "Source Column ID" : "source_test"})
+            >>> NumMapCondition({"Condition" : 3,  "New Column Name" : "test new name",  "Relationship" : "ge",  "Prerequisite" : None,  "Source Column ID" : "source_test"})
             <NumMapCondition:	 test new name = [column source_test].ge(3.0)>
 
         """
@@ -402,22 +348,14 @@ class NumMapCondition(MapCondition):
                 includes "equal to", then self.condition will also be included.
 
         Examples:
-            >>> NumMapCondition({"Condition" : 3,\
-                          "New Column Name" : "test new name",\
-                          "Relationship" : "ge",\
-                          "Prerequisite" : None,\
-                          "Source Column ID" : "source_test"}).possible_values()
+            >>> NumMapCondition({"Condition" : 3,  "New Column Name" : "test new name",  "Relationship" : "ge",  "Prerequisite" : None,  "Source Column ID" : "source_test"}).possible_values()
             [4.0, 5.0, 3.0]
-            >>> NumMapCondition({"Condition" : 3,\
-                          "New Column Name" : "test new name",\
-                          "Relationship" : "lt",\
-                          "Prerequisite" : None,\
-                          "Source Column ID" : "source_test"}).possible_values()
+            >>> NumMapCondition({"Condition" : 3,  "New Column Name" : "test new name",  "Relationship" : "lt",  "Prerequisite" : None,  "Source Column ID" : "source_test"}).possible_values()
             [0.0, 1.0, 2.0]
 
         """
         if self.relationship[0] == "g":
-            possible = np.arange(self.condition+1, self.condition*2)
+            possible = np.arange(self.condition + 1, self.condition * 2)
         else:
             possible = np.arange(0, self.condition)
         if self.relationship[1] == "e":
@@ -446,27 +384,12 @@ class ContainsCondition(StrMapCondition):
                 self.condition
 
         Examples:
-            >>> test_df = pd.DataFrame({"source_test_1_str": ["test condition",\
-                                                            "test condition 2"],\
-                                        "source_test_2_str": ["test test",\
-                                                            "test condition"]})
-            >>> ContainsCondition({"Condition" : "test condition",\
-                             "New Column Name" : "test new column name",\
-                             "Relationship" : "contains",\
-                             "Prerequisite" : None,\
-                             "Source Column ID" : "source_test_1"}).check(test_df)
-            0    True
-            1    True
-            Name: source_test_1_str, dtype: bool
-    
-            >>> ContainsCondition({"Condition" : "test condition",\
-                             "New Column Name" : "test new column name",\
-                             "Relationship" : "contains",\
-                             "Prerequisite" : None,\
-                             "Source Column ID" : "source_test_2"}).check(test_df)
-            0    False
-            1     True
-            Name: source_test_2_str, dtype: bool
+            >>> test_df = pd.DataFrame({"source_test_1_str": ["test condition",  "test condition 2"],  "source_test_2_str": ["test test",  "test condition"]})
+            >>> ContainsCondition({"Condition" : "test condition",  "New Column Name" : "test new column name",  "Relationship" : "contains",  "Prerequisite" : None,  "Source Column ID" : "source_test_1"}).check(test_df)
+             array([1., 1.])
+
+            >>> ContainsCondition({"Condition" : "test condition",  "New Column Name" : "test new column name",  "Relationship" : "contains",  "Prerequisite" : None,  "Source Column ID" : "source_test_2"}).check(test_df)
+            array([0., 1.])
         """
         return eval_col.fillna("").str.contains(self.condition)
 
@@ -489,11 +412,7 @@ class BetweenCondition(NumMapCondition):
             condition_row (Pandas Series or dict): see MapCondition's __init__
 
         Examples:
-            >>> BetweenCondition({"Condition" : "3 to 5",\
-                              "New Column Name" : "test new column name",\
-                              "Relationship" : "between",\
-                              "Prerequisite" : None,\
-                              "Source Column ID" : "source_test_1"})
+            >>> BetweenCondition({"Condition" : "3 to 5",  "New Column Name" : "test new column name",  "Relationship" : "between",  "Prerequisite" : None,  "Source Column ID" : "source_test_1"})
             <BetweenCondition:	 test new column name = [column
             source_test_1].between(3 to 5)>
         """
@@ -508,31 +427,18 @@ class BetweenCondition(NumMapCondition):
                 instance containing a column named self.source_dtype
 
         Returns:
-            boolean Pandas Series: true where the column named in
+            array: true (1) where the column named in
                 self.source_dtype has a number between self.low and self.high,
                 inclusive
 
         Examples:
-            >>> test_df = pd.DataFrame({"source_test_1_num": [1,2,3],\
-                                        "source_test_2_num": [4,5,6]})
-            >>> BetweenCondition({"Condition" : "3 to 5",\
-                              "New Column Name" : "test new column name",\
-                              "Relationship" : "between",\
-                              "Prerequisite" : None,\
-                              "Source Column ID" : "source_test_1"}).check(test_df)
-            0    False
-            1    False
-            2     True
-            Name: source_test_1_num, dtype: bool
-            >>> BetweenCondition({"Condition" : "3 to 5",\
-                              "New Column Name" : "test new column name",\
-                              "Relationship" : "between",\
-                              "Prerequisite" : None,\
-                              "Source Column ID" : "source_test_2"}).check(test_df)
-            0     True
-            1     True
-            2    False
-            Name: source_test_2_num, dtype: bool
+            >>> test_df = pd.DataFrame({"source_test_1_num": [1,2,3],   "source_test_2_num": [4,5,6]})
+            >>> BetweenCondition({"Condition" : "3 to 5",  "New Column Name" : "test new column name",  "Relationship" : "between",  "Prerequisite" : None,  "Source Column ID" : "source_test_1"}).check(test_df)
+            array([0., 0., 1.])
+
+            >>> BetweenCondition({"Condition" : "3 to 5",  "New Column Name" : "test new column name",  "Relationship" : "between",  "Prerequisite" : None,  "Source Column ID" : "source_test_2"}).check(test_df)
+            array([1., 1., 0.])
+
         """
         return eval_col.between(self.low, self.high)
 
@@ -546,16 +452,11 @@ class BetweenCondition(NumMapCondition):
             list: a list of integers between self.low - 1 and self.high + 2
 
         Examples:
-            >>> BetweenCondition({"Condition" : "3 to 5",\
-                                      "New Column Name" : "test new column name",\
-                                      "Relationship" : "between",\
-                                      "Prerequisite" : None,\
-                                      "Source Column ID" : "source_test_2"}\
-                    ).possible_values()
+            >>> BetweenCondition({"Condition" : "3 to 5",  "New Column Name" : "test new column name",  "Relationship" : "between",  "Prerequisite" : None,  "Source Column ID" : "source_test_2"}  ).possible_values()
             [2.0, 3.0, 4.0, 5.0, 6.0]
 
         """
-        return np.arange(self.low-1, self.high+2).tolist()
+        return np.arange(self.low - 1, self.high + 2).tolist()
 
 
 if __name__ == "__main__":

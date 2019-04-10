@@ -85,6 +85,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#command-line">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#currently-supported">Currently Supported</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#roadmap">Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#style">Style</a></li>
@@ -168,10 +169,13 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Module containing Validation class, and Vcheck class and its subclasses</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
 <span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">utils</span> <span class="k">import</span> <span class="n">report_list</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">re</span>
 
 
 <div class="viewcode-block" id="VCheck"><a class="viewcode-back" href="../source/validation.html#validation.VCheck">[docs]</a><span class="k">class</span> <span class="nc">VCheck</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
@@ -359,9 +363,10 @@
 <span class="sd">            of the VCheck instances that have been added.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;inits Validation class&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vchecks</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
     <span class="k">def</span> <span class="nf">_add_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flagged_series</span><span class="p">,</span> <span class="n">pass_check</span><span class="p">,</span> <span class="n">fail_check</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Internal method that adds a fail_check to the self.vchecks attribute</span>
@@ -381,10 +386,8 @@
 
 <span class="sd">        Examples:</span>
 <span class="sd">            &gt;&gt;&gt; v = Validation()</span>
-<span class="sd">            &gt;&gt;&gt; v._add_condition(pd.Series([False, False, False]),\</span>
-<span class="sd">                                 Passing(&quot;Passed test&quot;), Err(&quot;Failed test&quot;))</span>
-<span class="sd">            &gt;&gt;&gt; v._add_condition(pd.Series([False, False, True]),\</span>
-<span class="sd">                                 Passing(&quot;Passed test&quot;), Err(&quot;Failed test&quot;))</span>
+<span class="sd">            &gt;&gt;&gt; v._add_condition(pd.Series([False, False, False]),  Passing(&quot;Passed test&quot;), Err(&quot;Failed test&quot;))</span>
+<span class="sd">            &gt;&gt;&gt; v._add_condition(pd.Series([False, False, True]),  Passing(&quot;Passed test&quot;), Err(&quot;Failed test&quot;))</span>
 <span class="sd">            &gt;&gt;&gt; v.vchecks</span>
 <span class="sd">              Bullet  Level      Message     Tier          Title</span>
 <span class="sd">            0    [X]    4.0  Passed test  Passing  CHECKS PASSED</span>
@@ -397,9 +400,50 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">vchecks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vchecks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pass_check</span><span class="o">.</span><span class="n">expand</span><span class="p">(),</span>
                                                <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Validation.must_contain"><a class="viewcode-back" href="../source/validation.html#validation.Validation.must_contain">[docs]</a>    <span class="k">def</span> <span class="nf">must_contain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">given</span><span class="p">,</span> <span class="n">required</span><span class="p">,</span> <span class="n">passing_msg</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Validation.no_duplicates"><a class="viewcode-back" href="../source/validation.html#validation.Validation.no_duplicates">[docs]</a>    <span class="k">def</span> <span class="nf">no_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">my_series</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; adds a validation check as `Err` if any items in my_series are</span>
+<span class="sd">        duplicates. Intended to alert users of issues where there are duplicate</span>
+<span class="sd">        columns before an exception is raised.</span>
+
+<span class="sd">            my_series (Pandas Series): series where there should not be dupes</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">comparison</span> <span class="o">=</span> <span class="n">my_series</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()</span>
+        <span class="n">passing_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Source column IDs do not match more than one column in&quot;</span>
+                       <span class="s2">&quot; input data.&quot;</span><span class="p">)</span>
+        <span class="n">fail_msg</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="s2">&quot;{comparison.sum()} source column IDs {report_list(my_series[comparison])}&quot;</span>
+                    <span class="s2">&quot; were found multiple times in the input data. Each source&quot;</span>
+                    <span class="s2">&quot; column ID should only occur once as part of an input data&quot;</span>
+                    <span class="s2">&quot; column name. It should be a unique identifier at&quot;</span>
+                    <span class="s2">&quot; the end of an input data column name. Source column IDs&quot;</span>
+                    <span class="s2">&quot; are case sensitive. Please revise your mapping configuration&quot;</span>
+                    <span class="s2">&quot; or your input data so that this condition is satisfied.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">my_series</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(),</span> <span class="n">Passing</span><span class="p">(</span><span class="n">passing_msg</span><span class="p">),</span>
+                            <span class="n">Err</span><span class="p">(</span><span class="n">fail_msg</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Validation.affected_by_absence"><a class="viewcode-back" href="../source/validation.html#validation.Validation.affected_by_absence">[docs]</a>    <span class="k">def</span> <span class="nf">affected_by_absence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_grped</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; adds a validation check as `Warn` describing the items in missing_grped,</span>
+<span class="sd">        which detail the impact that missing columns have on newly created</span>
+<span class="sd">        mappings.</span>
+<span class="sd">            missing_grped (Pandas Series): series where the index is the name</span>
+<span class="sd">                of the missing source column, and the values are a list of</span>
+<span class="sd">                affected values.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">source</span><span class="p">,</span> <span class="n">affected_list</span> <span class="ow">in</span> <span class="n">missing_grped</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="s2">&quot;&#39;</span><span class="si">{source}</span><span class="s2">&#39; is missing, which affects the creation of &quot;</span>
+                   <span class="n">f</span><span class="s2">&quot; column(s) {report_list(affected_list, paren=False)}&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vchecks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vchecks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Warn</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(),</span>
+                                               <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Validation.must_contain"><a class="viewcode-back" href="../source/validation.html#validation.Validation.must_contain">[docs]</a>    <span class="k">def</span> <span class="nf">must_contain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">given</span><span class="p">,</span> <span class="n">required</span><span class="p">,</span> <span class="n">passing_msg</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fail</span><span class="o">=</span><span class="n">Err</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;adds a validation check where `given` must contain every item in</span>
-<span class="sd">        `required` at least once to pass, and `fail_check` is `Err`,</span>
+<span class="sd">        `required` at least once to pass, and `fail_check` is `fail`,</span>
 <span class="sd">        (fails validation).</span>
 
 <span class="sd">        Args:</span>
@@ -407,36 +451,35 @@
 <span class="sd">            required (Pandas Series): the items required to be in `given`</span>
 <span class="sd">            passing_msg (str): Message to return if all items in `expected` are</span>
 <span class="sd">                listed in `given`. Defaults to &quot;&quot;.</span>
+<span class="sd">            fail (VCheck): the outcome if the check fails. Default is Err.</span>
+<span class="sd">            impact (Pandas Series): a corresponding series to `required` that</span>
+<span class="sd">                represents the affected information when</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            None</span>
 
 <span class="sd">        Examples:</span>
 <span class="sd">            &gt;&gt;&gt; v = Validation()</span>
-<span class="sd">            &gt;&gt;&gt; v.must_contain(pd.Series([&quot;a&quot;,&quot;b&quot;,&quot;c&quot;], name=&quot;example input&quot;),\</span>
-<span class="sd">                               pd.Series([&quot;a&quot;,&quot;b&quot;],\</span>
-<span class="sd">                                         name=&quot;example requirement(s)&quot;),\</span>
-<span class="sd">                               &quot;all included&quot;)</span>
-<span class="sd">            &gt;&gt;&gt; v.must_contain(pd.Series([&quot;a&quot;,&quot;b&quot;,&quot;c&quot;], name=&quot;example input&quot;),\</span>
-<span class="sd">                               pd.Series([&quot;a&quot;,&quot;b&quot;,&quot;d&quot;],\</span>
-<span class="sd">                                         name=&quot;example requirement(s)&quot;))</span>
+<span class="sd">            &gt;&gt;&gt; v.must_contain(pd.Series([&quot;a&quot;,&quot;b&quot;,&quot;c&quot;], name=&quot;example input&quot;),  pd.Series([&quot;a&quot;,&quot;b&quot;],  name=&quot;example requirement(s)&quot;),  &quot;all included&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; v.must_contain(pd.Series([&quot;a&quot;,&quot;b&quot;,&quot;c&quot;], name=&quot;example input&quot;),  pd.Series([&quot;a&quot;,&quot;b&quot;,&quot;d&quot;],  name=&quot;example requirement(s)&quot;))</span>
 <span class="sd">            &gt;&gt;&gt; v.report(verbose=4)</span>
-<span class="sd">            CHECKS PASSED</span>
-<span class="sd">            [X]      all included</span>
+<span class="sd">            Validating  . . .</span>
 <span class="sd">            &lt;BLANKLINE&gt;</span>
-<span class="sd">            ERRORS</span>
-<span class="sd">            [!]      1 (&#39;d&#39;) example requirement(s) were missing</span>
-<span class="sd">            from example input. These must be included.</span>
+<span class="sd">             CHECKS PASSED</span>
+<span class="sd">            [X]          all included</span>
+<span class="sd">            &lt;BLANKLINE&gt;</span>
+<span class="sd">             ERRORS</span>
+<span class="sd">             [!]          1 (&#39;d&#39;) example requirement(s) were not found in   example input. Their values will be NA.</span>
 <span class="sd">            &quot;&quot;&quot;</span>
         <span class="c1"># Comparison is true (fails) when an item in required isn&#39;t in given</span>
         <span class="n">comparison</span> <span class="o">=</span> <span class="o">~</span><span class="n">required</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">given</span><span class="p">)</span>
         <span class="n">fail_msg</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">comparison</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
                              <span class="n">report_list</span><span class="p">(</span><span class="n">required</span><span class="p">[</span><span class="n">comparison</span><span class="p">]),</span>
                              <span class="nb">str</span><span class="p">(</span><span class="n">required</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
-                             <span class="s2">&quot;were missing from&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">given</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.&quot;</span><span class="p">,</span>
-                             <span class="s2">&quot;These must be included.&quot;</span><span class="p">])</span>
+                             <span class="s2">&quot;were not found in&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">given</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;Their values will be NA.&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">comparison</span><span class="p">,</span> <span class="n">Passing</span><span class="p">(</span><span class="n">passing_msg</span><span class="p">),</span>
-                            <span class="n">Err</span><span class="p">(</span><span class="n">fail_msg</span><span class="p">))</span></div>
+                            <span class="n">fail</span><span class="p">(</span><span class="n">fail_msg</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Validation.no_extraneous"><a class="viewcode-back" href="../source/validation.html#validation.Validation.no_extraneous">[docs]</a>    <span class="k">def</span> <span class="nf">no_extraneous</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">given</span><span class="p">,</span> <span class="n">relevant</span><span class="p">,</span> <span class="n">value_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;adds a validation check where all values in `given` should also be</span>
@@ -453,13 +496,10 @@
 
 <span class="sd">        Examples:</span>
 <span class="sd">            &gt;&gt;&gt; v = Validation()</span>
-<span class="sd">            &gt;&gt;&gt; v.no_extraneous(pd.Series([&quot;a&quot;,&quot;b&quot;], name=&quot;example input&quot;),\</span>
-<span class="sd">                               pd.Series([&quot;a&quot;,&quot;b&quot;,&quot;c&quot;],\</span>
-<span class="sd">                                         name=&quot;relevant value(s)&quot;), &quot;example&quot;)</span>
-<span class="sd">            &gt;&gt;&gt; v.no_extraneous(pd.Series([&quot;a&quot;,&quot;b&quot;,&quot;c&quot;], name=&quot;example input&quot;),\</span>
-<span class="sd">                               pd.Series([&quot;a&quot;,&quot;d&quot;],\</span>
-<span class="sd">                                         name=&quot;relevant value(s)&quot;), &quot;example&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; v.no_extraneous(pd.Series([&quot;a&quot;,&quot;b&quot;], name=&quot;example input&quot;),  pd.Series([&quot;a&quot;,&quot;b&quot;,&quot;c&quot;],  name=&quot;relevant value(s)&quot;), &quot;example&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; v.no_extraneous(pd.Series([&quot;a&quot;,&quot;b&quot;,&quot;c&quot;], name=&quot;example input&quot;),  pd.Series([&quot;a&quot;,&quot;d&quot;],  name=&quot;relevant value(s)&quot;), &quot;example&quot;)</span>
 <span class="sd">            &gt;&gt;&gt; v.report(verbose=4)</span>
+<span class="sd">            Validating  . . .</span>
 <span class="sd">            &lt;BLANKLINE&gt;</span>
 <span class="sd">            CHECKS PASSED</span>
 <span class="sd">            [X]      No extraneous example found in example input.</span>
@@ -472,13 +512,13 @@
         <span class="c1"># `relevant`</span>
         <span class="n">comparison</span> <span class="o">=</span> <span class="o">~</span><span class="n">given</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">relevant</span><span class="p">)</span>
         <span class="n">fail_msg</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">comparison</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
-                             <span class="s2">&quot;extraneous&quot;</span><span class="p">,</span> <span class="n">value_type</span><span class="o">+</span><span class="s2">&quot;(s)&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;extraneous&quot;</span><span class="p">,</span> <span class="n">value_type</span> <span class="o">+</span> <span class="s2">&quot;(s)&quot;</span><span class="p">,</span>
                              <span class="s2">&quot;found in&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">given</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
                              <span class="n">report_list</span><span class="p">(</span><span class="n">given</span><span class="p">[</span><span class="n">comparison</span><span class="p">],</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
-                             <span class="s2">&quot;Extraneous&quot;</span><span class="p">,</span> <span class="n">value_type</span><span class="o">+</span><span class="s2">&quot;(s)&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;Extraneous&quot;</span><span class="p">,</span> <span class="n">value_type</span> <span class="o">+</span> <span class="s2">&quot;(s)&quot;</span><span class="p">,</span>
                              <span class="s2">&quot;will be ommitted.&quot;</span><span class="p">])</span>
         <span class="n">passing_msg</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;No extraneous&quot;</span><span class="p">,</span> <span class="n">value_type</span><span class="p">,</span> <span class="s2">&quot;found in&quot;</span><span class="p">,</span>
-                                <span class="nb">str</span><span class="p">(</span><span class="n">given</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.&quot;</span><span class="p">])</span>
+                                <span class="nb">str</span><span class="p">(</span><span class="n">given</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">comparison</span><span class="p">,</span> <span class="n">Passing</span><span class="p">(</span><span class="n">passing_msg</span><span class="p">),</span>
                             <span class="n">Err</span><span class="p">(</span><span class="n">fail_msg</span><span class="p">))</span></div>
 
@@ -498,13 +538,10 @@
 
 <span class="sd">        Examples:</span>
 <span class="sd">            &gt;&gt;&gt; v = Validation()</span>
-<span class="sd">            &gt;&gt;&gt; v.all_valid(pd.Series([&quot;a&quot;,&quot;b&quot;], name=&quot;example input&quot;),\</span>
-<span class="sd">                               pd.Series([&quot;a&quot;,&quot;b&quot;,&quot;c&quot;],\</span>
-<span class="sd">                                         name=&quot;valid value(s)&quot;), &quot;pre-defined&quot;)</span>
-<span class="sd">            &gt;&gt;&gt; v.all_valid(pd.Series([&quot;a&quot;,&quot;b&quot;,&quot;c&quot;], name=&quot;example input&quot;),\</span>
-<span class="sd">                               pd.Series([&quot;a&quot;,&quot;d&quot;],\</span>
-<span class="sd">                                         name=&quot;valid value(s)&quot;), &quot;&#39;a&#39; or &#39;d&#39;&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; v.all_valid(pd.Series([&quot;a&quot;,&quot;b&quot;], name=&quot;example input&quot;),  pd.Series([&quot;a&quot;,&quot;b&quot;,&quot;c&quot;],  name=&quot;valid value(s)&quot;), &quot;pre-defined&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; v.all_valid(pd.Series([&quot;a&quot;,&quot;b&quot;,&quot;c&quot;], name=&quot;example input&quot;),  pd.Series([&quot;a&quot;,&quot;d&quot;],  name=&quot;valid value(s)&quot;), &quot;&#39;a&#39; or &#39;d&#39;&quot;)</span>
 <span class="sd">            &gt;&gt;&gt; v.report(verbose=4)</span>
+<span class="sd">            Validating  . . .</span>
 <span class="sd">            &lt;BLANKLINE&gt;</span>
 <span class="sd">             CHECKS PASSED</span>
 <span class="sd">            [X]          All values in example input are valid.</span>
@@ -524,6 +561,43 @@
                              <span class="s2">&quot;These must be&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="p">,</span> <span class="s2">&quot;to be valid.&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">comparison</span><span class="p">,</span> <span class="n">Passing</span><span class="p">(</span><span class="n">passing_msg</span><span class="p">),</span>
                             <span class="n">Err</span><span class="p">(</span><span class="n">fail_msg</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Validation.flag_elements"><a class="viewcode-back" href="../source/validation.html#validation.Validation.flag_elements">[docs]</a>    <span class="k">def</span> <span class="nf">flag_elements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flag_where</span><span class="p">,</span> <span class="n">flag_elements</span><span class="p">,</span> <span class="n">criteria</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds a validation check seeing if any values in flag_where are true,</span>
+<span class="sd">        and then reports on the corresponding items in flag_elements.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            flag_where (Pandas Series): a boolean Pandas Series where True</span>
+<span class="sd">                represents a failed check</span>
+<span class="sd">            flag_elements (Pandas Series): a boolean Pandas Series listing</span>
+<span class="sd">                elements that are affected by True values in `flag_where`</span>
+<span class="sd">            criteria (String): a brief description of what elements are</span>
+<span class="sd">                being flagged and reported on</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; v = Validation(&quot;element test&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; v.flag_elements(pd.Series([False, False]),  pd.Series([&quot;A&quot;, &quot;B&quot;]), &quot;red flag(s)&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; v.flag_elements(pd.Series([False, True]),  pd.Series([&quot;A&quot;, &quot;B&quot;]), &quot;blue flag(s)&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; v.report(verbose=4)</span>
+<span class="sd">            Validating element test . . .</span>
+<span class="sd">            &lt;BLANKLINE&gt;</span>
+<span class="sd">             CHECKS PASSED</span>
+<span class="sd">            [X]          No red flag(s) in element test detected.</span>
+<span class="sd">            &lt;BLANKLINE&gt;</span>
+<span class="sd">             WARNINGS</span>
+<span class="sd">            [?]          1 blue flag(s) in element test detected. These (&#39;B&#39;) will be treated as NA.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">passing_msg</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;No </span><span class="si">{criteria}</span><span class="s2"> in </span><span class="si">{self.name}</span><span class="s2"> detected.&quot;</span>
+        <span class="n">fail_msg</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">flag_where</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="n">criteria</span><span class="p">,</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span>
+                             <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;detected.&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;These&quot;</span><span class="p">,</span> <span class="n">report_list</span><span class="p">(</span><span class="n">flag_elements</span><span class="p">[</span><span class="n">flag_where</span><span class="p">]),</span>
+                             <span class="s2">&quot;will be treated as NA.&quot;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">flag_where</span><span class="p">,</span> <span class="n">Passing</span><span class="p">(</span><span class="n">passing_msg</span><span class="p">),</span>
+                            <span class="n">Warn</span><span class="p">(</span><span class="n">fail_msg</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Validation.flag_rows"><a class="viewcode-back" href="../source/validation.html#validation.Validation.flag_rows">[docs]</a>    <span class="k">def</span> <span class="nf">flag_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flag_where</span><span class="p">,</span> <span class="n">flag_criteria</span><span class="p">,</span> <span class="n">flag_action</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
                   <span class="n">flag_tier</span><span class="o">=</span><span class="n">Warn</span><span class="p">):</span>
@@ -546,11 +620,10 @@
 
 <span class="sd">        Examples:</span>
 <span class="sd">            &gt;&gt;&gt; v = Validation()</span>
-<span class="sd">            &gt;&gt;&gt; v.flag_rows(pd.Series([False, False]),\</span>
-<span class="sd">                                      flag_criteria=&quot;true values&quot;)</span>
-<span class="sd">            &gt;&gt;&gt; v.flag_rows(pd.Series([False, True]),\</span>
-<span class="sd">                                      flag_criteria=&quot;true values&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; v.flag_rows(pd.Series([False, False]),  flag_criteria=&quot;true values&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; v.flag_rows(pd.Series([False, True]),  flag_criteria=&quot;true values&quot;)</span>
 <span class="sd">            &gt;&gt;&gt; v.report(verbose=4)</span>
+<span class="sd">            Validating  . . .</span>
 <span class="sd">            &lt;BLANKLINE&gt;</span>
 <span class="sd">            CHECKS PASSED</span>
 <span class="sd">            [X]      No true values detected.</span>
@@ -561,7 +634,7 @@
         <span class="n">passing_msg</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;No&quot;</span><span class="p">,</span> <span class="n">flag_criteria</span><span class="p">,</span> <span class="s2">&quot;detected.&quot;</span><span class="p">])</span>
         <span class="n">fail_msg</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">flag_where</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="n">flag_criteria</span><span class="p">,</span>
                              <span class="s2">&quot;detected in row(s)&quot;</span><span class="p">,</span> <span class="n">report_row</span><span class="p">(</span>
-                                 <span class="n">flag_where</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.&quot;</span><span class="p">,</span>
+                                 <span class="n">flag_where</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
                              <span class="n">flag_action</span><span class="p">])</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">flag_where</span><span class="p">,</span> <span class="n">Passing</span><span class="p">(</span><span class="n">passing_msg</span><span class="p">),</span>
@@ -605,6 +678,7 @@
 <span class="sd">            2  C  F</span>
 
 <span class="sd">            &gt;&gt;&gt; v.report(verbose=4)</span>
+<span class="sd">            Validating  . . .</span>
 <span class="sd">            &lt;BLANKLINE&gt;</span>
 <span class="sd">             WARNINGS</span>
 <span class="sd">            [?]      1 lowercase char column A detected in row(s) #1.</span>
@@ -639,17 +713,18 @@
 <span class="sd">            &gt;&gt;&gt; test_df = pd.DataFrame({&quot;A&quot;:[&quot;a&quot;,&quot;B&quot;,&quot;c&quot;], &quot;B&quot;:[&quot;D&quot;,&quot;e&quot;,None]})</span>
 <span class="sd">            &gt;&gt;&gt; v.check_na(test_df)</span>
 <span class="sd">            &gt;&gt;&gt; v.report(verbose=4)</span>
+<span class="sd">            Validating  . . .</span>
 <span class="sd">            &lt;BLANKLINE&gt;</span>
 <span class="sd">             CHECKS PASSED</span>
-<span class="sd">            [X]      No NA&#39;s in column A detected.</span>
+<span class="sd">            [X]          No NA&#39;s in column A detected.</span>
 <span class="sd">            &lt;BLANKLINE&gt;</span>
-<span class="sd">             ERRORS</span>
-<span class="sd">            [!]      1 NA&#39;s in column B detected in row(s) #2.</span>
+<span class="sd">             WARNINGS</span>
+<span class="sd">            [?]          1 NA&#39;s in column B detected in row(s) #2.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
                        <span class="n">condition</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">x</span><span class="p">,</span>
                        <span class="n">flag_criteria</span><span class="o">=</span><span class="s2">&quot;NA&#39;s in&quot;</span><span class="p">,</span>
-                       <span class="n">flag_tier</span><span class="o">=</span><span class="n">Err</span>
+                       <span class="n">flag_tier</span><span class="o">=</span><span class="n">Warn</span>
                        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Validation.fix_whitespace"><a class="viewcode-back" href="../source/validation.html#validation.Validation.fix_whitespace">[docs]</a>    <span class="k">def</span> <span class="nf">fix_whitespace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
@@ -666,25 +741,22 @@
 
 <span class="sd">        Examples:</span>
 <span class="sd">            &gt;&gt;&gt; v = Validation()</span>
-<span class="sd">            &gt;&gt;&gt; test_df = pd.DataFrame({&quot;A&quot;:[&quot;a&quot;,&quot; B &quot;,&quot;Test Data&quot;],\</span>
-<span class="sd">                                        &quot;B&quot;:[&quot;D&quot;,&quot; e&quot;,&quot;F &quot;]})</span>
+<span class="sd">            &gt;&gt;&gt; test_df = pd.DataFrame({&quot;A&quot;:[&quot;a&quot;,&quot; B &quot;,&quot;Test Data&quot;],  &quot;B&quot;:[&quot;D&quot;,&quot; e&quot;,&quot;F &quot;]})</span>
 <span class="sd">            &gt;&gt;&gt; v.fix_whitespace(test_df)</span>
 <span class="sd">                       A  B</span>
 <span class="sd">            0          a  D</span>
 <span class="sd">            1          B  e</span>
 <span class="sd">            2  Test_Data  F</span>
 <span class="sd">            &gt;&gt;&gt; v.report(verbose=4)</span>
+<span class="sd">            Validating  . . .</span>
 <span class="sd">            &lt;BLANKLINE&gt;</span>
 <span class="sd">             CHECKS PASSED</span>
-<span class="sd">            [X]      No whitespace in column B detected.</span>
+<span class="sd">            [X]          No whitespace in column B detected.</span>
 <span class="sd">            &lt;BLANKLINE&gt;</span>
 <span class="sd">             WARNINGS</span>
-<span class="sd">            [?]      1 leading/trailing spaces column A detected in row(s)</span>
-<span class="sd">            #1. Leading or trailing spaces will be removed.</span>
-<span class="sd">            [?]      2 leading/trailing spaces column B detected in row(s)</span>
-<span class="sd">            #1, and #2. Leading/trailing spaces will be removed.</span>
-<span class="sd">            [?]      1 whitespace in column A detected in row(s) #2. Whitespace</span>
-<span class="sd">            will be converted to &#39;_&#39;</span>
+<span class="sd">            [?]          1 leading/trailing spaces column A detected in row(s) #1.  Leading/trailing spaces will be removed.</span>
+<span class="sd">            [?]          2 leading/trailing spaces column B detected in row(s)  #1, and #2. Leading/trailing spaces will be removed.</span>
+<span class="sd">            [?]          1 whitespace in column A detected in row(s) #2.  Whitespace will be converted to &#39;_&#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">stripped_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_df</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span>
                                      <span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">,</span>
@@ -716,14 +788,14 @@
 
 <span class="sd">        Examples:</span>
 <span class="sd">            &gt;&gt;&gt; v = Validation()</span>
-<span class="sd">            &gt;&gt;&gt; test_df = pd.DataFrame({&quot;A&quot;:[&quot;a&quot;,&quot;3.0&quot;,&quot;c&quot;],\</span>
-<span class="sd">                                        &quot;B&quot;:[&quot;??.test&quot;,&quot;test&lt;&gt;!&quot;,&quot;;test_data&quot;]})</span>
+<span class="sd">            &gt;&gt;&gt; test_df = pd.DataFrame({&quot;A&quot;:[&quot;a&quot;,&quot;3.0&quot;,&quot;c&quot;],  &quot;B&quot;:[&quot;??.test&quot;,&quot;test&lt;&gt;!&quot;,&quot;;test_data&quot;]})</span>
 <span class="sd">            &gt;&gt;&gt; v.fix_alnum(test_df)</span>
 <span class="sd">               A          B</span>
 <span class="sd">            0  a       test</span>
 <span class="sd">            1  3.0     test</span>
 <span class="sd">            2  c  test_data</span>
 <span class="sd">            &gt;&gt;&gt; v.report(verbose=4)</span>
+<span class="sd">            Validating  . . .</span>
 <span class="sd">            &lt;BLANKLINE&gt;</span>
 <span class="sd">             CHECKS PASSED</span>
 <span class="sd">            [X]      No non-alphanumeric value(s) in column A detected.</span>
@@ -735,7 +807,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
-                              <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[^a-zA-Z0-9_ -\.]|\.(?!\d)&quot;</span><span class="p">,</span>
+                              <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[^a-zA-Z0-9_ -\.]|\.(?!\d)|\!&quot;</span><span class="p">,</span>
                                                <span class="sa">r</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span>
                               <span class="n">flag_criteria</span><span class="o">=</span><span class="s2">&quot;non-alphanumeric value(s) in&quot;</span><span class="p">,</span>
                               <span class="n">flag_action</span><span class="o">=</span><span class="s2">&quot;This text should be alphanumeric. &quot;</span>
@@ -762,6 +834,7 @@
 <span class="sd">            1  B  E</span>
 <span class="sd">            2  C  F</span>
 <span class="sd">            &gt;&gt;&gt; v.report(verbose=4)</span>
+<span class="sd">            Validating  . . .</span>
 <span class="sd">            &lt;BLANKLINE&gt;</span>
 <span class="sd">             WARNINGS</span>
 <span class="sd">            [?]      2 lower case value(s) in  column A detected in row(s) #0,</span>
@@ -799,6 +872,7 @@
 <span class="sd">            1  b  e</span>
 <span class="sd">            2  c  f</span>
 <span class="sd">            &gt;&gt;&gt; v.report(verbose=4)</span>
+<span class="sd">            Validating  . . .</span>
 <span class="sd">            &lt;BLANKLINE&gt;</span>
 <span class="sd">             WARNINGS</span>
 <span class="sd">            [?]      1 upper case value(s) in column A detected in row(s) #1.</span>
@@ -853,22 +927,19 @@
 <span class="sd">            None</span>
 
 <span class="sd">        Examples:</span>
-<span class="sd">            &gt;&gt;&gt; v = Validation()</span>
-<span class="sd">            &gt;&gt;&gt; v._add_condition(pd.Series([False, False, False]),\</span>
-<span class="sd">                                 Passing(&quot;Passed test&quot;), Err(&quot;Failed test&quot;))</span>
-<span class="sd">            &gt;&gt;&gt; v._add_condition(pd.Series([False, False, False]),\</span>
-<span class="sd">                                 Passing(&quot;Passed test 2&quot;), Err(&quot;Failed test&quot;))</span>
-<span class="sd">            &gt;&gt;&gt; v._add_condition(pd.Series([False, False, True]),\</span>
-<span class="sd">                                 Passing(&quot;Passed test&quot;), Err(&quot;Error test&quot;))</span>
-<span class="sd">            &gt;&gt;&gt; v._add_condition(pd.Series([False, False, True]),\</span>
-<span class="sd">                                 Passing(&quot;Passed test&quot;), Warn(&quot;Warn test&quot;))</span>
-<span class="sd">            &gt;&gt;&gt; v._add_condition(pd.Series([False, False, True]),\</span>
-<span class="sd">                                 Passing(&quot;&quot;), Suggest(&quot;Suggest test&quot;))</span>
+<span class="sd">            &gt;&gt;&gt; v = Validation(&quot;Testing Tests&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; v._add_condition(pd.Series([False, False, False]),  Passing(&quot;Passed test&quot;), Err(&quot;Failed test&quot;))</span>
+<span class="sd">            &gt;&gt;&gt; v._add_condition(pd.Series([False, False, False]),  Passing(&quot;Passed test 2&quot;), Err(&quot;Failed test&quot;))</span>
+<span class="sd">            &gt;&gt;&gt; v._add_condition(pd.Series([False, False, True]),  Passing(&quot;Passed test&quot;), Err(&quot;Error test&quot;))</span>
+<span class="sd">            &gt;&gt;&gt; v._add_condition(pd.Series([False, False, True]),  Passing(&quot;Passed test&quot;), Warn(&quot;Warn test&quot;))</span>
+<span class="sd">            &gt;&gt;&gt; v._add_condition(pd.Series([False, False, True]),  Passing(&quot;&quot;), Suggest(&quot;Suggest test&quot;))</span>
 <span class="sd">            &gt;&gt;&gt; v.report(verbose=1)</span>
+<span class="sd">            Validating Testing Tests . . .</span>
 <span class="sd">            &lt;BLANKLINE&gt;</span>
 <span class="sd">             ERRORS</span>
 <span class="sd">            [!]      Error test</span>
 <span class="sd">            &gt;&gt;&gt; v.report(verbose=4)</span>
+<span class="sd">            Validating Testing Tests . . .</span>
 <span class="sd">            &lt;BLANKLINE&gt;</span>
 <span class="sd">             CHECKS PASSED</span>
 <span class="sd">            [X]      Passed test</span>
@@ -887,6 +958,8 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No validation checks made.&quot;</span><span class="p">)</span>
             <span class="k">return</span>
         <span class="n">within_verbose</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vchecks</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vchecks</span><span class="p">[</span><span class="s2">&quot;Level&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">verbose</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">within_verbose</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Validating </span><span class="si">{self.name}</span><span class="s2"> . . .&quot;</span><span class="p">)</span>
         <span class="n">final_reports</span> <span class="o">=</span> <span class="n">within_verbose</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">title</span> <span class="ow">in</span> <span class="n">final_reports</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>

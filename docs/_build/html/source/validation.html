@@ -87,6 +87,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#command-line">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#currently-supported">Currently Supported</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#roadmap">Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#style">Style</a></li>
@@ -348,7 +349,7 @@ Should be str, representing title of VCheck type</p>
 
 <dl class="class">
 <dt id="validation.Validation">
-<em class="property">class </em><code class="descclassname">validation.</code><code class="descname">Validation</code><a class="reference internal" href="../_modules/validation.html#Validation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">validation.</code><code class="descname">Validation</code><span class="sig-paren">(</span><em>name=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Validation object represents an organized dataframe of validation checks</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -360,6 +361,23 @@ of the VCheck instances that have been added.</td>
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="validation.Validation.affected_by_absence">
+<code class="descname">affected_by_absence</code><span class="sig-paren">(</span><em>missing_grped</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.affected_by_absence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.affected_by_absence" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a validation check as <cite>Warn</cite> describing the items in missing_grped,
+which detail the impact that missing columns have on newly created
+mappings.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>missing_grped (Pandas Series): series where the index is the name</dt>
+<dd>of the missing source column, and the values are a list of
+affected values.</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
 <dl class="method">
 <dt id="validation.Validation.all_valid">
 <code class="descname">all_valid</code><span class="sig-paren">(</span><em>given</em>, <em>valid</em>, <em>definition</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.all_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.all_valid" title="Permalink to this definition">¶</a></dt>
@@ -385,9 +403,10 @@ be in <cite>valid</cite></li>
 </table>
 <p class="rubric">Examples</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">all_valid</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;valid value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;pre-defined&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">all_valid</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;d&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;valid value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;&#39;a&#39; or &#39;d&#39;&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">all_valid</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span>  <span class="n">name</span><span class="o">=</span><span class="s2">&quot;valid value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;pre-defined&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">all_valid</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;d&quot;</span><span class="p">],</span>  <span class="n">name</span><span class="o">=</span><span class="s2">&quot;valid value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;&#39;a&#39; or &#39;d&#39;&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
 
 <span class="go"> CHECKS PASSED</span>
 <span class="go">[X]          All values in example input are valid.</span>
@@ -420,12 +439,13 @@ have no NA values</td>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot;e&quot;</span><span class="p">,</span><span class="kc">None</span><span class="p">]})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">check_na</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
 
 <span class="go"> CHECKS PASSED</span>
-<span class="go">[X]      No NA&#39;s in column A detected.</span>
+<span class="go">[X]          No NA&#39;s in column A detected.</span>
 
-<span class="go"> ERRORS</span>
-<span class="go">[!]      1 NA&#39;s in column B detected in row(s) #2.</span>
+<span class="go"> WARNINGS</span>
+<span class="go">[?]          1 NA&#39;s in column B detected in row(s) #2.</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -452,13 +472,14 @@ have only alphanumeric characters</td>
 </table>
 <p class="rubric">Examples</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;3.0&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span>                                        <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;??.test&quot;</span><span class="p">,</span><span class="s2">&quot;test&lt;&gt;!&quot;</span><span class="p">,</span><span class="s2">&quot;;test_data&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;3.0&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span>  <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;??.test&quot;</span><span class="p">,</span><span class="s2">&quot;test&lt;&gt;!&quot;</span><span class="p">,</span><span class="s2">&quot;;test_data&quot;</span><span class="p">]})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">fix_alnum</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
 <span class="go">   A          B</span>
 <span class="go">0  a       test</span>
 <span class="go">1  3.0     test</span>
 <span class="go">2  c  test_data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
 
 <span class="go"> CHECKS PASSED</span>
 <span class="go">[X]      No non-alphanumeric value(s) in column A detected.</span>
@@ -498,6 +519,7 @@ have only uppercase characters</td>
 <span class="go">1  B  E</span>
 <span class="go">2  C  F</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
 
 <span class="go"> WARNINGS</span>
 <span class="go">[?]      2 lower case value(s) in  column A detected in row(s) #0,</span>
@@ -537,6 +559,7 @@ have only lowercase characters</td>
 <span class="go">1  b  e</span>
 <span class="go">2  c  f</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
 
 <span class="go"> WARNINGS</span>
 <span class="go">[?]      1 upper case value(s) in column A detected in row(s) #1.</span>
@@ -573,24 +596,62 @@ have no whitespace</td>
 </table>
 <p class="rubric">Examples</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot; B &quot;</span><span class="p">,</span><span class="s2">&quot;Test Data&quot;</span><span class="p">],</span>                                        <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot; e&quot;</span><span class="p">,</span><span class="s2">&quot;F &quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot; B &quot;</span><span class="p">,</span><span class="s2">&quot;Test Data&quot;</span><span class="p">],</span>  <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot; e&quot;</span><span class="p">,</span><span class="s2">&quot;F &quot;</span><span class="p">]})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">fix_whitespace</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
 <span class="go">           A  B</span>
 <span class="go">0          a  D</span>
 <span class="go">1          B  e</span>
 <span class="go">2  Test_Data  F</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
 
 <span class="go"> CHECKS PASSED</span>
-<span class="go">[X]      No whitespace in column B detected.</span>
+<span class="go">[X]          No whitespace in column B detected.</span>
 
 <span class="go"> WARNINGS</span>
-<span class="go">[?]      1 leading/trailing spaces column A detected in row(s)</span>
-<span class="go">#1. Leading or trailing spaces will be removed.</span>
-<span class="go">[?]      2 leading/trailing spaces column B detected in row(s)</span>
-<span class="go">#1, and #2. Leading/trailing spaces will be removed.</span>
-<span class="go">[?]      1 whitespace in column A detected in row(s) #2. Whitespace</span>
-<span class="go">will be converted to &#39;_&#39;</span>
+<span class="go">[?]          1 leading/trailing spaces column A detected in row(s) #1.  Leading/trailing spaces will be removed.</span>
+<span class="go">[?]          2 leading/trailing spaces column B detected in row(s)  #1, and #2. Leading/trailing spaces will be removed.</span>
+<span class="go">[?]          1 whitespace in column A detected in row(s) #2.  Whitespace will be converted to &#39;_&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="validation.Validation.flag_elements">
+<code class="descname">flag_elements</code><span class="sig-paren">(</span><em>flag_where</em>, <em>flag_elements</em>, <em>criteria</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.flag_elements"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.flag_elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a validation check seeing if any values in flag_where are true,
+and then reports on the corresponding items in flag_elements.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>flag_where</strong> (<em>Pandas Series</em>) – a boolean Pandas Series where True
+represents a failed check</li>
+<li><strong>flag_elements</strong> (<em>Pandas Series</em>) – a boolean Pandas Series listing
+elements that are affected by True values in <cite>flag_where</cite></li>
+<li><strong>criteria</strong> (<em>String</em>) – a brief description of what elements are
+being flagged and reported on</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">(</span><span class="s2">&quot;element test&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">flag_elements</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]),</span> <span class="s2">&quot;red flag(s)&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">flag_elements</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]),</span> <span class="s2">&quot;blue flag(s)&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating element test . . .</span>
+
+<span class="go"> CHECKS PASSED</span>
+<span class="go">[X]          No red flag(s) in element test detected.</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]          1 blue flag(s) in element test detected. These (&#39;B&#39;) will be treated as NA.</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -624,9 +685,10 @@ the seriousness of the failed check.</li>
 </table>
 <p class="rubric">Examples</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">flag_rows</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>                                      <span class="n">flag_criteria</span><span class="o">=</span><span class="s2">&quot;true values&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">flag_rows</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>                                      <span class="n">flag_criteria</span><span class="o">=</span><span class="s2">&quot;true values&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">flag_rows</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>  <span class="n">flag_criteria</span><span class="o">=</span><span class="s2">&quot;true values&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">flag_rows</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>  <span class="n">flag_criteria</span><span class="o">=</span><span class="s2">&quot;true values&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
 
 <span class="go">CHECKS PASSED</span>
 <span class="go">[X]      No true values detected.</span>
@@ -673,9 +735,9 @@ the seriousness of the failed check.</li>
 
 <dl class="method">
 <dt id="validation.Validation.must_contain">
-<code class="descname">must_contain</code><span class="sig-paren">(</span><em>given</em>, <em>required</em>, <em>passing_msg=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.must_contain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.must_contain" title="Permalink to this definition">¶</a></dt>
+<code class="descname">must_contain</code><span class="sig-paren">(</span><em>given</em>, <em>required</em>, <em>passing_msg=''</em>, <em>fail=&lt;class 'validation.Err'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.must_contain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.must_contain" title="Permalink to this definition">¶</a></dt>
 <dd><p>adds a validation check where <cite>given</cite> must contain every item in
-<cite>required</cite> at least once to pass, and <cite>fail_check</cite> is <cite>Err</cite>,
+<cite>required</cite> at least once to pass, and <cite>fail_check</cite> is <cite>fail</cite>,
 (fails validation).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -686,6 +748,9 @@ the seriousness of the failed check.</li>
 <li><strong>required</strong> (<em>Pandas Series</em>) – the items required to be in <cite>given</cite></li>
 <li><strong>passing_msg</strong> (<em>str</em>) – Message to return if all items in <cite>expected</cite> are
 listed in <cite>given</cite>. Defaults to “”.</li>
+<li><strong>fail</strong> (<a class="reference internal" href="#validation.VCheck" title="validation.VCheck"><em>VCheck</em></a>) – the outcome if the check fails. Default is Err.</li>
+<li><strong>impact</strong> (<em>Pandas Series</em>) – a corresponding series to <cite>required</cite> that
+represents the affected information when</li>
 </ul>
 </td>
 </tr>
@@ -696,17 +761,33 @@ listed in <cite>given</cite>. Defaults to “”.</li>
 </table>
 <p class="rubric">Examples</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">must_contain</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example requirement(s)&quot;</span><span class="p">),</span>                               <span class="s2">&quot;all included&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">must_contain</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;d&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example requirement(s)&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">must_contain</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">],</span>  <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example requirement(s)&quot;</span><span class="p">),</span>  <span class="s2">&quot;all included&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">must_contain</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;d&quot;</span><span class="p">],</span>  <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example requirement(s)&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="go">CHECKS PASSED</span>
-<span class="go">[X]      all included</span>
+<span class="go">Validating  . . .</span>
 
-<span class="go">ERRORS</span>
-<span class="go">[!]      1 (&#39;d&#39;) example requirement(s) were missing</span>
-<span class="go">from example input. These must be included.</span>
+<span class="go"> CHECKS PASSED</span>
+<span class="go">[X]          all included</span>
+
+<span class="go"> ERRORS</span>
+<span class="go"> [!]          1 (&#39;d&#39;) example requirement(s) were not found in   example input. Their values will be NA.</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="method">
+<dt id="validation.Validation.no_duplicates">
+<code class="descname">no_duplicates</code><span class="sig-paren">(</span><em>my_series</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/validation.html#Validation.no_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#validation.Validation.no_duplicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a validation check as <cite>Err</cite> if any items in my_series are
+duplicates. Intended to alert users of issues where there are duplicate
+columns before an exception is raised.</p>
+<blockquote>
+<div><p>my_series (Pandas Series): series where there should not be dupes</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</div></blockquote>
 </dd></dl>
 
 <dl class="method">
@@ -733,9 +814,10 @@ listed in <cite>given</cite></li>
 </table>
 <p class="rubric">Examples</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">no_extraneous</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;relevant value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;example&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">no_extraneous</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;d&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;relevant value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;example&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">no_extraneous</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span>  <span class="n">name</span><span class="o">=</span><span class="s2">&quot;relevant value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;example&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">no_extraneous</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>  <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;d&quot;</span><span class="p">],</span>  <span class="n">name</span><span class="o">=</span><span class="s2">&quot;relevant value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;example&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
 
 <span class="go">CHECKS PASSED</span>
 <span class="go">[X]      No extraneous example found in example input.</span>
@@ -765,17 +847,19 @@ checks)</td>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>                                 <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test&quot;</span><span class="p">),</span> <span class="n">Err</span><span class="p">(</span><span class="s2">&quot;Failed test&quot;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>                                 <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test 2&quot;</span><span class="p">),</span> <span class="n">Err</span><span class="p">(</span><span class="s2">&quot;Failed test&quot;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>                                 <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test&quot;</span><span class="p">),</span> <span class="n">Err</span><span class="p">(</span><span class="s2">&quot;Error test&quot;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>                                 <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test&quot;</span><span class="p">),</span> <span class="n">Warn</span><span class="p">(</span><span class="s2">&quot;Warn test&quot;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>                                 <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">Suggest</span><span class="p">(</span><span class="s2">&quot;Suggest test&quot;</span><span class="p">))</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">(</span><span class="s2">&quot;Testing Tests&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>  <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test&quot;</span><span class="p">),</span> <span class="n">Err</span><span class="p">(</span><span class="s2">&quot;Failed test&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>  <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test 2&quot;</span><span class="p">),</span> <span class="n">Err</span><span class="p">(</span><span class="s2">&quot;Failed test&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>  <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test&quot;</span><span class="p">),</span> <span class="n">Err</span><span class="p">(</span><span class="s2">&quot;Error test&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>  <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test&quot;</span><span class="p">),</span> <span class="n">Warn</span><span class="p">(</span><span class="s2">&quot;Warn test&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>  <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">Suggest</span><span class="p">(</span><span class="s2">&quot;Suggest test&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">Validating Testing Tests . . .</span>
 
 <span class="go"> ERRORS</span>
 <span class="go">[!]      Error test</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating Testing Tests . . .</span>
 
 <span class="go"> CHECKS PASSED</span>
 <span class="go">[X]      Passed test</span>

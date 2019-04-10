@@ -27,15 +27,14 @@ CrossVA
 ^^^^^^^^
 
 CrossVA is a python package for transforming verbal autopsy data collected using
-the 2016 WHO VA instrument (currently, only version 1.5.1) into a format suitable
-for openVA.
+the 2016 WHO VA instrument (v1.5.1, or v1.4.1), 2012 WHO VA instrument, and
+the PHRMC short questionnaire into a format suitable for openVA.
 
 The flagship function of this package is the transform() function, which
-prepares raw data from a verbal autopsy questionnaire for use in a
-verbal autopsy algorithm. The user can either choose to use a default mapping,
-or create a custom one of their own design. The default mappings are listed in
-`Currently Supported`_ and can be invoked by passing in a tuple as the mapping
-argument in ``(input, output)`` format.
+prepares raw data for use in a verbal autopsy algorithm. The user can either
+choose to use a default mapping, or create a custom one of their own design. The
+default mappings are listed in `Currently Supported`_ and can be invoked by
+passing in a tuple as the mapping argument in ``("input", "output")`` format.
 
 
 Project Status
@@ -43,7 +42,7 @@ Project Status
 
 This package is a fleshed out prototype of the framework MTIRE is
 proposing for the open source CrossVA project going forward. This is an
-alpha version (as of Jan 7, 2018) intended to demonstrate full concept
+alpha version (as of April 8, 2019) intended to demonstrate full concept
 and flexibility, not for use in research or verbal autopsy evaluations.
 
 
@@ -71,6 +70,17 @@ read in and process the data before calling the function.
   data = some_special_function(data)
   transform(("2016WHOv151", "InterVA4"), data)
 
+There are more details available in `transform function`_
+
+Command Line
+------------
+
+`pycrossva` also contains a command line tool that allows users to invoke the main
+transform function on one or more files from the command line, without having
+to use the `Python` interpreter or write a `Python` script.
+
+
+
 
 Currently Supported
 --------------------
@@ -79,38 +89,21 @@ Inputs
 ^^^^^^^
 
 * 2016 WHO Questionnaire from ODK export, v1.5.1
-
-2016 WHO documentation can be found
-`here. <https://www.who.int/healthinfo/statistics/verbalautopsystandards/en/>`_
-
+* 2016 WHO Questionnaire from ODK export, v1.4.1
+* 2012 WHO Questionnaire from ODK export
+* PHRMC Shortened Questionnaire
 
 Outputs
 ^^^^^^^^
 
 * InSillicoVA
-* InterVA
+* InterVA4
+* InterVA5
 
 Roadmap
 -------
 
 This is an alpha version of package functionality, with only limited support.
-Future versions and updates will include expanding inputs and outputs, as well as
-creating more user-facing features.
-
-Supporting more inputs
-^^^^^^^^^^^^^^^^^^^^^^^
-
-One component of moving to a production version will be to offer additional
-mapping files to support more input formats. The package currently supports
-the 2016 WHO v1.5.1 odk export.
-
-The following is a list of four additional
-inputs already in our sights:
-
-* PHRMC short
-* PHRMC long
-* WHO 2012
-* WHO 2016 v1.4.1
 
 Expanding outputs
 ^^^^^^^^^^^^^^^^^^
@@ -124,34 +117,6 @@ additional outputs for other algorithms to be supported in future versions:
 
 * Tarrif
 * Tarrif 2.0
-* InterVA5
-
-
-Expanding user-facing features
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Some of the user-facing features in this version are sparser than we would like
-for a production-level package. In this vein, we want to prioritize creating
-both good documentation and intuitive features for the user, so that the package
-is easy to understand and use.
-
-* Better error messages
-
-    Adding exception classes to distinguish between mapping, configuration, and
-    data errors, so that it will be more immediately obvious to the user what
-    the root cause of the error is.
-
-* Improving speed
-
-    Adding additional validation checks has slowed down the algorithm from its
-    original proof of concept speed. We believe this can be further improved
-    before the package is in a production version.
-
-* More - and more detail - in validation checks
-
-    Being able to convey to the end-user when the data has unexpected properties
-    or an incorrect format will be essential to allow the user to understand and
-    correct the issue.
 
 Style
 -----

@@ -4,19 +4,12 @@ Structure for Configuration class
 
 # !/usr/bin/env python3
 #  -*- coding: utf-8 -*-
+import pandas as pd
+import numpy as np
 
 from mappings import MapCondition
 from utils import report_list
 from validation import Validation, Err, Warn
-import pandas as pd
-import numpy as np
-
-# MAP_PATH = "resources/mapping_configuration_files/"
-# EX_MAP_1 = pd.read_csv(MAP_PATH+"example_config_1.csv")
-# EX_MAP_2 = pd.read_csv(MAP_PATH+"example_config_2.csv")
-# EX_DATA_1 = pd.read_csv("resources/sample_data/who151_va_output.csv")
-# create problematic data
-# EX_DATA_2
 
 
 class Configuration():
@@ -82,6 +75,7 @@ class Configuration():
             Nothing
 
         Examples:
+            >>> EX_MAP_1 = pd.read_csv(MAP_PATH + "example_config_1.csv")
             >>> Configuration(EX_MAP_1)
             Unvalidated Configuration instance with 16 mapping conditions
 
@@ -106,9 +100,9 @@ class Configuration():
         self.new_columns = plain_info(config_data["New Column Name"],
                                       "New Column Name column")
         self.source_columns = plain_info(config_data["Source Column ID"],
-                                         "Source Column in Config")
+                                         "Source Column ID column")
         self.verbose = verbose
-        self.validation = Validation()
+        self.validation = Validation("Mapping Configuration")
 
     def __str__(self):
         """string representation of class"""
@@ -138,10 +132,11 @@ class Configuration():
              <NumMapCondition:     AC_COUGH = [column Id10154].lt(21.0)>]
 
         """
-        # TODO config_data["Standalone"] = config_data["Prerequisite"].isnull()
-        # self.config_data.sort_values("Standalone", ascending=False)
-        return [MapCondition.factory(row["Relationship"])(row)
-                for i, row in self.config_data.iterrows()]
+        self.config_data["Standalone"] = self.config_data["Prerequisite"].isnull()
+        # Sort first so that columns w/o prereqs are processed first
+        return [MapCondition.factory(row["Relationship"], row["Condition"])(row)
+                for i, row in self.config_data.sort_values("Standalone",
+                                                           ascending=False).iterrows()]
 
     def validate(self, verbose=None):
         """Prepares and validates the Configuration object's mapping conditions.
@@ -150,29 +145,26 @@ class Configuration():
 
         Args:
             verbose (int): controls print output, should be in range 0-5,
-                each higher level includes the messages of each level below it.  
-                Where verbose = 0, nothing will be printed to console.  
-                Where verbose = 1, print only errors to console,  
+                each higher level includes the messages of each level below it.
+                Where verbose = 0, nothing will be printed to console.
+                Where verbose = 1, print only errors to console,
                 where verbose = 2, also print warnings,
-                where verbose = 3, also print suggestions and status checks,  
-                where verbose = 4, also print passing validation checks,  
+                where verbose = 3, also print suggestions and status checks,
+                where verbose = 4, also print passing validation checks,
                 where verbose = 5, also print description of configuration
-                conditions.  
-                Defaults to None; if none, replace with self.verbose attribute  
+                conditions.
+                Defaults to None; if none, replace with self.verbose attribute
         Returns:
             Boolean: boolean representing whether there are any errors that
                 prevent validation
 
         Examples:
-            >>> Configuration(EX_MAP_1).validate()
-            True
-            >>> Configuration(EX_MAP_2).validate(verbose=4)
-                Validating configuration file . . .
+            >>> c = Configuration(EX_MAP_2)
+            >>> c.validate(verbose=5)
+            Validating Mapping Configuration . . .
             <BLANKLINE>
              CHECKS PASSED
             [X]          All expected columns ('New Column Name', 'New Column Documentation', 'Source Column ID', 'Source Column Documentation', 'Relationship', 'Condition', and 'Prerequisite') accounted for in configuration file.
-            [X]          No NA's in column New Column Name detected.
-            [X]          No NA's in column Source Column ID detected.
             [X]          No leading/trailing spaces column New Column Name detected.
             [X]          No leading/trailing spaces column Relationship detected.
             [X]          No leading/trailing spaces column Prerequisite detected.
@@ -183,29 +175,27 @@ class Configuration():
             [X]          No non-alphanumeric value(s) in column Source Column ID detected.
             [X]          No non-alphanumeric value(s) in column Relationship detected.
             [X]          No non-alphanumeric value(s) in column Condition detected.
+            [X]          No new column(s) listed but not defined in Mapping Configuration detected.
+            [X]          No NA's in column New Column Name detected.
+            [X]          No NA's in column Source Column ID detected.
             <BLANKLINE>
              ERRORS
-            [!]          1 extraneous column(s) found in the given columns ('unused column') Extraneous column(s) will be ommitted.
             [!]          3 values in Relationship column were invalid ('eqqqq', 'another fake', and 'gee'). These must be a valid method of pd.Series, e.g. ('gt', 'ge', 'lt', 'le', 'between', 'eq', 'ne', and 'contains') to be valid.
-            [!]          2 row(s) containing a numericalrelationship with non-number condition detected in row(s) #8, and #9.
+            [!]          2 row(s) containing a numerical relationship with non-number condition detected in row(s) #8, and #9.
             [!]          2 values in Prerequisite column were invalid ('ABDOMM', and 'Placeholder here'). These must be defined in the 'new column name' column of the config file to be valid.
-            [!]          1 NA's in column Relationship detected in row(s) #3.
-            [!]          1 NA's in column Condition detected in row(s) #6.
             <BLANKLINE>
              WARNINGS
-            [?]          2 duplicate row(s) detected in row(s) #1, and #14. Duplicates will be dropped.
-            [?]          1 blank row(s) detected in row(s) #10. Blank rows will be dropped.
             [?]          2 whitespace in column New Column Name detected in row(s) #6, and #8. Whitespace will be converted to '_'
             [?]          1 whitespace in column Relationship detected in row(s) #4. Whitespace will be converted to '_'
             [?]          1 whitespace in column Prerequisite detected in row(s) #9. Whitespace will be converted to '_'
-            [?]          2 non-alphanumeric value(s) in column New Column Name detected in row(s) #5, and #6. This text should be alphanumeric. Non-alphanumeric characters will be removed.
+            [?]          1 non-alphanumeric value(s) in column New Column Name detected in row(s) #6. This text should be alphanumeric. Non-alphanumeric characters will be removed.
+            [?]          2 duplicate row(s) detected in row(s) #1, and #14. Duplicates will be dropped.
+            [?]          1 NA's in column Relationship detected in row(s) #3.
+            [?]          1 NA's in column Condition detected in row(s) #6.
             False
         """
         if verbose is None:
             verbose = self.verbose
-
-        if verbose >= 3:
-            print("Validating configuration file . . .")
 
         # Check that all expected columns accounted for
         col_passing_msg = " ".join(["All expected columns",
@@ -215,28 +205,60 @@ class Configuration():
                                      self.required_columns,
                                      passing_msg=col_passing_msg)
 
-        # Check for extra columns
-        self.validation.no_extraneous(self.given_columns,
-                                      self.required_columns,
-                                      "column")
+        # reindex - any missing columns become filled with NA
         self.config_data = self.config_data.reindex(
             columns=self.required_columns)
 
-        # TODO: check for circular pre-reqs?
+        # Drop any rows that are entirely blank without warnings
+        self.config_data = self.config_data.dropna(how="all")
 
-        # Check for duplicate rows
+        # Processing strings
+        # columns that should contain no whitespace
+        ws_col = ["New Column Name", "Relationship", "Prerequisite"]
+        lowercase_col = ["Relationship"]  # columns that should be lowercase
+        if self.process_strings:
+            ws_col.append("Condition")
+            lowercase_col.append("Condition")
+        self.config_data.fillna("na", inplace=True)  # fill NAs for str ops
+
+        # Remove whitespace
+        self.config_data.loc[:, ws_col] = self.validation.fix_whitespace(
+            self.config_data.loc[:, ws_col])
+
+        # Check for uppercase characters
+        self.config_data.loc[:, lowercase_col] = self.validation.fix_upcase(
+            self.config_data.loc[:, lowercase_col])
+
+        # Check that main columns contain only alphanumeric values
+        self.config_data.loc[:, self.main_columns] = self.validation.fix_alnum(
+            self.config_data.loc[:, self.main_columns])
+
+        # Check for missing values
+        self.config_data = self.config_data.replace("na", np.nan)
+
+        # Check for duplicate rows & drop them
         self.validation.flag_rows(self.config_data.duplicated(),
                                   flag_criteria="duplicate row(s)",
                                   flag_action="Duplicates will be dropped.")
         self.config_data = self.config_data.drop_duplicates()
 
-        # Check for blank rows
-        self.validation.flag_rows(
-            pd.Series(np.all(self.config_data.isnull(), axis=1)),
-            flag_tier=Warn,
-            flag_criteria="blank row(s)",
-            flag_action="Blank rows will be dropped.")
-        self.config_data = self.config_data.dropna(how="all")
+        # Check and note if there are missing sources/conditions/rel
+        # ie if we expect any of these sources to be absent
+        defined_no_source = (np.all(self.config_data[["Source Column ID",
+                                                      "Relationship", "Condition"]].isnull(), axis=1)
+                             & self.config_data["New Column Name"].notnull())
+
+        self.validation.flag_elements(
+            defined_no_source,
+            self.config_data["New Column Name"],
+            criteria="new column(s) listed but not defined")
+
+        self.config_data = self.config_data.loc[~defined_no_source, :]
+
+        # Check & drop rows that contain any NAs in main columns
+        self.validation.check_na(self.config_data[self.main_columns])
+        self.config_data = self.config_data.loc[np.all(
+            self.config_data[self.main_columns].notnull(), axis=1), :]
 
         # check all relationships in relationship column are valid
         self.validation.all_valid(self.given_relationships,
@@ -246,12 +268,12 @@ class Configuration():
 
         # check for non-number conditions with numerical relationships
         invalid_num = (self.config_data["Relationship"].isin(
-                                        ["gt", "ge", "le", "lt"]) &
-                       (pd.to_numeric(self.config_data["Condition"],
-                                      errors="coerce").isnull()))
+            ["gt", "ge", "le", "lt"]) &
+            (pd.to_numeric(self.config_data["Condition"],
+                           errors="coerce").isnull()))
         self.validation.flag_rows(invalid_num,
                                   flag_criteria="row(s) containing a numerical"
-                                  + "relationship with non-number condition",
+                                  + " relationship with non-number condition",
                                   flag_tier=Err)
 
         # check all prerequisite columns are also defined in configuration
@@ -259,29 +281,7 @@ class Configuration():
                                   "defined in the 'new column name' column " +
                                   "of the config file")
 
-        # Check for missing values
-        self.validation.check_na(self.config_data[self.main_columns])
-
-        # Processing strings
-        ws_col = ["New Column Name", "Relationship", "Prerequisite"]
-        lowercase_col = ["Relationship"]
-        if self.process_strings:
-            ws_col.append("Condition")
-            lowercase_col.append("Condition")
-
-        # Remove whitespace
-        self.config_data.loc[:, ws_col] = self.validation.fix_whitespace(
-            self.config_data.loc[:, ws_col].fillna(""))
-
-        # Check for uppercase characters
-        self.config_data.loc[:, lowercase_col] = self.validation.fix_upcase(
-            self.config_data.loc[:, lowercase_col].fillna(""))
-
-        # Check that main columns contain only alphanumeric values
-        self.config_data.loc[:, self.main_columns] = self.validation.fix_alnum(
-            self.config_data.loc[:, self.main_columns])
-
-        self.validation.report(verbose)  # report
+        self.validation.report(verbose=verbose)  # report
         if verbose == 5:
             self.describe()
 
@@ -302,15 +302,11 @@ class Configuration():
             >>> Configuration(EX_MAP_1).describe()
             MAPPING STATS
             <BLANKLINE>
-             -       16 new columns produced ('AB_POSIT', 'AB_SIZE', 'AC_BRL',
-             'AC_CONV', 'AC_COUGH', etc.)
-             -       12 source columns required ('Id10403', 'Id10362',
-             'Id10169', 'Id10221', 'Id10154', etc.)
-             -       7 relationships invoked ('eq', 'lt', 'between', 'ge',
-             'contains', etc.)
-             -       13 conditions listed ('yes', '14', '10', '21', '15 to 49',
-             etc.)
-             -       1 prerequisites checked ('FEMALE')
+             -   16 new columns produced ('AB_POSIT', 'AB_SIZE', 'AC_BRL', 'AC_CONV', 'AC_COUGH', etc)
+             -   12 source columns required ('Id10403', 'Id10362', 'Id10169', 'Id10221', 'Id10154', etc)
+             -   7 relationships invoked ('eq', 'lt', 'between', 'ge', 'contains', etc)
+             -   13 conditions listed ('yes', '14', '10', '21', '15 to 49', etc)
+             -   1 prerequisites checked ('FEMALE')
 
         """
         print("MAPPING STATS\n")
@@ -361,6 +357,7 @@ class CrossVA():
             type: Description of returned object.
 
         Examples
+            >>> EX_DATA_1 = pd.read_csv("resources/sample_data/mock_data_2016WHO151.csv")
             >>> CrossVA(EX_DATA_1, Configuration(EX_MAP_1))
             <CrossVA with (4, 12) raw data and Validated Configuration instance
             with 16 mapping conditions>
@@ -375,10 +372,10 @@ class CrossVA():
         # Crop input data to only the columns which have a matching ID
         # at the end of their name using regex, and any additional columns
         # passed as an argument, and then rename dataframe to just the column
-        # IDs
+        # IDs expected from the mapping
         self.mapping = mapping_config
         new_columns = raw_data.columns.str.extract(
-            "("+"$|".join(self.mapping.source_columns.tolist())+"$)",
+            "(" + "$|".join(self.mapping.source_columns.tolist()) + "$)",
             expand=False)
         cropped_data = raw_data.loc[:, new_columns.notnull()].copy()
         cropped_data = cropped_data.replace(na_values, np.nan)
@@ -386,7 +383,7 @@ class CrossVA():
                                                           raw_data.columns))
         self.prepared_data = pd.DataFrame()
         self.verbose = verbose
-        self.validation = Validation()
+        self.validation = Validation("Mapping-Data Relationship")
 
     def __str__(self):
         """ str representation method """
@@ -404,37 +401,49 @@ class CrossVA():
 
         Returns:
             Pandas DataFrame: a dataframe where the transformations specified
-            have been applied to the raw data.
+            have been applied to the raw data, resulting
 
         """
         if not self.validation.is_valid():
             if not self.validate():
                 raise ValueError(("Can't process without valid"
-                                 " CrossVA instance"))
+                                  " CrossVA instance"))
+
+        # Create empty dataframe with the list of columns given in mapping
+        # If the new columns listed in the mapping have no definition (ie source,
+        # relationship, and condition) then they will keep their default value
+        # as NA.
         transformed_data = pd.DataFrame(index=np.arange(len(self.data)),
-                                        columns=self.mapping.new_columns)
+                                        columns=self.mapping.new_columns,
+                                        dtype=float)
         transformed_data.columns.name = ""
+
         for condition in self.mapping.list_conditions():
+            # this is the big transformation
             # create column_values (boolean pd.series) representing if
             # condition and preq is met in raw data for each row, preserving NA
+            pre_req = condition.check_prereq(transformed_data)
+            initial_condition = condition.check(self.prepared_data)
 
-            cond_result = condition.check(self.prepared_data)
-            column_val = np.where(cond_result.fillna(False),
-                                  condition.check_prereq(transformed_data),
-                                  cond_result
-                                  )
-            # update new column to be met_conditions where new column is
-            # currently NA or false, but do not overwrite TRUE values (creates
-            # implicit ANY relationship between conditions)
-            update_where = ~(transformed_data[condition.name].fillna(False))
-            transformed_data.loc[:, condition.name] = np.where(update_where,
-                                column_val, transformed_data[condition.name])
+            # using 0 for false and 1 for true
+            new_val = np.where((initial_condition == 0) | (pre_req == 0),
+                               0,
+                               pre_req * initial_condition)
+
+            # update new column where new column is currently NA and new values
+            # are True or False. If new column is False, overwrite if new value
+            # is true. If new column is already True, do not overwrite.
+            # This preserves NAs logically, creates implicit ANY relationship
+            # between different conditions for the same new column
+            transformed_data[condition.name] = np.sign(
+                transformed_data[condition.name].add(new_val,
+                                                     fill_value=0))
 
         return transformed_data
 
     def validate(self, verbose=None):
         """Validates that RawVAData's raw input data and its mapping
-        configuration object are compatible.
+        configuration object are compatible and prepares input data for use.
 
         Args:
             verbose (int): int from 0 to 5, representing verbosity of printing
@@ -445,7 +454,7 @@ class CrossVA():
             boolean: True if valid, False if not.
 
         Examples:
-            >>> CrossVA(EX_DATA_1, Configuration(EX_MAP_1)).validate()
+            >>> CrossVA(EX_DATA_1, Configuration(EX_MAP_1)).validate(verbose=0)
             True
 
         """
@@ -454,21 +463,40 @@ class CrossVA():
 
         if self.mapping.process_strings:
             # strip whitespace and replace non-trailing/leading with underscore
-            self.data.fillna("", inplace=True)
+            # for str operation convenience
+            self.data.fillna("NA", inplace=True)
             self.data = self.validation.fix_whitespace(self.data)
             # make all characters lowercase
             self.data = self.validation.fix_upcase(self.data)
             # strip for alphanumeric characters
             self.data = self.validation.fix_alnum(self.data)
-            self.data = self.data.replace("", np.nan)
+            self.data = self.data.replace("NA", np.nan)
+
         # check all expected columns from config Source Column ID are present
-        self.validation.must_contain(pd.Series(self.data.columns,
-                                               name="input data columns"),
-                                     self.mapping.source_columns)
+        col_msg = "All expected columns from mapping file are present in data"
+        self.validation.must_contain(self.data.columns.rename(
+            "the input data columns"),
+            self.mapping.source_columns.rename(
+            "expected source column IDs (listed in mapping file)"),
+            passing_msg=col_msg,
+            fail=Warn)
+
+        # warn about associated missing values
+        flagged_missing = ~(self.mapping.config_data["Source Column ID"].isin(
+            self.data.columns))
+
+        if flagged_missing.sum() > 0:
+            affected = self.mapping.config_data[flagged_missing].groupby(
+                "Source Column ID")["New Column Name"].apply(list)
+            self.validation.affected_by_absence(affected)
+
+        self.validation.no_duplicates(self.data.columns)
 
         # TODO Check to see if relationship and conditions correspond to
         # logical values in each column
         if self.validation.is_valid():
+            # add missing columns as NA
+            self.data = self.data.reindex(columns=self.mapping.source_columns)
             for mapping_condition in self.mapping.list_conditions():
                 self.prepared_data[mapping_condition.source_dtype] = \
                     mapping_condition.prepare_data(self.data)

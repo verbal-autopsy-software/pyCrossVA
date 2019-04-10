@@ -86,6 +86,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#command-line">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#currently-supported">Currently Supported</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#roadmap">Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#style">Style</a></li>
@@ -205,7 +206,7 @@ condition</p>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">BetweenCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="s2">&quot;3 to 5&quot;</span><span class="p">,</span>                                      <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>                                      <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;between&quot;</span><span class="p">,</span>                                      <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>                                      <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test_2&quot;</span><span class="p">}</span>                    <span class="p">)</span><span class="o">.</span><span class="n">possible_values</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">BetweenCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="s2">&quot;3 to 5&quot;</span><span class="p">,</span>  <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>  <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;between&quot;</span><span class="p">,</span>  <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test_2&quot;</span><span class="p">}</span>  <span class="p">)</span><span class="o">.</span><span class="n">possible_values</span><span class="p">()</span>
 <span class="go">[2.0, 3.0, 4.0, 5.0, 6.0]</span>
 </pre></div>
 </div>
@@ -258,29 +259,23 @@ them back afterward.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>input_data</strong> (<em>Pandas DataFrame</em>) – a dataframe containing a created
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prepared_data</strong> (<em>Pandas DataFrame</em>) – a dataframe containing a created
 column with the name specified in self.source_dtype</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">returns a bolean series where the condition is met</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">returns a boolean array where the condition is met (as float)</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas Series</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Array</td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;source_test_str&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;test condition&quot;</span><span class="p">,</span>                                                            <span class="s2">&quot;test condition 2&quot;</span><span class="p">,</span>                                                            <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>                                        <span class="s2">&quot;source_test_num&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">StrMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="s2">&quot;test condition&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;eq&quot;</span><span class="p">,</span> <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>                                 <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
-<span class="go">0     True</span>
-<span class="go">1    False</span>
-<span class="go">2      NaN</span>
-<span class="go">Name: source_test_str, dtype: object</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;source_test_str&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;test condition&quot;</span><span class="p">,</span> <span class="s2">&quot;test condition 2&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span> <span class="s2">&quot;source_test_num&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">StrMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="s2">&quot;test condition&quot;</span><span class="p">,</span> <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span> <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;eq&quot;</span><span class="p">,</span> <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="go">array([ 1., 0., nan])</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span>                                <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>                                <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span>                                <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>                                <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
-<span class="go">0    False</span>
-<span class="go">1     True</span>
-<span class="go">2      NaN</span>
-<span class="go">Name: source_test_num, dtype: object</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span> <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span> <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span> <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="go">array([ 0., 1., nan])</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -308,18 +303,18 @@ being created, which contains any pre-req columns</td>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;preq_one&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span>                                <span class="s2">&quot;preq_two&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="mi">5</span><span class="p">)})</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;preq_one&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span>  <span class="s2">&quot;preq_two&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="mi">5</span><span class="p">)})</span>
 </pre></div>
 </div>
-<p>If there is no pre-req, simply returns True (Pandas can interpret this
-in boolean indexing)</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span>                                 <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>                                 <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">}</span>                                    <span class="p">)</span><span class="o">.</span><span class="n">check_prereq</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
-<span class="go">True</span>
+<p>If there is no pre-req, simply returns True (1) Pandas can
+interpret this in boolean indexing.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span>  <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>  <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span>  <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">}</span>  <span class="p">)</span><span class="o">.</span><span class="n">check_prereq</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="go">1</span>
 </pre></div>
 </div>
 <p>If there is a pre-req, then returns the value of transformed_data
 with that column.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span>                                 <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="s2">&quot;preq_one&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">}</span>                                    <span class="p">)</span><span class="o">.</span><span class="n">check_prereq</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span>  <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>  <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span>  <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="s2">&quot;preq_one&quot;</span><span class="p">,</span>  <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">}</span>  <span class="p">)</span><span class="o">.</span><span class="n">check_prereq</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
 <span class="go">0    True</span>
 <span class="go">1    True</span>
 <span class="go">2    True</span>
@@ -328,7 +323,7 @@ with that column.</p>
 <span class="go">Name: preq_one, dtype: bool</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span>                                 <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="s2">&quot;preq_two&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">}</span>                                    <span class="p">)</span><span class="o">.</span><span class="n">check_prereq</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span>  <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>  <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span>  <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="s2">&quot;preq_two&quot;</span><span class="p">,</span>  <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">}</span>  <span class="p">)</span><span class="o">.</span><span class="n">check_prereq</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
 <span class="go">0    False</span>
 <span class="go">1    False</span>
 <span class="go">2    False</span>
@@ -347,26 +342,38 @@ with that column.</p>
 
 <dl class="method">
 <dt id="mappings.MapCondition.factory">
-<code class="descname">factory</code><span class="sig-paren">(</span><em>relationship</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mappings.html#MapCondition.factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mappings.MapCondition.factory" title="Permalink to this definition">¶</a></dt>
+<code class="descname">factory</code><span class="sig-paren">(</span><em>relationship</em>, <em>condition=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mappings.html#MapCondition.factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mappings.MapCondition.factory" title="Permalink to this definition">¶</a></dt>
 <dd><p>static class factory method, which determines which subclass to
 return</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>relationship</strong> (<em>str</em>) – a relationship in (gt, ge, lt, le, ne, eq,
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>relationship</strong> (<em>str</em>) – a relationship in (gt, ge, lt, le, ne, eq,
 contains, between) that represents a comparison to be
-made to the raw data</td>
+made to the raw data</li>
+<li><strong>condition</strong> (<em>str</em><em> or </em><em>int</em>) – the condition being matched. if
+relationship is ambiguous, then this determins if condition
+is numerical or string. Defaults to empty string.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">returns specific subclass that corresponds to the
-correct relationship</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">returns specific subclass that corresponds to the
+correct relationship</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#mappings.MapCondition" title="mappings.MapCondition">MapCondition</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#mappings.MapCondition" title="mappings.MapCondition">MapCondition</a></p>
+</td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MapCondition</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="s2">&quot;ge&quot;</span><span class="p">)</span>
+<span class="go">&lt;class &#39;__main__.NumMapCondition&#39;&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MapCondition</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="s2">&quot;eq&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="go">&lt;class &#39;__main__.NumMapCondition&#39;&gt;</span>
 </pre></div>
 </div>
@@ -407,7 +414,7 @@ generate a non-exhaustive list possible values implied by condition</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>raw_data</strong> (<em>dataframe</em>) – a data frame containing raw data, including
 the column given in self.source_name.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the column in <cite>raw_data</cite> named in self.source_name,                with the attribute self.prep_func applied to it.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the column in <cite>raw_data</cite> named in self.source_name,  with the attribute self.prep_func applied to it.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas Series</td>
 </tr>
@@ -461,9 +468,9 @@ includes “equal to”, then self.condition will also be included.</dd>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>                          <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new name&quot;</span><span class="p">,</span>                          <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span>                          <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>                          <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">possible_values</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>  <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new name&quot;</span><span class="p">,</span>  <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span>  <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">possible_values</span><span class="p">()</span>
 <span class="go">[4.0, 5.0, 3.0]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>                          <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new name&quot;</span><span class="p">,</span>                          <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;lt&quot;</span><span class="p">,</span>                          <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>                          <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">possible_values</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>  <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new name&quot;</span><span class="p">,</span>  <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;lt&quot;</span><span class="p">,</span>  <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">possible_values</span><span class="p">()</span>
 <span class="go">[0.0, 1.0, 2.0]</span>
 </pre></div>
 </div>
@@ -513,7 +520,7 @@ this condition</dd>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">StrMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="s2">&quot;test condition&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;eq&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>                                 <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">}</span>                                <span class="p">)</span><span class="o">.</span><span class="n">possible_values</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">StrMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="s2">&quot;test condition&quot;</span><span class="p">,</span>  <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>  <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;eq&quot;</span><span class="p">,</span>  <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">}</span>  <span class="p">)</span><span class="o">.</span><span class="n">possible_values</span><span class="p">()</span>
 <span class="go">[&#39;&#39;, nan, None, &#39;test condition&#39;, &#39;yes&#39;, &#39;no&#39;, &#39;dk&#39;, &#39;ref&#39;]</span>
 </pre></div>
 </div>

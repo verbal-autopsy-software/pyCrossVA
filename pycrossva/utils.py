@@ -13,7 +13,7 @@ def report_list(alist, limit=10, paren=True):
     Each element is reported single quotes and seperated by commas, with the
     last element preceded by " and ".
     When limit is shorter than the list, cuts the list at the limit,
-    omits the 'and', and ends with 'etc.' to indicate incompleteness.
+    omits the 'and', and ends with 'etc' to indicate incompleteness.
 
     Args:
         alist (list): Description of parameter `alist`.
@@ -26,17 +26,15 @@ def report_list(alist, limit=10, paren=True):
     Returns:
         str: human-friendly sentence describing the items in alist
 
-    Raises:    TODO
-
     Examples
     >>> report_list(["A","B","C"])
     "('A', 'B', and 'C')"
 
     >>> report_list(["A","B","C"], limit=2)
-    "('A', 'B', etc.)"
+    "('A', 'B', etc)"
 
     >>> report_list(["A","B","C"], limit=2, paren=False)
-    "'A', 'B', etc."
+    "'A', 'B', etc"
 
     >>> report_list([])
     ''
@@ -55,10 +53,10 @@ def report_list(alist, limit=10, paren=True):
         report = re.sub(r'(.*), ', r'\1, and ',
                         str_list)  # use "and" if complete
     else:
-        report = str_list + ", etc."  # end with etc. if incomplete
+        report = str_list + ", etc"  # end with etc. if incomplete
 
     if paren:
-        return "("+report+")"
+        return "(" + report + ")"
     return report
 
 
@@ -76,27 +74,24 @@ def flexible_read(path_or_df):
         Pandas DataFrame: either the data at the given path as read by pandas,
             or the DataFrame constructor used on the path_or_df argument
 
-    Raises:    TODO
-
     Examples:
     Can return a dataframe from a string:
-        >>> flexible_read("resources/sample_data/mock_data_1.csv").head()
-           ID       Id10004      ...        isNeonatal1   isNeonatal2
-        0   0           wet      ...                  1  Not Answered
-        1   1           wet      ...       Not Answered           NaN
-        2   2           dry      ...                NaN             1
-        3   3  Not Answered      ...       Not Answered  Not Answered
-        4   4           dry      ...                  1           NaN
-        <BLANKLINE>
-        [5 rows x 252 columns]
-    
+    >>> flexible_read("resources/sample_data/2016WHO_mock_data_1.csv").iloc[:5,:5]
+       ID -Id10004 -Id10019 -Id10059 -Id10077
+    0   0      wet       dk  married       dk
+    1   1      wet   female      NaN       dk
+    2   2      dry     male       dk      NaN
+    3   3       dk       dk       dk       dk
+    4   4      dry      NaN  married       dk
+
     Or apply the pandas dataframe constructor to the input:
-        >>> flexible_read(np.arange(9).reshape(3,3))
-           0  1  2
-        0  0  1  2
-        1  3  4  5
-        2  6  7  8
+    >>> flexible_read(np.arange(9).reshape(3,3))
+       0  1  2
+    0  0  1  2
+    1  3  4  5
+    2  6  7  8
     """
+
     if isinstance(path_or_df, str):  # if mapping is path
         ext = path_or_df.split(".")[:-1]  # file extension
         if ext in ["xlsm", "xlsx", "xls"]:
@@ -124,7 +119,7 @@ def english_relationship(rel):
     Examples
         >>> english_relationship("gt")
         'is greater than'
-        
+
         >>> english_relationship("unknown")
         'unknown'
 
@@ -136,3 +131,8 @@ def english_relationship(rel):
     if rel in english.keys():
         return "is " + english[rel]
     return rel
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod(optionflags=doctest.NORMALIZE_WHITESPACE)

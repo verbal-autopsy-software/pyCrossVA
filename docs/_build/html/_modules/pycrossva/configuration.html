@@ -1,0 +1,735 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycrossva.configuration &mdash; CrossVA 1.0a documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> CrossVA
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0a
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html#command-line">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html#currently-supported">Currently Supported</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html#roadmap">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html#style">Style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html#license">License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Custom Mappings</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration Files</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Under the hood</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/transform.html">transform function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/configuration.html">configuration module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/validation.html">validation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/mappings.html">mappings module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CrossVA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>pycrossva.configuration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycrossva.configuration</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Structure for Configuration class</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># !/usr/bin/env python3</span>
+<span class="c1">#  -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">mappings</span> <span class="k">import</span> <span class="n">MapCondition</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="k">import</span> <span class="n">report_list</span>
+<span class="kn">from</span> <span class="nn">validation</span> <span class="k">import</span> <span class="n">Validation</span><span class="p">,</span> <span class="n">Err</span><span class="p">,</span> <span class="n">Warn</span>
+
+
+<div class="viewcode-block" id="Configuration"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.configuration.Configuration">[docs]</a><span class="k">class</span> <span class="nc">Configuration</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Configuration class details the relationship between a set of input</span>
+<span class="sd">    data and output data. It is composed of MapConditions that</span>
+<span class="sd">    transform an input data source (2012 WHO, 2016 WHO 141, 2016 WHO 151,</span>
+<span class="sd">    PHRMC SHORT) into a different data form (PHRMC SHORT, InsillicoVA,</span>
+<span class="sd">    InterVA4, InterVA5, or Tarrif2) for verbal autopsy.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        given_columns (Pandas Series): columns of mapping dataframe.</span>
+<span class="sd">        required_columns (Pandas Series): required columns in mapping data.</span>
+<span class="sd">        main_columns (list): the four main columns required in config_data.</span>
+<span class="sd">        valid_relationships (Pandas Series): contains list of valid</span>
+<span class="sd">            relationships to use in comparisons. Relationships should be an</span>
+<span class="sd">            attr of Pandas Series object, or be defined as a subclass of</span>
+<span class="sd">            MapCondition.</span>
+<span class="sd">        config_data (Pandas DataFrame): dataframe containing mapping</span>
+<span class="sd">            relationships written out.</span>
+<span class="sd">        given_prereq (Pandas Series): lists pre-requisites referenced in config</span>
+<span class="sd">            data.</span>
+<span class="sd">        new_columns (Pandas Series): lists the new columns to be created with</span>
+<span class="sd">            config data.</span>
+<span class="sd">        source_columns (Pandas Series): lists the source columns required in</span>
+<span class="sd">            the raw input data.</span>
+<span class="sd">        verbose (int): controls default verbosity of printing to console.</span>
+<span class="sd">        process_strings (boolean): whether or not to remove whitespace and</span>
+<span class="sd">            non-alphanumeric characters from strings in condition field and in</span>
+<span class="sd">            raw_data during mapping.</span>
+<span class="sd">        validation (Validation): a validation object containing the validation</span>
+<span class="sd">            checks made</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">required_columns</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;New Column Name&#39;</span><span class="p">,</span>
+                                  <span class="s1">&#39;New Column Documentation&#39;</span><span class="p">,</span>
+                                  <span class="s1">&#39;Source Column ID&#39;</span><span class="p">,</span>
+                                  <span class="s1">&#39;Source Column Documentation&#39;</span><span class="p">,</span>
+                                  <span class="s1">&#39;Relationship&#39;</span><span class="p">,</span>
+                                  <span class="s1">&#39;Condition&#39;</span><span class="p">,</span> <span class="s1">&#39;Prerequisite&#39;</span><span class="p">,</span>
+                                  <span class="p">],</span>
+                                 <span class="n">name</span><span class="o">=</span><span class="s2">&quot;expected columns&quot;</span><span class="p">)</span>
+
+    <span class="n">main_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;New Column Name&quot;</span><span class="p">,</span> <span class="s2">&quot;Source Column ID&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Relationship&quot;</span><span class="p">,</span> <span class="s2">&quot;Condition&quot;</span><span class="p">]</span>
+
+    <span class="n">valid_relationships</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;gt&quot;</span><span class="p">,</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span> <span class="s2">&quot;lt&quot;</span><span class="p">,</span> <span class="s2">&quot;le&quot;</span><span class="p">,</span> <span class="s2">&quot;between&quot;</span><span class="p">,</span> <span class="s2">&quot;eq&quot;</span><span class="p">,</span>
+                                     <span class="s2">&quot;ne&quot;</span><span class="p">,</span> <span class="s2">&quot;contains&quot;</span><span class="p">],</span>
+                                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;valid relationships&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_data</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">process_strings</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inits configuration class from a Pandas DataFrame containing</span>
+<span class="sd">            mapping data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            config_data (Pandas DataFrame): dataframe representing the mapping</span>
+<span class="sd">                data relationships, in specified format.</span>
+<span class="sd">            verbose (int): should be in range 1-5,</span>
+<span class="sd">                controls print output, where 0=silent. Defaults to 1.</span>
+<span class="sd">            process_strings (boolean): Whether or not to normalize string</span>
+<span class="sd">                conditions and data. Defaults to True.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Nothing</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; EX_MAP_1 = pd.read_csv(MAP_PATH + &quot;example_config_1.csv&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; Configuration(EX_MAP_1)</span>
+<span class="sd">            Unvalidated Configuration instance with 16 mapping conditions</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO check for df &amp; # of rows &amp; these 3 columns</span>
+        <span class="c1"># throw cant instantiate error?</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span> <span class="o">=</span> <span class="n">config_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">given_columns</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">config_data</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+                                       <span class="n">name</span><span class="o">=</span><span class="s2">&quot;the given columns&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_strings</span> <span class="o">=</span> <span class="n">process_strings</span>
+
+        <span class="k">def</span> <span class="nf">plain_info</span><span class="p">(</span><span class="n">aseries</span><span class="p">,</span> <span class="n">new_name</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot; returns Pandas Series without NAs or duplicates renamed to</span>
+<span class="sd">            `new_name` &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">aseries</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">new_name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">given_relationships</span> <span class="o">=</span> <span class="n">plain_info</span><span class="p">(</span><span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;Relationship&quot;</span><span class="p">],</span>
+                                              <span class="s2">&quot;Relationship column&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">given_prereq</span> <span class="o">=</span> <span class="n">plain_info</span><span class="p">(</span><span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;Prerequisite&quot;</span><span class="p">],</span>
+                                       <span class="s2">&quot;Prerequisite column&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_columns</span> <span class="o">=</span> <span class="n">plain_info</span><span class="p">(</span><span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;New Column Name&quot;</span><span class="p">],</span>
+                                      <span class="s2">&quot;New Column Name column&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_columns</span> <span class="o">=</span> <span class="n">plain_info</span><span class="p">(</span><span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;Source Column ID&quot;</span><span class="p">],</span>
+                                         <span class="s2">&quot;Source Column ID column&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">(</span><span class="s2">&quot;Mapping Configuration&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;string representation of class&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;string representation of class&quot;&quot;&quot;</span>
+        <span class="n">val_status</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Validated&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="k">else</span>
+                      <span class="s2">&quot;Unvalidated&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">val_status</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="s2">&quot;instance with&quot;</span><span class="p">,</span>
+                         <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="p">)),</span> <span class="s2">&quot;mapping conditions&quot;</span><span class="p">])</span>
+
+<div class="viewcode-block" id="Configuration.list_conditions"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.configuration.Configuration.list_conditions">[docs]</a>    <span class="k">def</span> <span class="nf">list_conditions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Lists the final mapping conditions contained in Configuration object</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: list of MapConditions, where each MapConditions is</span>
+<span class="sd">            created from a row of processed mapping data.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; c = Configuration(EX_MAP_1)</span>
+<span class="sd">            &gt;&gt;&gt; c.list_conditions()[:5]</span>
+<span class="sd">            [&lt;StrMapCondition:     AB_POSIT = [column Id10403].eq(yes)&gt;,</span>
+<span class="sd">             &lt;StrMapCondition:     AB_SIZE = [column Id10362].eq(yes)&gt;,</span>
+<span class="sd">             &lt;NumMapCondition:     AC_BRL = [column Id10169].lt(14.0)&gt;,</span>
+<span class="sd">             &lt;NumMapCondition:     AC_CONV = [column Id10221].lt(10.0)&gt;,</span>
+<span class="sd">             &lt;NumMapCondition:     AC_COUGH = [column Id10154].lt(21.0)&gt;]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;Standalone&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;Prerequisite&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span>
+        <span class="c1"># Sort first so that columns w/o prereqs are processed first</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">MapCondition</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;Relationship&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Condition&quot;</span><span class="p">])(</span><span class="n">row</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;Standalone&quot;</span><span class="p">,</span>
+                                                           <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()]</span></div>
+
+<div class="viewcode-block" id="Configuration.validate"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.configuration.Configuration.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prepares and validates the Configuration object&#39;s mapping conditions.</span>
+<span class="sd">        Validation fails if there are any inoperable errors. Problems that can</span>
+<span class="sd">        be fixed in place are processed and flagged as warnings.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            verbose (int): controls print output, should be in range 0-5,</span>
+<span class="sd">                each higher level includes the messages of each level below it.</span>
+<span class="sd">                Where verbose = 0, nothing will be printed to console.</span>
+<span class="sd">                Where verbose = 1, print only errors to console,</span>
+<span class="sd">                where verbose = 2, also print warnings,</span>
+<span class="sd">                where verbose = 3, also print suggestions and status checks,</span>
+<span class="sd">                where verbose = 4, also print passing validation checks,</span>
+<span class="sd">                where verbose = 5, also print description of configuration</span>
+<span class="sd">                conditions.</span>
+<span class="sd">                Defaults to None; if none, replace with self.verbose attribute</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Boolean: boolean representing whether there are any errors that</span>
+<span class="sd">                prevent validation</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            Validating Mapping Configuration . . .</span>
+<span class="sd">            &lt;BLANKLINE&gt;</span>
+<span class="sd">             CHECKS PASSED</span>
+<span class="sd">            [X]          All expected columns (&#39;New Column Name&#39;, &#39;New Column Documentation&#39;, &#39;Source Column ID&#39;, &#39;Source Column Documentation&#39;, &#39;Relationship&#39;, &#39;Condition&#39;, and &#39;Prerequisite&#39;) accounted for in configuration file.</span>
+<span class="sd">            [X]          No leading/trailing spaces column New Column Name detected.</span>
+<span class="sd">            [X]          No leading/trailing spaces column Relationship detected.</span>
+<span class="sd">            [X]          No leading/trailing spaces column Prerequisite detected.</span>
+<span class="sd">            [X]          No leading/trailing spaces column Condition detected.</span>
+<span class="sd">            [X]          No whitespace in column Condition detected.</span>
+<span class="sd">            [X]          No upper case value(s) in column Relationship detected.</span>
+<span class="sd">            [X]          No upper case value(s) in column Condition detected.</span>
+<span class="sd">            [X]          No non-alphanumeric value(s) in column Source Column ID detected.</span>
+<span class="sd">            [X]          No non-alphanumeric value(s) in column Relationship detected.</span>
+<span class="sd">            [X]          No non-alphanumeric value(s) in column Condition detected.</span>
+<span class="sd">            [X]          No new column(s) listed but not defined in Mapping Configuration detected.</span>
+<span class="sd">            [X]          No NA&#39;s in column New Column Name detected.</span>
+<span class="sd">            [X]          No NA&#39;s in column Source Column ID detected.</span>
+<span class="sd">            &lt;BLANKLINE&gt;</span>
+<span class="sd">             ERRORS</span>
+<span class="sd">            [!]          3 values in Relationship column were invalid (&#39;eqqqq&#39;, &#39;another fake&#39;, and &#39;gee&#39;). These must be a valid method of pd.Series, e.g. (&#39;gt&#39;, &#39;ge&#39;, &#39;lt&#39;, &#39;le&#39;, &#39;between&#39;, &#39;eq&#39;, &#39;ne&#39;, and &#39;contains&#39;) to be valid.</span>
+<span class="sd">            [!]          2 row(s) containing a numerical relationship with non-number condition detected in row(s) #8, and #9.</span>
+<span class="sd">            [!]          2 values in Prerequisite column were invalid (&#39;ABDOMM&#39;, and &#39;Placeholder here&#39;). These must be defined in the &#39;new column name&#39; column of the config file to be valid.</span>
+<span class="sd">            &lt;BLANKLINE&gt;</span>
+<span class="sd">             WARNINGS</span>
+<span class="sd">            [?]          2 whitespace in column New Column Name detected in row(s) #6, and #8. Whitespace will be converted to &#39;_&#39;</span>
+<span class="sd">            [?]          1 whitespace in column Relationship detected in row(s) #4. Whitespace will be converted to &#39;_&#39;</span>
+<span class="sd">            [?]          1 whitespace in column Prerequisite detected in row(s) #9. Whitespace will be converted to &#39;_&#39;</span>
+<span class="sd">            [?]          1 non-alphanumeric value(s) in column New Column Name detected in row(s) #6. This text should be alphanumeric. Non-alphanumeric characters will be removed.</span>
+<span class="sd">            [?]          2 duplicate row(s) detected in row(s) #1, and #14. Duplicates will be dropped.</span>
+<span class="sd">            [?]          1 NA&#39;s in column Relationship detected in row(s) #3.</span>
+<span class="sd">            [?]          1 NA&#39;s in column Condition detected in row(s) #6.</span>
+<span class="sd">            False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">verbose</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>
+
+        <span class="c1"># Check that all expected columns accounted for</span>
+        <span class="n">col_passing_msg</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;All expected columns&quot;</span><span class="p">,</span>
+                                    <span class="n">report_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">required_columns</span><span class="p">),</span>
+                                    <span class="s2">&quot;accounted for in configuration file.&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">must_contain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">given_columns</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">required_columns</span><span class="p">,</span>
+                                     <span class="n">passing_msg</span><span class="o">=</span><span class="n">col_passing_msg</span><span class="p">)</span>
+
+        <span class="c1"># reindex - any missing columns become filled with NA</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">required_columns</span><span class="p">)</span>
+
+        <span class="c1"># Drop any rows that are entirely blank without warnings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Processing strings</span>
+        <span class="c1"># columns that should contain no whitespace</span>
+        <span class="n">ws_col</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;New Column Name&quot;</span><span class="p">,</span> <span class="s2">&quot;Relationship&quot;</span><span class="p">,</span> <span class="s2">&quot;Prerequisite&quot;</span><span class="p">]</span>
+        <span class="n">lowercase_col</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Relationship&quot;</span><span class="p">]</span>  <span class="c1"># columns that should be lowercase</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_strings</span><span class="p">:</span>
+            <span class="n">ws_col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Condition&quot;</span><span class="p">)</span>
+            <span class="n">lowercase_col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Condition&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;na&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># fill NAs for str ops</span>
+
+        <span class="c1"># Remove whitespace</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">ws_col</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fix_whitespace</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">ws_col</span><span class="p">])</span>
+
+        <span class="c1"># Check for uppercase characters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">lowercase_col</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fix_upcase</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">lowercase_col</span><span class="p">])</span>
+
+        <span class="c1"># Check that main columns contain only alphanumeric values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_columns</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fix_alnum</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_columns</span><span class="p">])</span>
+
+        <span class="c1"># Check for missing values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;na&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+        <span class="c1"># Check for duplicate rows &amp; drop them</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">flag_rows</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(),</span>
+                                  <span class="n">flag_criteria</span><span class="o">=</span><span class="s2">&quot;duplicate row(s)&quot;</span><span class="p">,</span>
+                                  <span class="n">flag_action</span><span class="o">=</span><span class="s2">&quot;Duplicates will be dropped.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+
+        <span class="c1"># Check and note if there are missing sources/conditions/rel</span>
+        <span class="c1"># ie if we expect any of these sources to be absent</span>
+        <span class="n">defined_no_source</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="p">[[</span><span class="s2">&quot;Source Column ID&quot;</span><span class="p">,</span>
+                                                      <span class="s2">&quot;Relationship&quot;</span><span class="p">,</span> <span class="s2">&quot;Condition&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">isnull</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                             <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;New Column Name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">flag_elements</span><span class="p">(</span>
+            <span class="n">defined_no_source</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;New Column Name&quot;</span><span class="p">],</span>
+            <span class="n">criteria</span><span class="o">=</span><span class="s2">&quot;new column(s) listed but not defined&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">defined_no_source</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="c1"># Check &amp; drop rows that contain any NAs in main columns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">check_na</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">main_columns</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">main_columns</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="p">:]</span>
+
+        <span class="c1"># check all relationships in relationship column are valid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">all_valid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">given_relationships</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">valid_relationships</span><span class="p">,</span>
+                                  <span class="s2">&quot;a valid method of pd.Series, e.g. &quot;</span> <span class="o">+</span>
+                                  <span class="n">report_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valid_relationships</span><span class="p">))</span>
+
+        <span class="c1"># check for non-number conditions with numerical relationships</span>
+        <span class="n">invalid_num</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;Relationship&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">&quot;gt&quot;</span><span class="p">,</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span> <span class="s2">&quot;le&quot;</span><span class="p">,</span> <span class="s2">&quot;lt&quot;</span><span class="p">])</span> <span class="o">&amp;</span>
+            <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;Condition&quot;</span><span class="p">],</span>
+                           <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isnull</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">flag_rows</span><span class="p">(</span><span class="n">invalid_num</span><span class="p">,</span>
+                                  <span class="n">flag_criteria</span><span class="o">=</span><span class="s2">&quot;row(s) containing a numerical&quot;</span>
+                                  <span class="o">+</span> <span class="s2">&quot; relationship with non-number condition&quot;</span><span class="p">,</span>
+                                  <span class="n">flag_tier</span><span class="o">=</span><span class="n">Err</span><span class="p">)</span>
+
+        <span class="c1"># check all prerequisite columns are also defined in configuration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">all_valid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">given_prereq</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_columns</span><span class="p">,</span>
+                                  <span class="s2">&quot;defined in the &#39;new column name&#39; column &quot;</span> <span class="o">+</span>
+                                  <span class="s2">&quot;of the config file&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>  <span class="c1"># report</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+
+        <span class="c1"># return true only if there are zero errors</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Configuration.describe"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.configuration.Configuration.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prints the mapping relationships in the Configuration object to</span>
+<span class="sd">        console.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; Configuration(EX_MAP_1).describe()</span>
+<span class="sd">            MAPPING STATS</span>
+<span class="sd">            &lt;BLANKLINE&gt;</span>
+<span class="sd">             -   16 new columns produced (&#39;AB_POSIT&#39;, &#39;AB_SIZE&#39;, &#39;AC_BRL&#39;, &#39;AC_CONV&#39;, &#39;AC_COUGH&#39;, etc)</span>
+<span class="sd">             -   12 source columns required (&#39;Id10403&#39;, &#39;Id10362&#39;, &#39;Id10169&#39;, &#39;Id10221&#39;, &#39;Id10154&#39;, etc)</span>
+<span class="sd">             -   7 relationships invoked (&#39;eq&#39;, &#39;lt&#39;, &#39;between&#39;, &#39;ge&#39;, &#39;contains&#39;, etc)</span>
+<span class="sd">             -   13 conditions listed (&#39;yes&#39;, &#39;14&#39;, &#39;10&#39;, &#39;21&#39;, &#39;15 to 49&#39;, etc)</span>
+<span class="sd">             -   1 prerequisites checked (&#39;FEMALE&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MAPPING STATS</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">spacer</span> <span class="o">=</span> <span class="s2">&quot; - </span><span class="se">\t</span><span class="s2">&quot;</span>
+
+        <span class="n">unique_checks</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;New Column Name&quot;</span><span class="p">,</span> <span class="s2">&quot;new columns produced&quot;</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s2">&quot;Source Column ID&quot;</span><span class="p">,</span> <span class="s2">&quot;source columns required&quot;</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s2">&quot;Relationship&quot;</span><span class="p">,</span> <span class="s2">&quot;relationships invoked&quot;</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s2">&quot;Condition&quot;</span><span class="p">,</span> <span class="s2">&quot;conditions listed&quot;</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s2">&quot;Prerequisite&quot;</span><span class="p">,</span> <span class="s2">&quot;prerequisites checked&quot;</span><span class="p">)]</span>
+
+        <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">context</span> <span class="ow">in</span> <span class="n">unique_checks</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">spacer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">(),</span> <span class="n">context</span><span class="p">,</span>
+                  <span class="n">report_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config_data</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span>
+                              <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="CrossVA"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.configuration.CrossVA">[docs]</a><span class="k">class</span> <span class="nc">CrossVA</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Class representing raw VA data, and how to map it to an algorithm</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        mapping (type): a validated Configuration object that details how to</span>
+<span class="sd">            transform the type of data in `raw_data` to the desired output.</span>
+<span class="sd">        data (Pandas DataFrame): a Pandas DataFrame containing the raw VA data</span>
+<span class="sd">        prepared_data (Pandas DataFrame): a Pandas DataFrame containing a</span>
+<span class="sd">            prepared form of the VA data to use with the Configuration object.</span>
+<span class="sd">        validation (Validation): Validation object containing the validation</span>
+<span class="sd">            checks that have been made on the raw data and between the raw data</span>
+<span class="sd">            and mapping Configuration.</span>
+<span class="sd">        verbose (int): Controls verbosity of printing to console, 0-5 where 0</span>
+<span class="sd">            is silent.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_data</span><span class="p">,</span> <span class="n">mapping_config</span><span class="p">,</span> <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dk&quot;</span><span class="p">,</span> <span class="s2">&quot;ref&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
+                 <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inits CrossVA class</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            raw_data (Pandas DataFrame): a Pandas DataFrame containing the</span>
+<span class="sd">                raw data</span>
+<span class="sd">            mapping_config (Configuration): a validated Configuration object</span>
+<span class="sd">                that details how to transform the type of data in `raw_data`</span>
+<span class="sd">                to the desired output.</span>
+<span class="sd">            na_values (list): List of values to consider NA.</span>
+<span class="sd">            verbose (int): Controls verbosity of printing to console. Defaults</span>
+<span class="sd">                to 2.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            type: Description of returned object.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">            &gt;&gt;&gt; EX_DATA_1 = pd.read_csv(&quot;resources/sample_data/mock_data_2016WHO151.csv&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; CrossVA(EX_DATA_1, Configuration(EX_MAP_1))</span>
+<span class="sd">            &lt;CrossVA with (4, 12) raw data and Validated Configuration instance</span>
+<span class="sd">            with 16 mapping conditions&gt;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if mapping_config isn&#39;t valid, attempt to validate before aborting</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">mapping_config</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">mapping_config</span><span class="o">.</span><span class="n">validate</span><span class="p">():</span>
+                <span class="k">pass</span>
+                <span class="c1"># raise error - mapping_config should be a valid</span>
+
+        <span class="c1"># Crop input data to only the columns which have a matching ID</span>
+        <span class="c1"># at the end of their name using regex, and any additional columns</span>
+        <span class="c1"># passed as an argument, and then rename dataframe to just the column</span>
+        <span class="c1"># IDs expected from the mapping</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span> <span class="o">=</span> <span class="n">mapping_config</span>
+        <span class="n">new_columns</span> <span class="o">=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span>
+            <span class="s2">&quot;(&quot;</span> <span class="o">+</span> <span class="s2">&quot;$|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">source_columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;$)&quot;</span><span class="p">,</span>
+            <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">cropped_data</span> <span class="o">=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">new_columns</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">cropped_data</span> <span class="o">=</span> <span class="n">cropped_data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">na_values</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">cropped_data</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">new_columns</span><span class="p">,</span>
+                                                          <span class="n">raw_data</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prepared_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">(</span><span class="s2">&quot;Mapping-Data Relationship&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; str representation method &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;&lt;&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot; with &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot; raw data and &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CrossVA.process"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.configuration.CrossVA.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Applies the given configuration object&#39;s mappings to the given raw</span>
+<span class="sd">        data.</span>
+
+<span class="sd">        Args:   None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Pandas DataFrame: a dataframe where the transformations specified</span>
+<span class="sd">            have been applied to the raw data, resulting</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s2">&quot;Can&#39;t process without valid&quot;</span>
+                                  <span class="s2">&quot; CrossVA instance&quot;</span><span class="p">))</span>
+
+        <span class="c1"># Create empty dataframe with the list of columns given in mapping</span>
+        <span class="c1"># If the new columns listed in the mapping have no definition (ie source,</span>
+        <span class="c1"># relationship, and condition) then they will keep their default value</span>
+        <span class="c1"># as NA.</span>
+        <span class="n">transformed_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)),</span>
+                                        <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">new_columns</span><span class="p">,</span>
+                                        <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">transformed_data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">condition</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">list_conditions</span><span class="p">():</span>
+            <span class="c1"># this is the big transformation</span>
+            <span class="c1"># create column_values (boolean pd.series) representing if</span>
+            <span class="c1"># condition and preq is met in raw data for each row, preserving NA</span>
+            <span class="n">pre_req</span> <span class="o">=</span> <span class="n">condition</span><span class="o">.</span><span class="n">check_prereq</span><span class="p">(</span><span class="n">transformed_data</span><span class="p">)</span>
+            <span class="n">initial_condition</span> <span class="o">=</span> <span class="n">condition</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prepared_data</span><span class="p">)</span>
+
+            <span class="c1"># using 0 for false and 1 for true</span>
+            <span class="n">new_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">initial_condition</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">pre_req</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span>
+                               <span class="mi">0</span><span class="p">,</span>
+                               <span class="n">pre_req</span> <span class="o">*</span> <span class="n">initial_condition</span><span class="p">)</span>
+
+            <span class="c1"># update new column where new column is currently NA and new values</span>
+            <span class="c1"># are True or False. If new column is False, overwrite if new value</span>
+            <span class="c1"># is true. If new column is already True, do not overwrite.</span>
+            <span class="c1"># This preserves NAs logically, creates implicit ANY relationship</span>
+            <span class="c1"># between different conditions for the same new column</span>
+            <span class="n">transformed_data</span><span class="p">[</span><span class="n">condition</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span>
+                <span class="n">transformed_data</span><span class="p">[</span><span class="n">condition</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_val</span><span class="p">,</span>
+                                                     <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">transformed_data</span></div>
+
+<div class="viewcode-block" id="CrossVA.validate"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.configuration.CrossVA.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Validates that RawVAData&#39;s raw input data and its mapping</span>
+<span class="sd">        configuration object are compatible and prepares input data for use.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            verbose (int): int from 0 to 5, representing verbosity of printing</span>
+<span class="sd">                to console. Defaults to None; if None, replaced with</span>
+<span class="sd">                self.verbose attribute.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            boolean: True if valid, False if not.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; CrossVA(EX_DATA_1, Configuration(EX_MAP_1)).validate(verbose=0)</span>
+<span class="sd">            True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">verbose</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">process_strings</span><span class="p">:</span>
+            <span class="c1"># strip whitespace and replace non-trailing/leading with underscore</span>
+            <span class="c1"># for str operation convenience</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;NA&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fix_whitespace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="c1"># make all characters lowercase</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fix_upcase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="c1"># strip for alphanumeric characters</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fix_alnum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;NA&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+        <span class="c1"># check all expected columns from config Source Column ID are present</span>
+        <span class="n">col_msg</span> <span class="o">=</span> <span class="s2">&quot;All expected columns from mapping file are present in data&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">must_contain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+            <span class="s2">&quot;the input data columns&quot;</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">source_columns</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+            <span class="s2">&quot;expected source column IDs (listed in mapping file)&quot;</span><span class="p">),</span>
+            <span class="n">passing_msg</span><span class="o">=</span><span class="n">col_msg</span><span class="p">,</span>
+            <span class="n">fail</span><span class="o">=</span><span class="n">Warn</span><span class="p">)</span>
+
+        <span class="c1"># warn about associated missing values</span>
+        <span class="n">flagged_missing</span> <span class="o">=</span> <span class="o">~</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">config_data</span><span class="p">[</span><span class="s2">&quot;Source Column ID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">flagged_missing</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">affected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">config_data</span><span class="p">[</span><span class="n">flagged_missing</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span>
+                <span class="s2">&quot;Source Column ID&quot;</span><span class="p">)[</span><span class="s2">&quot;New Column Name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">affected_by_absence</span><span class="p">(</span><span class="n">affected</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">no_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="c1"># TODO Check to see if relationship and conditions correspond to</span>
+        <span class="c1"># logical values in each column</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="c1"># add missing columns as NA</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">source_columns</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">mapping_condition</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">list_conditions</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">prepared_data</span><span class="p">[</span><span class="n">mapping_condition</span><span class="o">.</span><span class="n">source_dtype</span><span class="p">]</span> <span class="o">=</span> \
+                    <span class="n">mapping_condition</span><span class="o">.</span><span class="n">prepare_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">optionflags</span><span class="o">=</span><span class="n">doctest</span><span class="o">.</span><span class="n">NORMALIZE_WHITESPACE</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, MITRE
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../../',
+              VERSION:'1.0a',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

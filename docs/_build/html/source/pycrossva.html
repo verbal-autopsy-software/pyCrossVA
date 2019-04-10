@@ -1,0 +1,1930 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycrossva package &mdash; CrossVA 1.0a documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> CrossVA
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0a
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#currently-supported">Currently Supported</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#roadmap">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#style">Style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#license">License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Custom Mappings</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../config.html">Configuration Files</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Under the hood</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="transform.html">transform function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">configuration module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">validation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mappings.html">mappings module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CrossVA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>pycrossva package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/pycrossva.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pycrossva-package">
+<h1>pycrossva package<a class="headerlink" href="#pycrossva-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pycrossva-command-line-module">
+<h2>pycrossva.command_line module<a class="headerlink" href="#pycrossva-command-line-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pycrossva.configuration">
+<span id="pycrossva-configuration-module"></span><h2>pycrossva.configuration module<a class="headerlink" href="#module-pycrossva.configuration" title="Permalink to this headline">¶</a></h2>
+<p>Structure for Configuration class</p>
+<dl class="class">
+<dt id="pycrossva.configuration.Configuration">
+<em class="property">class </em><code class="descclassname">pycrossva.configuration.</code><code class="descname">Configuration</code><span class="sig-paren">(</span><em>config_data</em>, <em>verbose=1</em>, <em>process_strings=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/configuration.html#Configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.configuration.Configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Configuration class details the relationship between a set of input
+data and output data. It is composed of MapConditions that
+transform an input data source (2012 WHO, 2016 WHO 141, 2016 WHO 151,
+PHRMC SHORT) into a different data form (PHRMC SHORT, InsillicoVA,
+InterVA4, InterVA5, or Tarrif2) for verbal autopsy.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>given_columns</strong> (<em>Pandas Series</em>) – columns of mapping dataframe.</li>
+<li><a class="reference internal" href="configuration.html#configuration.Configuration.required_columns" title="configuration.Configuration.required_columns"><strong>required_columns</strong></a> (<em>Pandas Series</em>) – required columns in mapping data.</li>
+<li><a class="reference internal" href="configuration.html#configuration.Configuration.main_columns" title="configuration.Configuration.main_columns"><strong>main_columns</strong></a> (<em>list</em>) – the four main columns required in config_data.</li>
+<li><a class="reference internal" href="configuration.html#configuration.Configuration.valid_relationships" title="configuration.Configuration.valid_relationships"><strong>valid_relationships</strong></a> (<em>Pandas Series</em>) – contains list of valid
+relationships to use in comparisons. Relationships should be an
+attr of Pandas Series object, or be defined as a subclass of
+MapCondition.</li>
+<li><strong>config_data</strong> (<em>Pandas DataFrame</em>) – dataframe containing mapping
+relationships written out.</li>
+<li><strong>given_prereq</strong> (<em>Pandas Series</em>) – lists pre-requisites referenced in config
+data.</li>
+<li><strong>new_columns</strong> (<em>Pandas Series</em>) – lists the new columns to be created with
+config data.</li>
+<li><strong>source_columns</strong> (<em>Pandas Series</em>) – lists the source columns required in
+the raw input data.</li>
+<li><strong>verbose</strong> (<em>int</em>) – controls default verbosity of printing to console.</li>
+<li><strong>process_strings</strong> (<em>boolean</em>) – whether or not to remove whitespace and
+non-alphanumeric characters from strings in condition field and in
+raw_data during mapping.</li>
+<li><a class="reference internal" href="validation.html#module-validation" title="validation"><strong>validation</strong></a> (<a class="reference internal" href="#pycrossva.validation.Validation" title="pycrossva.validation.Validation"><em>Validation</em></a>) – a validation object containing the validation
+checks made</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pycrossva.configuration.Configuration.describe">
+<code class="descname">describe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/configuration.html#Configuration.describe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.configuration.Configuration.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the mapping relationships in the Configuration object to
+console.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>None</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Configuration</span><span class="p">(</span><span class="n">EX_MAP_1</span><span class="p">)</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<span class="go">MAPPING STATS</span>
+
+<span class="go"> -   16 new columns produced (&#39;AB_POSIT&#39;, &#39;AB_SIZE&#39;, &#39;AC_BRL&#39;, &#39;AC_CONV&#39;, &#39;AC_COUGH&#39;, etc)</span>
+<span class="go"> -   12 source columns required (&#39;Id10403&#39;, &#39;Id10362&#39;, &#39;Id10169&#39;, &#39;Id10221&#39;, &#39;Id10154&#39;, etc)</span>
+<span class="go"> -   7 relationships invoked (&#39;eq&#39;, &#39;lt&#39;, &#39;between&#39;, &#39;ge&#39;, &#39;contains&#39;, etc)</span>
+<span class="go"> -   13 conditions listed (&#39;yes&#39;, &#39;14&#39;, &#39;10&#39;, &#39;21&#39;, &#39;15 to 49&#39;, etc)</span>
+<span class="go"> -   1 prerequisites checked (&#39;FEMALE&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.configuration.Configuration.list_conditions">
+<code class="descname">list_conditions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/configuration.html#Configuration.list_conditions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.configuration.Configuration.list_conditions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists the final mapping conditions contained in Configuration object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of MapConditions, where each MapConditions is
+created from a row of processed mapping data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Configuration</span><span class="p">(</span><span class="n">EX_MAP_1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">list_conditions</span><span class="p">()[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">[&lt;StrMapCondition:     AB_POSIT = [column Id10403].eq(yes)&gt;,</span>
+<span class="go"> &lt;StrMapCondition:     AB_SIZE = [column Id10362].eq(yes)&gt;,</span>
+<span class="go"> &lt;NumMapCondition:     AC_BRL = [column Id10169].lt(14.0)&gt;,</span>
+<span class="go"> &lt;NumMapCondition:     AC_CONV = [column Id10221].lt(10.0)&gt;,</span>
+<span class="go"> &lt;NumMapCondition:     AC_COUGH = [column Id10154].lt(21.0)&gt;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycrossva.configuration.Configuration.main_columns">
+<code class="descname">main_columns</code><em class="property"> = ['New Column Name', 'Source Column ID', 'Relationship', 'Condition']</em><a class="headerlink" href="#pycrossva.configuration.Configuration.main_columns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pycrossva.configuration.Configuration.required_columns">
+<code class="descname">required_columns</code><em class="property"> = 0                New Column Name 1       New Column Documentation 2               Source Column ID 3    Source Column Documentation 4                   Relationship 5                      Condition 6                   Prerequisite Name: expected columns, dtype: object</em><a class="headerlink" href="#pycrossva.configuration.Configuration.required_columns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pycrossva.configuration.Configuration.valid_relationships">
+<code class="descname">valid_relationships</code><em class="property"> = 0          gt 1          ge 2          lt 3          le 4     between 5          eq 6          ne 7    contains Name: valid relationships, dtype: object</em><a class="headerlink" href="#pycrossva.configuration.Configuration.valid_relationships" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.configuration.Configuration.validate">
+<code class="descname">validate</code><span class="sig-paren">(</span><em>verbose=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/configuration.html#Configuration.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.configuration.Configuration.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares and validates the Configuration object’s mapping conditions.
+Validation fails if there are any inoperable errors. Problems that can
+be fixed in place are processed and flagged as warnings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verbose</strong> (<em>int</em>) – controls print output, should be in range 0-5,
+each higher level includes the messages of each level below it.
+Where verbose = 0, nothing will be printed to console.
+Where verbose = 1, print only errors to console,
+where verbose = 2, also print warnings,
+where verbose = 3, also print suggestions and status checks,
+where verbose = 4, also print passing validation checks,
+where verbose = 5, also print description of configuration
+conditions.
+Defaults to None; if none, replace with self.verbose attribute</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>boolean representing whether there are any errors that</dt>
+<dd>prevent validation</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Boolean</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>Validating Mapping Configuration …
+&lt;BLANKLINE&gt;</p>
+<blockquote>
+<div>CHECKS PASSED</div></blockquote>
+<p>[X]          All expected columns (‘New Column Name’, ‘New Column Documentation’, ‘Source Column ID’, ‘Source Column Documentation’, ‘Relationship’, ‘Condition’, and ‘Prerequisite’) accounted for in configuration file.
+[X]          No leading/trailing spaces column New Column Name detected.
+[X]          No leading/trailing spaces column Relationship detected.
+[X]          No leading/trailing spaces column Prerequisite detected.
+[X]          No leading/trailing spaces column Condition detected.
+[X]          No whitespace in column Condition detected.
+[X]          No upper case value(s) in column Relationship detected.
+[X]          No upper case value(s) in column Condition detected.
+[X]          No non-alphanumeric value(s) in column Source Column ID detected.
+[X]          No non-alphanumeric value(s) in column Relationship detected.
+[X]          No non-alphanumeric value(s) in column Condition detected.
+[X]          No new column(s) listed but not defined in Mapping Configuration detected.
+[X]          No NA’s in column New Column Name detected.
+[X]          No NA’s in column Source Column ID detected.
+&lt;BLANKLINE&gt;</p>
+<blockquote>
+<div>ERRORS</div></blockquote>
+<p>[!]          3 values in Relationship column were invalid (‘eqqqq’, ‘another fake’, and ‘gee’). These must be a valid method of pd.Series, e.g. (‘gt’, ‘ge’, ‘lt’, ‘le’, ‘between’, ‘eq’, ‘ne’, and ‘contains’) to be valid.
+[!]          2 row(s) containing a numerical relationship with non-number condition detected in row(s) #8, and #9.
+[!]          2 values in Prerequisite column were invalid (‘ABDOMM’, and ‘Placeholder here’). These must be defined in the ‘new column name’ column of the config file to be valid.
+&lt;BLANKLINE&gt;</p>
+<blockquote>
+<div>WARNINGS</div></blockquote>
+<p>[?]          2 whitespace in column New Column Name detected in row(s) #6, and #8. Whitespace will be converted to ‘_’
+[?]          1 whitespace in column Relationship detected in row(s) #4. Whitespace will be converted to ‘_’
+[?]          1 whitespace in column Prerequisite detected in row(s) #9. Whitespace will be converted to ‘_’
+[?]          1 non-alphanumeric value(s) in column New Column Name detected in row(s) #6. This text should be alphanumeric. Non-alphanumeric characters will be removed.
+[?]          2 duplicate row(s) detected in row(s) #1, and #14. Duplicates will be dropped.
+[?]          1 NA’s in column Relationship detected in row(s) #3.
+[?]          1 NA’s in column Condition detected in row(s) #6.
+False</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycrossva.configuration.CrossVA">
+<em class="property">class </em><code class="descclassname">pycrossva.configuration.</code><code class="descname">CrossVA</code><span class="sig-paren">(</span><em>raw_data, mapping_config, na_values=['dk', 'ref', ''], verbose=2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/configuration.html#CrossVA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.configuration.CrossVA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class representing raw VA data, and how to map it to an algorithm</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mapping</strong> (<em>type</em>) – a validated Configuration object that details how to
+transform the type of data in <cite>raw_data</cite> to the desired output.</li>
+<li><strong>data</strong> (<em>Pandas DataFrame</em>) – a Pandas DataFrame containing the raw VA data</li>
+<li><strong>prepared_data</strong> (<em>Pandas DataFrame</em>) – a Pandas DataFrame containing a
+prepared form of the VA data to use with the Configuration object.</li>
+<li><a class="reference internal" href="validation.html#module-validation" title="validation"><strong>validation</strong></a> (<a class="reference internal" href="#pycrossva.validation.Validation" title="pycrossva.validation.Validation"><em>Validation</em></a>) – Validation object containing the validation
+checks that have been made on the raw data and between the raw data
+and mapping Configuration.</li>
+<li><strong>verbose</strong> (<em>int</em>) – Controls verbosity of printing to console, 0-5 where 0
+is silent.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pycrossva.configuration.CrossVA.process">
+<code class="descname">process</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/configuration.html#CrossVA.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.configuration.CrossVA.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the given configuration object’s mappings to the given raw
+data.</p>
+<p>Args:   None</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a dataframe where the transformations specified
+have been applied to the raw data, resulting</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Pandas DataFrame</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.configuration.CrossVA.validate">
+<code class="descname">validate</code><span class="sig-paren">(</span><em>verbose=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/configuration.html#CrossVA.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.configuration.CrossVA.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates that RawVAData’s raw input data and its mapping
+configuration object are compatible and prepares input data for use.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verbose</strong> (<em>int</em>) – int from 0 to 5, representing verbosity of printing
+to console. Defaults to None; if None, replaced with
+self.verbose attribute.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if valid, False if not.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">CrossVA</span><span class="p">(</span><span class="n">EX_DATA_1</span><span class="p">,</span> <span class="n">Configuration</span><span class="p">(</span><span class="n">EX_MAP_1</span><span class="p">))</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycrossva.mappings">
+<span id="pycrossva-mappings-module"></span><h2>pycrossva.mappings module<a class="headerlink" href="#module-pycrossva.mappings" title="Permalink to this headline">¶</a></h2>
+<p>Defines MapCondition class and its subclasses, each represent a single condition
+that uses a relationship to transform raw data into a boolean column while
+preserving the NA values.</p>
+<dl class="class">
+<dt id="pycrossva.mappings.BetweenCondition">
+<em class="property">class </em><code class="descclassname">pycrossva.mappings.</code><code class="descname">BetweenCondition</code><span class="sig-paren">(</span><em>condition_row</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/mappings.html#BetweenCondition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.mappings.BetweenCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycrossva.mappings.NumMapCondition" title="pycrossva.mappings.NumMapCondition"><code class="xref py py-class docutils literal"><span class="pre">pycrossva.mappings.NumMapCondition</span></code></a></p>
+<p>Subclass of NumMapCondition that overrides __init__ and .check() methods
+for the <cite>between</cite> relationship</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>low</strong> (<em>float</em>) – a float representing the lowest acceptable value (incl)</li>
+<li><strong>high</strong> (<em>float</em>) – a float representing the highest acceptable value (incl)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pycrossva.mappings.BetweenCondition.possible_values">
+<code class="descname">possible_values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/mappings.html#BetweenCondition.possible_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.mappings.BetweenCondition.possible_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>generate a non-exhaustive list of possible values implied by the
+condition</p>
+<p>Args:   None</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a list of integers between self.low - 1 and self.high + 2</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">BetweenCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="s2">&quot;3 to 5&quot;</span><span class="p">,</span>                                      <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>                                      <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;between&quot;</span><span class="p">,</span>                                      <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>                                      <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test_2&quot;</span><span class="p">}</span>                    <span class="p">)</span><span class="o">.</span><span class="n">possible_values</span><span class="p">()</span>
+<span class="go">[2.0, 3.0, 4.0, 5.0, 6.0]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycrossva.mappings.ContainsCondition">
+<em class="property">class </em><code class="descclassname">pycrossva.mappings.</code><code class="descname">ContainsCondition</code><span class="sig-paren">(</span><em>condition_row</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/mappings.html#ContainsCondition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.mappings.ContainsCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycrossva.mappings.StrMapCondition" title="pycrossva.mappings.StrMapCondition"><code class="xref py py-class docutils literal"><span class="pre">pycrossva.mappings.StrMapCondition</span></code></a></p>
+<p>Subclass of StrMapCondition that overrides ._run_check() method for the
+<cite>contains</cite> relationship</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pycrossva.mappings.MapCondition">
+<em class="property">class </em><code class="descclassname">pycrossva.mappings.</code><code class="descname">MapCondition</code><span class="sig-paren">(</span><em>condition_row</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/mappings.html#MapCondition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.mappings.MapCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Abstract class representing a single mapped condition in the mapping
+data, which gives instructions to transform the raw input data into the
+form needed for a VA instrument. The main configuration class is composed
+of these.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) – the name of the new column to be created</li>
+<li><strong>relationship</strong> (<em>str</em>) – the relationship of the input data to the condition
+Should be one of “ge” (greater than or equal to), “gt”
+(greater than), “le” (less than or equal to), “lt” (less than),
+“eq” (equal to), “ne” (not equal to),
+“contains” (if string contains) or “between”
+(between the two numbers, inclusive).</li>
+<li><strong>preq_column</strong> (<em>str</em><em> or </em><em>None</em>) – name of the pre-requisite column if it exists,
+or <cite>None</cite> if no pre-requisite</li>
+<li><strong>source</strong> (<em>str</em>) – the name of the column to be checked</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pycrossva.mappings.MapCondition.check">
+<code class="descname">check</code><span class="sig-paren">(</span><em>prepared_data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/mappings.html#MapCondition.check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.mappings.MapCondition.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks the condition against dataframe. Do not check NAs, just add
+them back afterward.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prepared_data</strong> (<em>Pandas DataFrame</em>) – a dataframe containing a created
+column with the name specified in self.source_dtype</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">returns a boolean array where the condition is met (as float)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Array</td>
+</tr>
+</tbody>
+</table>
+<p>Examples:
+&gt;&gt;&gt; test_df = pd.DataFrame({“source_test_str”: [“test condition”,                                                        “test condition 2”,                                                        np.nan],                                    “source_test_num”: [4, 5, np.nan]})
+&gt;&gt;&gt; StrMapCondition({“Condition” : “test condition”,                             “New Column Name” : “test new column name”,                             “Relationship” : “eq”, “Prerequisite” : None,                             “Source Column ID” : “source_test”}).check(test_df)
+array([ 1., 0., nan])</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span>                            <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>                            <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span>                            <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>                            <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="go">array([ 0., 1., nan])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.mappings.MapCondition.check_prereq">
+<code class="descname">check_prereq</code><span class="sig-paren">(</span><em>transformed_data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/mappings.html#MapCondition.check_prereq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.mappings.MapCondition.check_prereq" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks for pre-req column status; if there is no pre-req, returns
+true, else looks up values of pre-req column from transformed_data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transformed_data</strong> (<em>Pandas DataFrame</em>) – the new dataframe
+being created, which contains any pre-req columns</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>representing whether pre-req is</dt>
+<dd>satisfied</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean or boolean pd.series</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;preq_one&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span>                                <span class="s2">&quot;preq_two&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="mi">5</span><span class="p">)})</span>
+</pre></div>
+</div>
+<p>If there is no pre-req, simply returns True (1) Pandas can
+interpret this in boolean indexing.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span>                                 <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>                                 <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">}</span>                                    <span class="p">)</span><span class="o">.</span><span class="n">check_prereq</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+<p>If there is a pre-req, then returns the value of transformed_data
+with that column.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span>                                 <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="s2">&quot;preq_one&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">}</span>                                    <span class="p">)</span><span class="o">.</span><span class="n">check_prereq</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="go">0    True</span>
+<span class="go">1    True</span>
+<span class="go">2    True</span>
+<span class="go">3    True</span>
+<span class="go">4    True</span>
+<span class="go">Name: preq_one, dtype: bool</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mf">4.5</span><span class="p">,</span>                                 <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="s2">&quot;preq_two&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">}</span>                                    <span class="p">)</span><span class="o">.</span><span class="n">check_prereq</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="go">0    False</span>
+<span class="go">1    False</span>
+<span class="go">2    False</span>
+<span class="go">3    False</span>
+<span class="go">4    False</span>
+<span class="go">Name: preq_two, dtype: bool</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.mappings.MapCondition.describe">
+<code class="descname">describe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/mappings.html#MapCondition.describe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.mappings.MapCondition.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>just a wrapper for the __str__ function</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.mappings.MapCondition.factory">
+<code class="descname">factory</code><span class="sig-paren">(</span><em>relationship</em>, <em>condition=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/mappings.html#MapCondition.factory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.mappings.MapCondition.factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>static class factory method, which determines which subclass to
+return</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>relationship</strong> (<em>str</em>) – a relationship in (gt, ge, lt, le, ne, eq,
+contains, between) that represents a comparison to be
+made to the raw data</li>
+<li><strong>condition</strong> (<em>str</em><em> or </em><em>int</em>) – the condition being matched. if
+relationship is ambiguous, then this determins if condition
+is numerical or string. Defaults to empty string.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">returns specific subclass that corresponds to the
+correct relationship</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="mappings.html#mappings.MapCondition" title="mappings.MapCondition">MapCondition</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MapCondition</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="s2">&quot;ge&quot;</span><span class="p">)</span>
+<span class="go">&lt;class &#39;__main__.NumMapCondition&#39;&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MapCondition</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="s2">&quot;eq&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="go">&lt;class &#39;__main__.NumMapCondition&#39;&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MapCondition</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="s2">&quot;eq&quot;</span><span class="p">)</span>
+<span class="go">&lt;class &#39;__main__.StrMapCondition&#39;&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MapCondition</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="s2">&quot;contains&quot;</span><span class="p">)</span>
+<span class="go">&lt;class &#39;__main__.ContainsCondition&#39;&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MapCondition</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="s2">&quot;between&quot;</span><span class="p">)</span>
+<span class="go">&lt;class &#39;__main__.BetweenCondition&#39;&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MapCondition</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="s2">&quot;eqq&quot;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="gr">AssertionError</span>: <span class="n">No defined Condition class for eqq type</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycrossva.mappings.MapCondition.possible_values">
+<code class="descname">possible_values</code><a class="headerlink" href="#pycrossva.mappings.MapCondition.possible_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>abstract method stub
+generate a non-exhaustive list possible values implied by condition</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.mappings.MapCondition.prepare_data">
+<code class="descname">prepare_data</code><span class="sig-paren">(</span><em>raw_data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/mappings.html#MapCondition.prepare_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.mappings.MapCondition.prepare_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>prepares raw_data by ensuring dtypes are correct for each comparison</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>raw_data</strong> (<em>dataframe</em>) – a data frame containing raw data, including
+the column given in self.source_name.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the column in <cite>raw_data</cite> named in self.source_name,                with the attribute self.prep_func applied to it.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas Series</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycrossva.mappings.NumMapCondition">
+<em class="property">class </em><code class="descclassname">pycrossva.mappings.</code><code class="descname">NumMapCondition</code><span class="sig-paren">(</span><em>condition_row</em>, <em>cast_cond=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/mappings.html#NumMapCondition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.mappings.NumMapCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycrossva.mappings.MapCondition" title="pycrossva.mappings.MapCondition"><code class="xref py py-class docutils literal"><span class="pre">pycrossva.mappings.MapCondition</span></code></a></p>
+<p>class representing a numerical condition, inherits from MapCondition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>source_dtype</strong> (<em>str</em>) – a copy of the instance attribute self.source_name
+with “_num” appended, to represent the expected dtype</li>
+<li><strong>prep_func</strong> (<em>function</em>) – class attr, a function to apply before making a
+numerical-based comparison. pd.to_numeric() coerces non-number data
+to NaN.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pycrossva.mappings.NumMapCondition.possible_values">
+<code class="descname">possible_values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/mappings.html#NumMapCondition.possible_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.mappings.NumMapCondition.possible_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>generate a non-exhaustive list of possible values implied by
+condition</p>
+<p>Args:   None</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>list containing range of possible values. If a greater than</dt>
+<dd>relationship, the list will include ints from self.condition
++ 1 to self.condition*2. If a less than relationship, it will
+include values from 0 to self.condition. If the condition
+includes “equal to”, then self.condition will also be included.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>                          <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new name&quot;</span><span class="p">,</span>                          <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span>                          <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>                          <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">possible_values</span><span class="p">()</span>
+<span class="go">[4.0, 5.0, 3.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">NumMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>                          <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new name&quot;</span><span class="p">,</span>                          <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;lt&quot;</span><span class="p">,</span>                          <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>                          <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">possible_values</span><span class="p">()</span>
+<span class="go">[0.0, 1.0, 2.0]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycrossva.mappings.StrMapCondition">
+<em class="property">class </em><code class="descclassname">pycrossva.mappings.</code><code class="descname">StrMapCondition</code><span class="sig-paren">(</span><em>condition_row</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/mappings.html#StrMapCondition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.mappings.StrMapCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycrossva.mappings.MapCondition" title="pycrossva.mappings.MapCondition"><code class="xref py py-class docutils literal"><span class="pre">pycrossva.mappings.MapCondition</span></code></a></p>
+<p>class representing a str condition, inherits from MapCondition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>source_dtype</strong> (<em>str</em>) – instance attribute, a copy of the instance
+attribute self.source_name with “_str” appended,
+to represent the expected dtype</li>
+<li><strong>prep_func</strong> (<em>function</em>) – class attribute, a function to apply before
+making a string-based comparison. It preserves null values but
+changes all else to str.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pycrossva.mappings.StrMapCondition.possible_values">
+<code class="descname">possible_values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/mappings.html#StrMapCondition.possible_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.mappings.StrMapCondition.possible_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>generate a non-exhaustive list possible values implied by condition</p>
+<p>Args:   None</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>list containing 4 possible values (empty string, NA, None,</dt>
+<dd>and the self.condition attribute) that might be expected by
+this condition</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">StrMapCondition</span><span class="p">({</span><span class="s2">&quot;Condition&quot;</span> <span class="p">:</span> <span class="s2">&quot;test condition&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;New Column Name&quot;</span> <span class="p">:</span> <span class="s2">&quot;test new column name&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Relationship&quot;</span> <span class="p">:</span> <span class="s2">&quot;eq&quot;</span><span class="p">,</span>                                 <span class="s2">&quot;Prerequisite&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>                                 <span class="s2">&quot;Source Column ID&quot;</span> <span class="p">:</span> <span class="s2">&quot;source_test&quot;</span><span class="p">}</span>                                <span class="p">)</span><span class="o">.</span><span class="n">possible_values</span><span class="p">()</span>
+<span class="go">[&#39;&#39;, nan, None, &#39;test condition&#39;, &#39;yes&#39;, &#39;no&#39;, &#39;dk&#39;, &#39;ref&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycrossva.transform">
+<span id="pycrossva-transform-module"></span><h2>pycrossva.transform module<a class="headerlink" href="#module-pycrossva.transform" title="Permalink to this headline">¶</a></h2>
+<p>Defines main CrossVA function, <cite>transform</cite> which maps raw VA data into data
+for use with a VA algorithm in OpenVA.</p>
+<dl class="function">
+<dt id="pycrossva.transform.transform">
+<code class="descclassname">pycrossva.transform.</code><code class="descname">transform</code><span class="sig-paren">(</span><em>mapping</em>, <em>raw_data</em>, <em>verbose=2</em>, <em>preserve_na=True</em>, <em>result_values={'Present': 1</em>, <em>'Absent': 0</em>, <em>'NA': nan}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/transform.html#transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.transform.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>transforms raw VA data (<cite>raw_data</cite>) into data suitable for use with a VA
+algorithm, according to the specified transformations given in <cite>mapping</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mapping</strong> (<em>string</em><em>, </em><em>tuple</em><em> or </em><em>Pandas DataFrame</em>) – Should be either a tuple
+in form (input, output), a path to csv containing a configuration
+data file, or a Pandas DataFrame containing configuration data</li>
+<li><strong>raw_data</strong> (<em>string</em><em> or </em><em>Pandas DataFrame</em>) – raw verbal autopsy data to
+process</li>
+<li><strong>verbose</strong> (<em>int</em>) – integer from 0 to 5, controlling how much status detail
+is printed to console. Silent if 0. Defaults to 2, which will print
+only errors and warnings.</li>
+<li><strong>preserve_na</strong> (<em>bool</em>) – whether to preserve NAs in data, or to count them
+as FALSE. Overridden with True for InsillicoVA, False for InterVA4
+when mapping is given as a tuple. Defaults to TRUE, which allows
+NA values to perpetuate through the data.</li>
+<li><strong>result_values</strong> (<em>dict</em>) – available as a simple customization option if
+user would like values indicating presence, absence, and NAs to
+be mapped to certain values.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the raw data transformed according to specifications
+given in mapping data. Default values are 1 where symptom is present,
+0 where symptom is absent, and if NAs are preserved, they are represented
+in the data as NaNs. If NAs are not preserved, they are considered to be
+false / absent / 0.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Pandas DataFrame</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>You can specify the mapping as (‘input’, ‘output’) and the path to csv
+as a string:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span><span class="p">((</span><span class="s2">&quot;2016WHOv151&quot;</span><span class="p">,</span> <span class="s2">&quot;InterVA4&quot;</span><span class="p">),</span> <span class="s2">&quot;resources/sample_data/2016WHO_mock_data_1.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),[</span><span class="s2">&quot;ACUTE&quot;</span><span class="p">,</span><span class="s2">&quot;CHRONIC&quot;</span><span class="p">,</span><span class="s2">&quot;TUBER&quot;</span><span class="p">]]</span>
+<span class="go">   ACUTE  CHRONIC  TUBER</span>
+<span class="go">0    1.0      0.0    0.0</span>
+<span class="go">1    1.0      0.0    0.0</span>
+<span class="go">2    0.0      1.0    0.0</span>
+<span class="go">3    0.0      1.0    0.0</span>
+<span class="go">4    1.0      0.0    0.0</span>
+</pre></div>
+</div>
+<p>You can also give the data and mapping as Pandas DataFrames:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_special_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;resources/sample_data/2016WHO_mock_data_1.csv&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_special_mapping</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;resources/mapping_configuration_files/2016WHOv151_to_InsillicoVA.csv&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span><span class="p">(</span><span class="n">my_special_mapping</span><span class="p">,</span> <span class="n">my_special_data</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),[</span><span class="s2">&quot;ACUTE&quot;</span><span class="p">,</span><span class="s2">&quot;CHRONIC&quot;</span><span class="p">,</span><span class="s2">&quot;TUBER&quot;</span><span class="p">]]</span>
+<span class="go">   ACUTE  CHRONIC  TUBER</span>
+<span class="go">0    1.0      0.0    NaN</span>
+<span class="go">1    1.0      0.0    NaN</span>
+<span class="go">2    0.0      1.0    NaN</span>
+<span class="go">3    0.0      1.0    NaN</span>
+<span class="go">4    1.0      0.0    NaN</span>
+</pre></div>
+</div>
+<p>Note that by default, <cite>preserve_na</cite> is <cite>True</cite> and NA values will be
+left in. If <cite>preserve_na</cite> is <cite>False</cite>, or if the algorithm does not
+preserve NAs, then NA values will be filled in as 0’s, as they are in
+the first InterVA4 example above.</p>
+<p>The user can also pass in a different mapping dictionary for
+result_values to change the values from their defaults of
+0 (False / Absent), 1 (True / Present), and NaN
+(No data / missing), if they need their results in a different format.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span><span class="p">((</span><span class="s2">&quot;2016WHOv151&quot;</span><span class="p">,</span> <span class="s2">&quot;InterVA4&quot;</span><span class="p">),</span> <span class="s2">&quot;resources/sample_data/2016WHO_mock_data_1.csv&quot;</span><span class="p">,</span> <span class="n">result_values</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Absent&quot;</span><span class="p">:</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;Present&quot;</span><span class="p">:</span><span class="s2">&quot;P&quot;</span><span class="p">,</span><span class="s2">&quot;NA&quot;</span><span class="p">:</span><span class="s2">&quot;Missing&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),[</span><span class="s2">&quot;ACUTE&quot;</span><span class="p">,</span><span class="s2">&quot;CHRONIC&quot;</span><span class="p">,</span><span class="s2">&quot;TUBER&quot;</span><span class="p">]]</span>
+<span class="go">  ACUTE CHRONIC    TUBER</span>
+<span class="go">0     P       A  Missing</span>
+<span class="go">1     P       A  Missing</span>
+<span class="go">2     A       P  Missing</span>
+<span class="go">3     A       P  Missing</span>
+<span class="go">4     P       A  Missing</span>
+</pre></div>
+</div>
+<p>The mapping-data relationship is designed to be as flexible as possible,
+while still emphasizing tracebility and alerting the user to data
+integrity issues.</p>
+<p>Not every source column in the mapping needs to be
+represented in the data. If source columns are missing in the source data,
+then those columns will be created and filled with NA values.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span><span class="p">((</span><span class="s2">&quot;2016WHOv151&quot;</span><span class="p">,</span> <span class="s2">&quot;InsillicoVA&quot;</span><span class="p">),</span> <span class="s2">&quot;resources/sample_data/2016WHO_mock_data_2.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),[</span><span class="s2">&quot;ACUTE&quot;</span><span class="p">,</span><span class="s2">&quot;FEMALE&quot;</span><span class="p">,</span><span class="s2">&quot;MARRIED&quot;</span><span class="p">]]</span>
+<span class="go">Validating Mapping-Data Relationship . . .</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]          3 (&#39;-ageInDaysNeonate&#39;, &#39;-Id10019&#39;, and &#39;-Id10059&#39;) expected source column IDs (listed in mapping file) were not found in the input data columns. Their values will be NA.</span>
+<span class="go">[?]          &#39;-Id10019&#39; is missing, which affects the creation of  column(s) &#39;FEMALE&#39;, and &#39;MALE&#39;</span>
+<span class="go">[?]          &#39;-Id10059&#39; is missing, which affects the creation of  column(s) &#39;MARRIED&#39;</span>
+<span class="go">[?]          &#39;-ageInDaysNeonate&#39; is missing, which affects the creation of  column(s) &#39;DIED_D1&#39;, &#39;DIED_D23&#39;, &#39;DIED_D36&#39;, &#39;DIED_W1&#39;, and &#39;NEONATE&#39;</span>
+<span class="go">   ACUTE  FEMALE  MARRIED</span>
+<span class="go">0    1.0     NaN      NaN</span>
+<span class="go">1    1.0     NaN      NaN</span>
+<span class="go">2    1.0     NaN      NaN</span>
+<span class="go">3    1.0     NaN      NaN</span>
+<span class="go">4    1.0     NaN      NaN</span>
+</pre></div>
+</div>
+<p><cite>transform</cite> will also accept mapping configurations with missing values,
+with new columns that are specified but missing source columns.
+These new columns will be created so that the final result has the correct
+expeted columns for the algorithm, but filled with NA values to indicate
+the lack of information. If <cite>preserve_na</cite> is set to <cite>False</cite>, then the NA
+values will also be <cite>False</cite>.</p>
+<p>This situation is common between certain questionnaire sources and algorithms.
+For example, in the mapping between the PHRMC Short questionnaire
+to InterVA5 mapping, there are 107 InterVA5
+variables that are listed in the mapping configuration to be created,
+but have no corresponding question in PHRMC short.</p>
+<p>For example, variables i004a and i004b have no specifications in the
+mapping below. They are still listed under “New Column Name” so
+CrossVA knows that they should be created in the final result, but
+because they have no logic defined, they will be left as their default
+value of NA.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">phrmc_to_interva5</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;resources/mapping_configuration_files/PHRMCShort_to_InterVA5.csv&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">phrmc_to_interva5</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">5</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<span class="go">  New Column Name Source Column ID Relationship Meta: Notes</span>
+<span class="go">0           i004a              NaN          NaN   Not Asked</span>
+<span class="go">1           i004b              NaN          NaN   Not Asked</span>
+<span class="go">2           i019a          gen_5_2           eq         NaN</span>
+<span class="go">3           i019b          gen_5_2           eq         NaN</span>
+<span class="go">4           i022a         gen_5_4h           ge         NaN</span>
+</pre></div>
+</div>
+<p>The <cite>transform</cite> function will warn the user of this behavior.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span><span class="p">(</span><span class="n">phrmc_to_interva5</span><span class="p">,</span> <span class="s2">&quot;resources/sample_data/PHRMC_mock_data_1.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">5</span><span class="p">,:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">Validating Mapping Configuration . . .</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]      107 new column(s) listed but not defined in Mapping Configuration detected. These (&#39;i004a&#39;, &#39;i004b&#39;, &#39;i059o&#39;, &#39;i082o&#39;, &#39;i087o&#39;, &#39;i091o&#39;, &#39;i092o&#39;, &#39;i093o&#39;, &#39;i094o&#39;, &#39;i095o&#39;, etc) will be treated as NA.</span>
+<span class="go">   i004a  i004b  i019a  i019b  i022a</span>
+<span class="go">0    NaN    NaN    1.0    0.0    0.0</span>
+<span class="go">1    NaN    NaN    0.0    0.0    0.0</span>
+<span class="go">2    NaN    NaN    0.0    0.0    0.0</span>
+<span class="go">3    NaN    NaN    1.0    0.0    0.0</span>
+<span class="go">4    NaN    NaN    0.0    0.0    0.0</span>
+</pre></div>
+</div>
+<p>However, the mapping-data relationship must be valid. For example, if
+the source column IDs are not unique for the input data - that is,
+if multiple columns in the input data contain the same source ID - then
+validation will fail.</p>
+<p>For example, <cite>bad_data</cite> contains columns named <cite>A-Id10004</cite> and <cite>B-Id10004</cite>,
+but the 2016 WHO mapping is looking for just <cite>-Id10004</cite> as a source ID.
+CrossVA cannot tell which column should be used, so validation fails.</p>
+<p>&gt;&gt; bad_data = pd.read_csv(“resources/sample_data/2016WHO_bad_data_1.csv”)
+&gt;&gt; transform((“2016WHOv151”, “InsillicoVA”), bad_data)
+Validating Mapping-Data Relationship …
+&lt;BLANKLINE&gt;</p>
+<blockquote>
+<div>ERRORS</div></blockquote>
+<p>[!]      1 source column IDs (‘-Id10004’) were found multiple times in        the input data. Each source column ID should only occur once as part of        an input data column name. It should be a unique identifier at the end        of an input data column name. Source column IDs are case sensitive.         Please revise your mapping configuration or your input data so that         this condition is satisfied.
+Traceback (most recent call last):
+ValueError: Configuration from mapping file must be valid before transform.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycrossva.utils">
+<span id="pycrossva-utils-module"></span><h2>pycrossva.utils module<a class="headerlink" href="#module-pycrossva.utils" title="Permalink to this headline">¶</a></h2>
+<p>Convenience functions for the CrossVA module, which help to provide a more
+user-friendly experience with inputs and error messages across different files.</p>
+<dl class="function">
+<dt id="pycrossva.utils.english_relationship">
+<code class="descclassname">pycrossva.utils.</code><code class="descname">english_relationship</code><span class="sig-paren">(</span><em>rel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/utils.html#english_relationship"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.utils.english_relationship" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns abbreviated relationship as full english phrase.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rel</strong> (<em>str</em>) – a string with the relationship being translated, e.g., “gt”</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>a string with the relationship as a longer english phrase e.g.,</dt>
+<dd>”greater than”. If relationship not defined in the dict english,
+then this method returns rel without modification.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+<p>Raises:    TODO</p>
+<dl class="docutils">
+<dt>Examples</dt>
+<dd><div class="first highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">english_relationship</span><span class="p">(</span><span class="s2">&quot;gt&quot;</span><span class="p">)</span>
+<span class="go">&#39;is greater than&#39;</span>
+</pre></div>
+</div>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">english_relationship</span><span class="p">(</span><span class="s2">&quot;unknown&quot;</span><span class="p">)</span>
+<span class="go">&#39;unknown&#39;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycrossva.utils.flexible_read">
+<code class="descclassname">pycrossva.utils.</code><code class="descname">flexible_read</code><span class="sig-paren">(</span><em>path_or_df</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/utils.html#flexible_read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.utils.flexible_read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes either a path or a Pandas DataFrame, if path, read in as a pandas
+dataframe. Convenience method to add input flexibility for main transform
+method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path_or_df</strong> (<em>string</em><em> or </em><em>Pandas DataFrame</em>) – Either a string representing
+a path to the file containing the data, or a dataframe that has
+already been read into Python.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>either the data at the given path as read by pandas,</dt>
+<dd>or the DataFrame constructor used on the path_or_df argument</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas DataFrame</td>
+</tr>
+</tbody>
+</table>
+<p>Examples:
+Can return a dataframe from a string:
+&gt;&gt;&gt; flexible_read(“resources/sample_data/2016WHO_mock_data_1.csv”).iloc[:5,:5]</p>
+<blockquote>
+<div>ID -Id10004 -Id10019 -Id10059 -Id10077</div></blockquote>
+<p>0   0      wet       dk  married       dk
+1   1      wet   female      NaN       dk
+2   2      dry     male       dk      NaN
+3   3       dk       dk       dk       dk
+4   4      dry      NaN  married       dk</p>
+<p>Or apply the pandas dataframe constructor to the input:
+&gt;&gt;&gt; flexible_read(np.arange(9).reshape(3,3))</p>
+<blockquote>
+<div>0  1  2</div></blockquote>
+<p>0  0  1  2
+1  3  4  5
+2  6  7  8</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pycrossva.utils.report_list">
+<code class="descclassname">pycrossva.utils.</code><code class="descname">report_list</code><span class="sig-paren">(</span><em>alist</em>, <em>limit=10</em>, <em>paren=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/utils.html#report_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.utils.report_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts alist into a user-friendly string for clearer error messages.
+Each element is reported single quotes and seperated by commas, with the
+last element preceded by ” and “.
+When limit is shorter than the list, cuts the list at the limit,
+omits the ‘and’, and ends with ‘etc’ to indicate incompleteness.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>alist</strong> (<em>list</em>) – Description of parameter <cite>alist</cite>.</li>
+<li><strong>limit</strong> (<em>int</em>) – The maximum number of items to report. If more than limit,
+the list is reported without conjunction and ends with “etc.”
+Defaults to 10.</li>
+<li><strong>paren</strong> (<em>boolean</em>) – Encloses string in parentheses if true. Defaults to
+True.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">human-friendly sentence describing the items in alist</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Examples
+&gt;&gt;&gt; report_list([“A”,”B”,”C”])
+“(‘A’, ‘B’, and ‘C’)”</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">report_list</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="s2">&quot;C&quot;</span><span class="p">],</span> <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">&quot;(&#39;A&#39;, &#39;B&#39;, etc)&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">report_list</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="s2">&quot;C&quot;</span><span class="p">],</span> <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">paren</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">&quot;&#39;A&#39;, &#39;B&#39;, etc&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">report_list</span><span class="p">([])</span>
+<span class="go">&#39;&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycrossva.validation">
+<span id="pycrossva-validation-module"></span><h2>pycrossva.validation module<a class="headerlink" href="#module-pycrossva.validation" title="Permalink to this headline">¶</a></h2>
+<p>Module containing Validation class, and Vcheck class and its subclasses</p>
+<dl class="class">
+<dt id="pycrossva.validation.Err">
+<em class="property">class </em><code class="descclassname">pycrossva.validation.</code><code class="descname">Err</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Err"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Err" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycrossva.validation.VCheck" title="pycrossva.validation.VCheck"><code class="xref py py-class docutils literal"><span class="pre">pycrossva.validation.VCheck</span></code></a></p>
+<p>VCheck subclass representing a serious problem in data validation
+that prevents validation.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Err</span><span class="p">(</span><span class="s2">&quot;This is a data validation error&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="go">Tier                                 Error</span>
+<span class="go">Bullet                                 [!]</span>
+<span class="go">Level                                    1</span>
+<span class="go">Title                               ERRORS</span>
+<span class="go">Message    This is a data validation error</span>
+<span class="go">dtype: object</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pycrossva.validation.Err.bullet">
+<code class="descname">bullet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Err.bullet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Err.bullet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Err.level">
+<code class="descname">level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Err.level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Err.level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Err.tier">
+<code class="descname">tier</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Err.tier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Err.tier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Err.title">
+<code class="descname">title</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Err.title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Err.title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycrossva.validation.Passing">
+<em class="property">class </em><code class="descclassname">pycrossva.validation.</code><code class="descname">Passing</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Passing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Passing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycrossva.validation.VCheck" title="pycrossva.validation.VCheck"><code class="xref py py-class docutils literal"><span class="pre">pycrossva.validation.VCheck</span></code></a></p>
+<p>VCheck subclass representing a passed check in data validation, where
+there is no problem.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;This is a passing data validation check&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="go">Tier                                       Passing</span>
+<span class="go">Bullet                                         [X]</span>
+<span class="go">Level                                            4</span>
+<span class="go">Title                                CHECKS PASSED</span>
+<span class="go">Message    This is a passing data validation check</span>
+<span class="go">dtype: object</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pycrossva.validation.Passing.bullet">
+<code class="descname">bullet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Passing.bullet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Passing.bullet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Passing.level">
+<code class="descname">level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Passing.level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Passing.level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Passing.tier">
+<code class="descname">tier</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Passing.tier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Passing.tier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Passing.title">
+<code class="descname">title</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Passing.title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Passing.title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycrossva.validation.Suggest">
+<em class="property">class </em><code class="descclassname">pycrossva.validation.</code><code class="descname">Suggest</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Suggest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Suggest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycrossva.validation.VCheck" title="pycrossva.validation.VCheck"><code class="xref py py-class docutils literal"><span class="pre">pycrossva.validation.VCheck</span></code></a></p>
+<p>VCheck subclass representing a minor problem with data that
+does not prevent data validation.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Suggest</span><span class="p">(</span><span class="s2">&quot;This is a data validation suggestion&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="go">Tier                                 Suggestion</span>
+<span class="go">Bullet                                      [i]</span>
+<span class="go">Level                                         3</span>
+<span class="go">Title                               SUGGESTIONS</span>
+<span class="go">Message    This is a data validation suggestion</span>
+<span class="go">dtype: object</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pycrossva.validation.Suggest.bullet">
+<code class="descname">bullet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Suggest.bullet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Suggest.bullet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Suggest.level">
+<code class="descname">level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Suggest.level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Suggest.level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Suggest.tier">
+<code class="descname">tier</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Suggest.tier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Suggest.tier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Suggest.title">
+<code class="descname">title</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Suggest.title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Suggest.title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycrossva.validation.VCheck">
+<em class="property">class </em><code class="descclassname">pycrossva.validation.</code><code class="descname">VCheck</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#VCheck"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.VCheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Abstract class fior a single validation check</p>
+<dl class="attribute">
+<dt id="pycrossva.validation.VCheck.bullet">
+<code class="descname">bullet</code><a class="headerlink" href="#pycrossva.validation.VCheck.bullet" title="Permalink to this definition">¶</a></dt>
+<dd><p>abstract property, must be overriden.
+Should be a str, representing a bullet point</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.VCheck.expand">
+<code class="descname">expand</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#VCheck.expand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.VCheck.expand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands VCheck information as a Pandas Series</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>None</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">representing VCheck attributes as a Pandas Series</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas Series</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Err</span><span class="p">(</span><span class="s2">&quot;Error Message&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="go">Tier               Error</span>
+<span class="go">Bullet               [!]</span>
+<span class="go">Level                  1</span>
+<span class="go">Title             ERRORS</span>
+<span class="go">Message    Error Message</span>
+<span class="go">dtype: object</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycrossva.validation.VCheck.level">
+<code class="descname">level</code><a class="headerlink" href="#pycrossva.validation.VCheck.level" title="Permalink to this definition">¶</a></dt>
+<dd><p>abstract property, must be overriden.
+Should be int ,representing VCheck tier</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycrossva.validation.VCheck.tier">
+<code class="descname">tier</code><a class="headerlink" href="#pycrossva.validation.VCheck.tier" title="Permalink to this definition">¶</a></dt>
+<dd><p>abstract property, must be overriden.
+Should be str, representing name of VCheck tier</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pycrossva.validation.VCheck.title">
+<code class="descname">title</code><a class="headerlink" href="#pycrossva.validation.VCheck.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>abstract property, must be overriden.
+Should be str, representing title of VCheck type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycrossva.validation.Validation">
+<em class="property">class </em><code class="descclassname">pycrossva.validation.</code><code class="descname">Validation</code><span class="sig-paren">(</span><em>name=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Validation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Validation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Validation object represents an organized dataframe of validation checks</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>vchecks</strong> (<em>Pandas DataFrame</em>) – a dataframe containing the expanded form
+of the VCheck instances that have been added.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pycrossva.validation.Validation.affected_by_absence">
+<code class="descname">affected_by_absence</code><span class="sig-paren">(</span><em>missing_grped</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Validation.affected_by_absence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Validation.affected_by_absence" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a validation check as <cite>Warn</cite> describing the items in missing_grped,
+which detail the impact that missing columns have on newly created
+mappings.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>missing_grped (Pandas Series): series where the index is the name</dt>
+<dd>of the missing source column, and the values are a list of
+affected values.</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Validation.all_valid">
+<code class="descname">all_valid</code><span class="sig-paren">(</span><em>given</em>, <em>valid</em>, <em>definition</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Validation.all_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Validation.all_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a validation check where all values in <cite>given</cite> must be in <cite>valid</cite>
+to pass. <cite>fail_check</cite> is <cite>Err</cite> (fails validation).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>given</strong> (<em>Pandas Series</em>) – the items representing input given</li>
+<li><strong>valid</strong> (<em>Pandas Series</em>) – list of all possible valid items accepted in
+<cite>given</cite></li>
+<li><strong>definition</strong> (<em>str</em>) – string describing what makes an item in <cite>given</cite>
+be in <cite>valid</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">all_valid</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;valid value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;pre-defined&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">all_valid</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;d&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;valid value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;&#39;a&#39; or &#39;d&#39;&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
+
+<span class="go"> CHECKS PASSED</span>
+<span class="go">[X]          All values in example input are valid.</span>
+
+<span class="go"> ERRORS</span>
+<span class="go">[!]          2 values in example input were invalid (&#39;b&#39;, and &#39;c&#39;).</span>
+<span class="go">These must be &#39;a&#39; or &#39;d&#39; to be valid.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Validation.check_na">
+<code class="descname">check_na</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Validation.check_na"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Validation.check_na" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a validation check flagging the rows in every column of <cite>df</cite>
+that are <cite>None</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> (<em>Pandas DataFrame</em>) – a Pandas DataFrame with columns that should
+have no NA values</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot;e&quot;</span><span class="p">,</span><span class="kc">None</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">check_na</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
+
+<span class="go"> CHECKS PASSED</span>
+<span class="go">[X]          No NA&#39;s in column A detected.</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]          1 NA&#39;s in column B detected in row(s) #2.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Validation.fix_alnum">
+<code class="descname">fix_alnum</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Validation.fix_alnum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Validation.fix_alnum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a validation check flagging the rows in every column of <cite>df</cite>
+that contain non-alphanumeric characters. Regex removes all characters
+that are not alpha-numeric, but leaves periods that are part of a
+number.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> (<em>Pandas DataFrame</em>) – a Pandas DataFrame with columns that should
+have only alphanumeric characters</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><cite>df</cite> where alphanumeric characters are removed</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas DataFrame</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;3.0&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span>                                        <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;??.test&quot;</span><span class="p">,</span><span class="s2">&quot;test&lt;&gt;!&quot;</span><span class="p">,</span><span class="s2">&quot;;test_data&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">fix_alnum</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="go">   A          B</span>
+<span class="go">0  a       test</span>
+<span class="go">1  3.0     test</span>
+<span class="go">2  c  test_data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
+
+<span class="go"> CHECKS PASSED</span>
+<span class="go">[X]      No non-alphanumeric value(s) in column A detected.</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]      3 non-alphanumeric value(s) in column B detected in row(s)</span>
+<span class="go">#0, #1, and #2. This text should be alphanumeric. Non-alphanumeric</span>
+<span class="go">characters will be removed.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Validation.fix_lowcase">
+<code class="descname">fix_lowcase</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Validation.fix_lowcase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Validation.fix_lowcase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a validation check flagging the rows in every column of <cite>df</cite>
+that contain lowercase characters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> (<em>Pandas DataFrame</em>) – a Pandas DataFrame with columns that should
+have only uppercase characters</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><cite>df</cite> where all characters are uppercase</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas DataFrame</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot;e&quot;</span><span class="p">,</span><span class="s2">&quot;F&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">fix_lowcase</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="go">   A  B</span>
+<span class="go">0  A  D</span>
+<span class="go">1  B  E</span>
+<span class="go">2  C  F</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]      2 lower case value(s) in  column A detected in row(s) #0,</span>
+<span class="go">and #2. Convention to have this text be uppercase. Lower case text</span>
+<span class="go">will be made uppercase.</span>
+<span class="go">[?]      1 lower case value(s) in  column B detected in row(s) #1.</span>
+<span class="go">Convention to have this text be uppercase. Lower case text will be</span>
+<span class="go">made uppercase.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Validation.fix_upcase">
+<code class="descname">fix_upcase</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Validation.fix_upcase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Validation.fix_upcase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a validation check flagging the rows in every column of <cite>df</cite>
+that contain uppercase characters</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> (<em>Pandas DataFrame</em>) – a Pandas DataFrame with columns that should
+have only lowercase characters</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><cite>df</cite> where all characters are lowercase</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas DataFrame</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot;e&quot;</span><span class="p">,</span><span class="s2">&quot;F&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">fix_upcase</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="go">   A  B</span>
+<span class="go">0  a  d</span>
+<span class="go">1  b  e</span>
+<span class="go">2  c  f</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]      1 upper case value(s) in column A detected in row(s) #1.</span>
+<span class="go">Convention is to have this text be lowercase. Upper case text will</span>
+<span class="go">be made lowercase.</span>
+<span class="go">[?]      2 upper case value(s) in column B detected in row(s) #0,</span>
+<span class="go">and #2. Convention is to have this text be lowercase. Upper case</span>
+<span class="go">text will be made lowercase.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Validation.fix_whitespace">
+<code class="descname">fix_whitespace</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Validation.fix_whitespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Validation.fix_whitespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a validation check flagging the rows in every column of <cite>df</cite>
+that contain whitespace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> (<em>Pandas DataFrame</em>) – a Pandas DataFrame with columns that should
+have no whitespace</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt><cite>df</cite> where whitespace is replaced with an</dt>
+<dd>underscore</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Pandas DataFrame</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot; B &quot;</span><span class="p">,</span><span class="s2">&quot;Test Data&quot;</span><span class="p">],</span>                                        <span class="s2">&quot;B&quot;</span><span class="p">:[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span><span class="s2">&quot; e&quot;</span><span class="p">,</span><span class="s2">&quot;F &quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">fix_whitespace</span><span class="p">(</span><span class="n">test_df</span><span class="p">)</span>
+<span class="go">           A  B</span>
+<span class="go">0          a  D</span>
+<span class="go">1          B  e</span>
+<span class="go">2  Test_Data  F</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
+
+<span class="go"> CHECKS PASSED</span>
+<span class="go">[X]          No whitespace in column B detected.</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]          1 leading/trailing spaces column A detected in row(s) #1.            Leading/trailing spaces will be removed.</span>
+<span class="go">[?]          2 leading/trailing spaces column B detected in row(s)            #1, and #2. Leading/trailing spaces will be removed.</span>
+<span class="go">[?]          1 whitespace in column A detected in row(s) #2.            Whitespace will be converted to &#39;_&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Validation.flag_elements">
+<code class="descname">flag_elements</code><span class="sig-paren">(</span><em>flag_where</em>, <em>flag_elements</em>, <em>criteria</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Validation.flag_elements"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Validation.flag_elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a validation check seeing if any values in flag_where are true,
+and then reports on the corresponding items in flag_elements.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>flag_where</strong> (<em>Pandas Series</em>) – a boolean Pandas Series where True
+represents a failed check</li>
+<li><strong>flag_elements</strong> (<em>Pandas Series</em>) – a boolean Pandas Series listing
+elements that are affected by True values in <cite>flag_where</cite></li>
+<li><strong>criteria</strong> (<em>String</em>) – a brief description of what elements are
+being flagged and reported on</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">(</span><span class="s2">&quot;element test&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">flag_elements</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>                                      <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]),</span> <span class="s2">&quot;red flag(s)&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">flag_elements</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>                                      <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]),</span> <span class="s2">&quot;blue flag(s)&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating element test . . .</span>
+
+<span class="go"> CHECKS PASSED</span>
+<span class="go">[X]          No red flag(s) in element test detected.</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]          1 blue flag(s) in element test detected. These (&#39;B&#39;) will be treated as NA.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Validation.flag_rows">
+<code class="descname">flag_rows</code><span class="sig-paren">(</span><em>flag_where</em>, <em>flag_criteria</em>, <em>flag_action=''</em>, <em>flag_tier=&lt;class 'pycrossva.validation.Warn'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Validation.flag_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Validation.flag_rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a validation check seeing if any values in flag_where are true,
+where fail_check is of type flag_tier. Note that rows are reported
+counting from 0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>flag_where</strong> (<em>Pandas Series</em>) – a boolean Pandas Series where True
+represents a failed check.</li>
+<li><strong>flag_criteria</strong> (<em>str</em>) – a noun clause describing the criteria for an
+item to be flagged in <cite>flag_where</cite></li>
+<li><strong>flag_action</strong> (<em>str</em>) – string describing the action to be taken if
+an item is flagged. Defaults to “”.</li>
+<li><strong>flag_tier</strong> (<a class="reference internal" href="#pycrossva.validation.VCheck" title="pycrossva.validation.VCheck"><em>VCheck</em></a>) – should be either Suggest, Warn, or Err, is
+the seriousness of the failed check.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">flag_rows</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>                                      <span class="n">flag_criteria</span><span class="o">=</span><span class="s2">&quot;true values&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">flag_rows</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>                                      <span class="n">flag_criteria</span><span class="o">=</span><span class="s2">&quot;true values&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
+
+<span class="go">CHECKS PASSED</span>
+<span class="go">[X]      No true values detected.</span>
+
+<span class="go">WARNINGS</span>
+<span class="go">[?]      1 true values detected in row(s) #1.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Validation.is_valid">
+<code class="descname">is_valid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Validation.is_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Validation.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks to see if instance is valid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>None</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>True if is valid (has no errors in vchecks) and False if</dt>
+<dd>instance has errors or where vchecks is empty.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Validation</span><span class="p">()</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">must_contain</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]),</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;B&quot;</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">must_contain</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]),</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;C&quot;</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Validation.must_contain">
+<code class="descname">must_contain</code><span class="sig-paren">(</span><em>given</em>, <em>required</em>, <em>passing_msg=''</em>, <em>fail=&lt;class 'pycrossva.validation.Err'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Validation.must_contain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Validation.must_contain" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a validation check where <cite>given</cite> must contain every item in
+<cite>required</cite> at least once to pass, and <cite>fail_check</cite> is <cite>fail</cite>,
+(fails validation).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>given</strong> (<em>Pandas Series</em>) – the items representing input given</li>
+<li><strong>required</strong> (<em>Pandas Series</em>) – the items required to be in <cite>given</cite></li>
+<li><strong>passing_msg</strong> (<em>str</em>) – Message to return if all items in <cite>expected</cite> are
+listed in <cite>given</cite>. Defaults to “”.</li>
+<li><strong>fail</strong> (<a class="reference internal" href="#pycrossva.validation.VCheck" title="pycrossva.validation.VCheck"><em>VCheck</em></a>) – the outcome if the check fails. Default is Err.</li>
+<li><strong>impact</strong> (<em>Pandas Series</em>) – a corresponding series to <cite>required</cite> that
+represents the affected information when</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">must_contain</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example requirement(s)&quot;</span><span class="p">),</span>                               <span class="s2">&quot;all included&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">must_contain</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;d&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example requirement(s)&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
+
+<span class="go"> CHECKS PASSED</span>
+<span class="go">[X]          all included</span>
+
+<span class="go"> ERRORS</span>
+<span class="go"> [!]          1 (&#39;d&#39;) example requirement(s) were not found in              example input. Their values will be NA.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Validation.no_duplicates">
+<code class="descname">no_duplicates</code><span class="sig-paren">(</span><em>my_series</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Validation.no_duplicates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Validation.no_duplicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a validation check as <cite>Err</cite> if any items in my_series are
+duplicates. Intended to alert users of issues where there are duplicate
+columns before an exception is raised.</p>
+<blockquote>
+<div><p>my_series (Pandas Series): series where there should not be dupes</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Validation.no_extraneous">
+<code class="descname">no_extraneous</code><span class="sig-paren">(</span><em>given</em>, <em>relevant</em>, <em>value_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Validation.no_extraneous"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Validation.no_extraneous" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a validation check where all values in <cite>given</cite> should also be
+in <cite>relevant</cite> to pass. <cite>fail_check</cite> is <cite>Warn</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>given</strong> (<em>Pandas Series</em>) – the items representing input given</li>
+<li><strong>relevant</strong> (<em>Pandas Series</em>) – all items in <cite>given</cite> that will be used</li>
+<li><strong>value_type</strong> (<em>str</em>) – string describing the kind of noun that is
+listed in <cite>given</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">no_extraneous</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;relevant value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;example&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">no_extraneous</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example input&quot;</span><span class="p">),</span>                               <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;d&quot;</span><span class="p">],</span>                                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;relevant value(s)&quot;</span><span class="p">),</span> <span class="s2">&quot;example&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating  . . .</span>
+
+<span class="go">CHECKS PASSED</span>
+<span class="go">[X]      No extraneous example found in example input.</span>
+
+<span class="go">ERRORS</span>
+<span class="go">[!]      2 extraneous example(s) found in example input</span>
+<span class="go">(&#39;b&#39;, and &#39;c&#39;) Extraneous example(s) will be ommitted.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Validation.report">
+<code class="descname">report</code><span class="sig-paren">(</span><em>verbose=2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Validation.report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Validation.report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the checks in the vchecks attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verbose</strong> (<em>int</em>) – Parameter controlling how much to print by filtering
+for the level in each vchecks row to be less than or equal to
+verbose. Defaults to 2 (print only converted <cite>Warn</cite> and <cite>Err</cite>
+checks)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">Validation</span><span class="p">(</span><span class="s2">&quot;Testing Tests&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>                                 <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test&quot;</span><span class="p">),</span> <span class="n">Err</span><span class="p">(</span><span class="s2">&quot;Failed test&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>                                 <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test 2&quot;</span><span class="p">),</span> <span class="n">Err</span><span class="p">(</span><span class="s2">&quot;Failed test&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>                                 <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test&quot;</span><span class="p">),</span> <span class="n">Err</span><span class="p">(</span><span class="s2">&quot;Error test&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>                                 <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;Passed test&quot;</span><span class="p">),</span> <span class="n">Warn</span><span class="p">(</span><span class="s2">&quot;Warn test&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">_add_condition</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]),</span>                                 <span class="n">Passing</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">Suggest</span><span class="p">(</span><span class="s2">&quot;Suggest test&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">Validating Testing Tests . . .</span>
+
+<span class="go"> ERRORS</span>
+<span class="go">[!]      Error test</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">Validating Testing Tests . . .</span>
+
+<span class="go"> CHECKS PASSED</span>
+<span class="go">[X]      Passed test</span>
+<span class="go">[X]      Passed test 2</span>
+
+<span class="go"> ERRORS</span>
+<span class="go">[!]      Error test</span>
+
+<span class="go"> SUGGESTIONS</span>
+<span class="go">[i]      Suggest test</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]      Warn test</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pycrossva.validation.Warn">
+<em class="property">class </em><code class="descclassname">pycrossva.validation.</code><code class="descname">Warn</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Warn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Warn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pycrossva.validation.VCheck" title="pycrossva.validation.VCheck"><code class="xref py py-class docutils literal"><span class="pre">pycrossva.validation.VCheck</span></code></a></p>
+<p>VCheck subclass representing a problem in data validation that
+can be fixed in place, but would otherwise prevent validation.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Warn</span><span class="p">(</span><span class="s2">&quot;This is a data validation warning&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="go">Tier                                 Warning</span>
+<span class="go">Bullet                                   [?]</span>
+<span class="go">Level                                      2</span>
+<span class="go">Title                               WARNINGS</span>
+<span class="go">Message    This is a data validation warning</span>
+<span class="go">dtype: object</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pycrossva.validation.Warn.bullet">
+<code class="descname">bullet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Warn.bullet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Warn.bullet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Warn.level">
+<code class="descname">level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Warn.level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Warn.level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Warn.tier">
+<code class="descname">tier</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Warn.tier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Warn.tier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pycrossva.validation.Warn.title">
+<code class="descname">title</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#Warn.title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.Warn.title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pycrossva.validation.report_row">
+<code class="descclassname">pycrossva.validation.</code><code class="descname">report_row</code><span class="sig-paren">(</span><em>flag_where</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pycrossva/validation.html#report_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pycrossva.validation.report_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper method to return an english explanation of what rows have been
+flagged with a failed validation check.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>flag_where</strong> (<em>Pandas Series</em>) – boolean Pandas Series representing failed
+validation checks.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a string reporting the index of the flagged rows</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">report_row</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]))</span>
+<span class="go">&#39;#0, #1, and #3&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycrossva">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pycrossva" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, MITRE
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'1.0a',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -72,22 +72,22 @@ class MapCondition(metaclass=ABCMeta):
             correct relationship
 
         Examples:
-            >>> MapCondition.factory("ge")
-            <class '__main__.NumMapCondition'>
+            >>> MapCondition.factory("ge") #doctest: +ELLIPSIS
+            <class '...NumMapCondition'>
 
-            >>> MapCondition.factory("eq", 0)
-            <class '__main__.NumMapCondition'>
+            >>> MapCondition.factory("eq", 0) #doctest: +ELLIPSIS
+            <class '...NumMapCondition'>
 
-            >>> MapCondition.factory("eq")
-            <class '__main__.StrMapCondition'>
+            >>> MapCondition.factory("eq") #doctest: +ELLIPSIS
+            <class '...StrMapCondition'>
 
-            >>> MapCondition.factory("contains")
-            <class '__main__.ContainsCondition'>
+            >>> MapCondition.factory("contains") #doctest: +ELLIPSIS
+            <class '...ContainsCondition'>
 
-            >>> MapCondition.factory("between")
-            <class '__main__.BetweenCondition'>
+            >>> MapCondition.factory("between") #doctest: +ELLIPSIS
+            <class '...BetweenCondition'>
 
-            >>> MapCondition.factory("eqq")
+            >>> MapCondition.factory("eqq") #doctest: +ELLIPSIS
             Traceback (most recent call last):
             AssertionError: No defined Condition class for eqq type
 

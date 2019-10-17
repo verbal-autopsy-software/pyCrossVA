@@ -152,8 +152,8 @@ mapping to the InterVA4 and InsillicoVA format.
 The following is a list of
 additional outputs for other algorithms to be supported in future versions:
 
-* Tarrif
-* Tarrif 2.0
+* Tariff
+* Tariff 2.0
 
 Style
 -----

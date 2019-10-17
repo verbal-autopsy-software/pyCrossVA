@@ -101,7 +101,7 @@ def transform(mapping, raw_data, verbose=2, preserve_na=True,
         Validating Mapping-Data Relationship . . .
         <BLANKLINE>
          WARNINGS
-        [?]          3 ('-ageInDaysNeonate', '-Id10019', and '-Id10059') expected source column IDs (listed in mapping file) were not found in the input data columns. Their values will be NA.
+        [?]          3 (1.3%) expected source column IDs listed in mapping file ('-ageInDaysNeonate', '-Id10019', and '-Id10059') were not found in the input data columns. Their values will be NA.
         [?]          '-Id10019' is missing, which affects the creation of  column(s) 'FEMALE', and 'MALE'
         [?]          '-Id10059' is missing, which affects the creation of  column(s) 'MARRIED'
         [?]          '-ageInDaysNeonate' is missing, which affects the creation of  column(s) 'DIED_D1', 'DIED_D23', 'DIED_D36', 'DIED_W1', and 'NEONATE'

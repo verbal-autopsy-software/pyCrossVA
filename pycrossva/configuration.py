@@ -489,7 +489,7 @@ class CrossVA():
         self.validation.must_contain(self.data.columns.rename(
             "the input data columns"),
             self.mapping.source_columns.rename(
-            "expected source column IDs (listed in mapping file)"),
+            "expected source column IDs listed in mapping file"),
             passing_msg=col_msg,
             fail=Warn)
 

@@ -303,13 +303,15 @@ class Validation():
             [X]          all included
             <BLANKLINE>
              ERRORS
-             [!]          1 ('d') example requirement(s) were not found in   example input. Their values will be NA.
+             [!]          1 (33.3%) example requirement(s) ('d') were not found in example input. Their values will be NA.
             """
         # Comparison is true (fails) when an item in required isn't in given
         comparison = ~required.isin(given)
+        percentage = '{0:.1%}'.format(comparison.sum() / comparison.size)
         fail_msg = " ".join([str(comparison.sum()),
-                             report_list(required[comparison]),
+                             '(' + percentage + ')',
                              str(required.name),
+                             report_list(required[comparison]),
                              "were not found in", str(given.name) + ".",
                              "Their values will be NA."])
         self._add_condition(comparison, Passing(passing_msg),

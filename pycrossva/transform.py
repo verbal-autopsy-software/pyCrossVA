@@ -11,7 +11,7 @@ import pandas as pd
 import numpy as np
 
 from pycrossva.configuration import Configuration, CrossVA
-from pycrossva.utils import flexible_read
+from pycrossva.utils import flexible_read, detect_format
 
 SUPPORTED_INPUTS = ["2016WHOv151", "2016WHOv141", "2012WHO",
                     "PHRMCShort"]
@@ -171,6 +171,9 @@ def transform(mapping, raw_data, verbose=2, preserve_na=True,
         [!]      1 source column IDs ('-Id10004') were found multiple times in the input data. Each source column ID should only occur once as part of an input data column name. It should be a unique identifier at the end of an input data column name. Source column IDs are case sensitive. Please revise your mapping configuration or your input data so that this condition is satisfied.
 
     """
+    # Read in data to transform
+    input_data = flexible_read(raw_data)
+
     mapping_data = pd.DataFrame()
 
     # read in mapping data
@@ -178,6 +181,9 @@ def transform(mapping, raw_data, verbose=2, preserve_na=True,
         internal_path = os.path.join(os.path.split(
             __file__)[0], "resources/mapping_configuration_files/")
         if len(mapping) == 2:
+            # Handle case where user wishes input format to be detected
+            if mapping[0] == 'AUTODETECT':
+                mapping = (detect_format(mapping[1], input_data), mapping[1])
             if mapping[0] in SUPPORTED_INPUTS:
                 if mapping[1] in SUPPORTED_OUTPUTS:
                     preserve_na = mapping[1] == "InsillicoVA"  # overides given
@@ -228,8 +234,6 @@ def transform(mapping, raw_data, verbose=2, preserve_na=True,
         raise ValueError(("Configuration from mapping file must be valid "
                           "before transform."))
 
-    # TODO adds args to init based on data type?
-    input_data = flexible_read(raw_data)
     cross_va = CrossVA(input_data, config)
     if not cross_va.validate(verbose=verbose):
         return

@@ -9,7 +9,7 @@ from pycrossva.transform import transform, SUPPORTED_INPUTS, SUPPORTED_OUTPUTS
 @click.command()
 @click.argument("input_type",
                 nargs=1,
-                type=click.Choice(SUPPORTED_INPUTS),
+                type=click.Choice(SUPPORTED_INPUTS + ['AUTODETECT']),
                 required=True)
 @click.argument('output_type',
                 nargs=1,

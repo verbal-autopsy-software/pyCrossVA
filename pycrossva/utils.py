@@ -113,14 +113,17 @@ def detect_format(output_format, data):
 
     Returns:
         str: the best matching format for the input data
+
+    Examples:
+    Can determine the format of a data file:
+    >>> detect_format("InsillicoVA", flexible_read("resources/sample_data/2016WHO_mock_data_1.csv"))
+    '2016WHOv141'
     """
 
     # Go through all of the SUPPORTED_INPUTS and for each determine
     # the proportion of inputs that are present in the input data and
     # choose the best match (the one with the highest proportion)
 
-    # TODO: importing here seems wrong, but otherwise we have a circular dependency...
-    # TODO: Needing SUPPORTED_INPUTS at all seems wrong, just use the mapping files that are present...
     from pycrossva.transform import SUPPORTED_INPUTS
     from pycrossva.configuration import Configuration, CrossVA
 
@@ -129,10 +132,8 @@ def detect_format(output_format, data):
     proportions = {}
 
     for input_format in SUPPORTED_INPUTS:
-        translation_file = (f"{config_file_path}" f"{input_format}_to_" f"{output_format}.csv")
+        translation_file = (f"{config_file_path}{input_format}_to_{output_format}.csv")
         if os.path.isfile(translation_file):
-
-            print("Testing format " + input_format)
 
             # Get a list of the column IDs of the data file that are in the mapping file
             mapping_data = pd.read_csv(translation_file)
@@ -146,11 +147,7 @@ def detect_format(output_format, data):
             # Find the proportion of the column IDs that are mapped
             proportions[input_format] = len(mapped_data_column_ids) / len(data_column_ids)
 
-            print(input_format + " has proportion " + str(proportions[input_format]))
-            print("=========")
-
     # Return the supported input that has the highest proportion
-    print("Selected " + max(proportions, key=proportions.get))
     return max(proportions, key=proportions.get)
 
 def english_relationship(rel):

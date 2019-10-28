@@ -98,7 +98,7 @@ default name. If `dst` ends in '.csv' but multiple input files are given,
 then the output files will be written to dst_1.csv, dst_2.csv, etc.
 
 `pycrossva-transform` takes 3 positional arguments:
-  *  `input_type`: source type of the input data
+  *  `input_type`: source type of the input data (the special input type of 'AUTODETECT' specifies that the type should be detected automatically if possible)
   *  `output_type`: format of output data (which algorithm the data should be prepared for)
   *  `src`: filepath to the input data - can take multiple arguments, separated by a space
 
@@ -116,6 +116,10 @@ Examples:
     $ pycrossva-transform 2012WHO InterVA4 path/to/mydata1.csv path/to/another/data2.csv --dst outputfolder/results.csv
     2012WHO 'path/to/mydata1.csv' data prepared for InterVA4 and written to csv at 'outputfolder/results_1.csv'
     2012WHO 'path/to/another/data2.csv' data prepared for InterVA4 and written to csv at 'outputfolder/results_2.csv'
+
+    $ pycrossva-transform AUTODETECT InterVA4 path/to/mydata.csv
+    Detected input type: 2012WHO
+    2012WHO 'path/to/my/data.csv' data prepared for InterVA4 and written to csv at 'my/current/directory/InterVA4_from_mydata_042319.csv'
 
 
 

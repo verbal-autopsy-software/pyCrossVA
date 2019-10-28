@@ -9,7 +9,7 @@ from pycrossva.transform import transform, SUPPORTED_INPUTS, SUPPORTED_OUTPUTS
 @click.command()
 @click.argument("input_type",
                 nargs=1,
-                type=click.Choice(SUPPORTED_INPUTS),
+                type=click.Choice(SUPPORTED_INPUTS + ['AUTODETECT']),
                 required=True)
 @click.argument('output_type',
                 nargs=1,
@@ -70,10 +70,18 @@ def main(input_type, output_type, src, dst, silent):
     if silent:
         verbosity = 0
     for i in range(0, len(src)):
-        input_data = src[i]
+        input_file = src[i]
+
+        # Automatically detect the input format if desired
+        from pycrossva.utils import flexible_read, detect_format
+        input_data = flexible_read(input_file)
+        if input_type == "AUTODETECT":
+            input_type = detect_format(output_type, input_data)
+            click.echo(f"Detected input type: {input_type}")
+
         result = transform((input_type, output_type), input_data,
                            verbose=verbosity)
-        original_name = input_data.split(os.path.sep)[-1].split(".")[0]
+        original_name = input_file.split(os.path.sep)[-1].split(".")[0]
         default_name = "_".join([output_type, "from", original_name,
                                  dt.today().strftime("%m%d%y")]) + ".csv"
         if not dst is None:  # if dst is given
@@ -95,7 +103,7 @@ def main(input_type, output_type, src, dst, silent):
             result.to_csv(final_dst)
             if not silent:
                 click.echo(
-                    f"{input_type} '{input_data}' data prepared for {output_type} and written to csv at '{final_dst}'")
+                    f"{input_type} '{input_file}' data prepared for {output_type} and written to csv at '{final_dst}'")
 
 
 if __name__ == '__main__':

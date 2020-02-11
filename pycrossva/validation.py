@@ -4,9 +4,12 @@
 Module containing Validation class, and Vcheck class and its subclasses
 """
 from abc import ABCMeta, abstractmethod
-from utils import report_list
+
 import pandas as pd
+import numpy as np
 import re
+
+from pycrossva.utils import report_list
 
 
 class VCheck(metaclass=ABCMeta):
@@ -194,9 +197,10 @@ class Validation():
             of the VCheck instances that have been added.
     """
 
-    def __init__(self):
+    def __init__(self, name=""):
         """inits Validation class"""
         self.vchecks = pd.DataFrame()
+        self.name = name
 
     def _add_condition(self, flagged_series, pass_check, fail_check):
         """Internal method that adds a fail_check to the self.vchecks attribute
@@ -216,10 +220,8 @@ class Validation():
 
         Examples:
             >>> v = Validation()
-            >>> v._add_condition(pd.Series([False, False, False]),\
-                                 Passing("Passed test"), Err("Failed test"))
-            >>> v._add_condition(pd.Series([False, False, True]),\
-                                 Passing("Passed test"), Err("Failed test"))
+            >>> v._add_condition(pd.Series([False, False, False]),  Passing("Passed test"), Err("Failed test"))
+            >>> v._add_condition(pd.Series([False, False, True]),  Passing("Passed test"), Err("Failed test"))
             >>> v.vchecks
               Bullet  Level      Message     Tier          Title
             0    [X]    4.0  Passed test  Passing  CHECKS PASSED
@@ -232,9 +234,50 @@ class Validation():
             self.vchecks = self.vchecks.append(pass_check.expand(),
                                                ignore_index=True)
 
-    def must_contain(self, given, required, passing_msg=""):
+    def no_duplicates(self, my_series):
+        """ adds a validation check as `Err` if any items in my_series are
+        duplicates. Intended to alert users of issues where there are duplicate
+        columns before an exception is raised.
+
+            my_series (Pandas Series): series where there should not be dupes
+
+            Returns:
+                None
+        """
+        comparison = my_series.duplicated()
+        passing_msg = ("Source column IDs do not match more than one column in"
+                       " input data.")
+        fail_msg = (f"{comparison.sum()} source column IDs {report_list(my_series[comparison])}"
+                    " were found multiple times in the input data. Each source"
+                    " column ID should only occur once as part of an input data"
+                    " column name. It should be a unique identifier at"
+                    " the end of an input data column name. Source column IDs"
+                    " are case sensitive. Please revise your mapping configuration"
+                    " or your input data so that this condition is satisfied.")
+        self._add_condition(my_series.duplicated(), Passing(passing_msg),
+                            Err(fail_msg))
+
+    def affected_by_absence(self, missing_grped):
+        """ adds a validation check as `Warn` describing the items in missing_grped,
+        which detail the impact that missing columns have on newly created
+        mappings.
+            missing_grped (Pandas Series): series where the index is the name
+                of the missing source column, and the values are a list of
+                affected values.
+
+            Returns:
+                None
+        """
+
+        for source, affected_list in missing_grped.iteritems():
+            msg = (f"'{source}' is missing, which affects the creation of "
+                   f" column(s) {report_list(affected_list, paren=False)}")
+            self.vchecks = self.vchecks.append(Warn(msg).expand(),
+                                               ignore_index=True)
+
+    def must_contain(self, given, required, passing_msg="", fail=Err):
         """adds a validation check where `given` must contain every item in
-        `required` at least once to pass, and `fail_check` is `Err`,
+        `required` at least once to pass, and `fail_check` is `fail`,
         (fails validation).
 
         Args:
@@ -242,36 +285,37 @@ class Validation():
             required (Pandas Series): the items required to be in `given`
             passing_msg (str): Message to return if all items in `expected` are
                 listed in `given`. Defaults to "".
+            fail (VCheck): the outcome if the check fails. Default is Err.
+            impact (Pandas Series): a corresponding series to `required` that
+                represents the affected information when
 
         Returns:
             None
 
         Examples:
             >>> v = Validation()
-            >>> v.must_contain(pd.Series(["a","b","c"], name="example input"),\
-                               pd.Series(["a","b"],\
-                                         name="example requirement(s)"),\
-                               "all included")
-            >>> v.must_contain(pd.Series(["a","b","c"], name="example input"),\
-                               pd.Series(["a","b","d"],\
-                                         name="example requirement(s)"))
+            >>> v.must_contain(pd.Series(["a","b","c"], name="example input"),  pd.Series(["a","b"],  name="example requirement(s)"),  "all included")
+            >>> v.must_contain(pd.Series(["a","b","c"], name="example input"),  pd.Series(["a","b","d"],  name="example requirement(s)"))
             >>> v.report(verbose=4)
-            CHECKS PASSED
-            [X]      all included
+            Validating  . . .
             <BLANKLINE>
-            ERRORS
-            [!]      1 ('d') example requirement(s) were missing
-            from example input. These must be included.
+             CHECKS PASSED
+            [X]          all included
+            <BLANKLINE>
+             ERRORS
+             [!]          1 (33.3%) example requirement(s) ('d') were not found in example input. Their values will be NA.
             """
         # Comparison is true (fails) when an item in required isn't in given
         comparison = ~required.isin(given)
+        percentage = '{0:.1%}'.format(comparison.sum() / comparison.size)
         fail_msg = " ".join([str(comparison.sum()),
-                             report_list(required[comparison]),
+                             '(' + percentage + ')',
                              str(required.name),
-                             "were missing from", str(given.name)+".",
-                             "These must be included."])
+                             report_list(required[comparison]),
+                             "were not found in", str(given.name) + ".",
+                             "Their values will be NA."])
         self._add_condition(comparison, Passing(passing_msg),
-                            Err(fail_msg))
+                            fail(fail_msg))
 
     def no_extraneous(self, given, relevant, value_type):
         """adds a validation check where all values in `given` should also be
@@ -288,13 +332,10 @@ class Validation():
 
         Examples:
             >>> v = Validation()
-            >>> v.no_extraneous(pd.Series(["a","b"], name="example input"),\
-                               pd.Series(["a","b","c"],\
-                                         name="relevant value(s)"), "example")
-            >>> v.no_extraneous(pd.Series(["a","b","c"], name="example input"),\
-                               pd.Series(["a","d"],\
-                                         name="relevant value(s)"), "example")
+            >>> v.no_extraneous(pd.Series(["a","b"], name="example input"),  pd.Series(["a","b","c"],  name="relevant value(s)"), "example")
+            >>> v.no_extraneous(pd.Series(["a","b","c"], name="example input"),  pd.Series(["a","d"],  name="relevant value(s)"), "example")
             >>> v.report(verbose=4)
+            Validating  . . .
             <BLANKLINE>
             CHECKS PASSED
             [X]      No extraneous example found in example input.
@@ -307,13 +348,13 @@ class Validation():
         # `relevant`
         comparison = ~given.isin(relevant)
         fail_msg = " ".join([str(comparison.sum()),
-                             "extraneous", value_type+"(s)",
+                             "extraneous", value_type + "(s)",
                              "found in", str(given.name),
                              report_list(given[comparison], limit=5),
-                             "Extraneous", value_type+"(s)",
+                             "Extraneous", value_type + "(s)",
                              "will be ommitted."])
         passing_msg = " ".join(["No extraneous", value_type, "found in",
-                                str(given.name)+"."])
+                                str(given.name) + "."])
         self._add_condition(comparison, Passing(passing_msg),
                             Err(fail_msg))
 
@@ -333,13 +374,10 @@ class Validation():
 
         Examples:
             >>> v = Validation()
-            >>> v.all_valid(pd.Series(["a","b"], name="example input"),\
-                               pd.Series(["a","b","c"],\
-                                         name="valid value(s)"), "pre-defined")
-            >>> v.all_valid(pd.Series(["a","b","c"], name="example input"),\
-                               pd.Series(["a","d"],\
-                                         name="valid value(s)"), "'a' or 'd'")
+            >>> v.all_valid(pd.Series(["a","b"], name="example input"),  pd.Series(["a","b","c"],  name="valid value(s)"), "pre-defined")
+            >>> v.all_valid(pd.Series(["a","b","c"], name="example input"),  pd.Series(["a","d"],  name="valid value(s)"), "'a' or 'd'")
             >>> v.report(verbose=4)
+            Validating  . . .
             <BLANKLINE>
              CHECKS PASSED
             [X]          All values in example input are valid.
@@ -359,6 +397,43 @@ class Validation():
                              "These must be", definition, "to be valid."])
         self._add_condition(comparison, Passing(passing_msg),
                             Err(fail_msg))
+
+    def flag_elements(self, flag_where, flag_elements, criteria):
+        """Adds a validation check seeing if any values in flag_where are true,
+        and then reports on the corresponding items in flag_elements.
+
+        Args:
+            flag_where (Pandas Series): a boolean Pandas Series where True
+                represents a failed check
+            flag_elements (Pandas Series): a boolean Pandas Series listing
+                elements that are affected by True values in `flag_where`
+            criteria (String): a brief description of what elements are
+                being flagged and reported on
+
+        Returns:
+            None
+
+        Examples:
+            >>> v = Validation("element test")
+            >>> v.flag_elements(pd.Series([False, False]),  pd.Series(["A", "B"]), "red flag(s)")
+            >>> v.flag_elements(pd.Series([False, True]),  pd.Series(["A", "B"]), "blue flag(s)")
+            >>> v.report(verbose=4)
+            Validating element test . . .
+            <BLANKLINE>
+             CHECKS PASSED
+            [X]          No red flag(s) in element test detected.
+            <BLANKLINE>
+             WARNINGS
+            [?]          1 blue flag(s) in element test detected. These ('B') will be treated as NA.
+        """
+        passing_msg = f"No {criteria} in {self.name} detected."
+        fail_msg = " ".join([str(flag_where.sum()), criteria, "in",
+                             self.name, "detected.",
+                             "These", report_list(flag_elements[flag_where]),
+                             "will be treated as NA."])
+
+        self._add_condition(flag_where, Passing(passing_msg),
+                            Warn(fail_msg))
 
     def flag_rows(self, flag_where, flag_criteria, flag_action="",
                   flag_tier=Warn):
@@ -381,11 +456,10 @@ class Validation():
 
         Examples:
             >>> v = Validation()
-            >>> v.flag_rows(pd.Series([False, False]),\
-                                      flag_criteria="true values")
-            >>> v.flag_rows(pd.Series([False, True]),\
-                                      flag_criteria="true values")
+            >>> v.flag_rows(pd.Series([False, False]),  flag_criteria="true values")
+            >>> v.flag_rows(pd.Series([False, True]),  flag_criteria="true values")
             >>> v.report(verbose=4)
+            Validating  . . .
             <BLANKLINE>
             CHECKS PASSED
             [X]      No true values detected.
@@ -396,7 +470,7 @@ class Validation():
         passing_msg = " ".join(["No", flag_criteria, "detected."])
         fail_msg = " ".join([str(flag_where.sum()), flag_criteria,
                              "detected in row(s)", report_row(
-                                 flag_where)+".",
+                                 flag_where) + ".",
                              flag_action])
 
         self._add_condition(flag_where, Passing(passing_msg),
@@ -440,6 +514,7 @@ class Validation():
             2  C  F
 
             >>> v.report(verbose=4)
+            Validating  . . .
             <BLANKLINE>
              WARNINGS
             [?]      1 lowercase char column A detected in row(s) #1.
@@ -474,17 +549,18 @@ class Validation():
             >>> test_df = pd.DataFrame({"A":["a","B","c"], "B":["D","e",None]})
             >>> v.check_na(test_df)
             >>> v.report(verbose=4)
+            Validating  . . .
             <BLANKLINE>
              CHECKS PASSED
-            [X]      No NA's in column A detected.
+            [X]          No NA's in column A detected.
             <BLANKLINE>
-             ERRORS
-            [!]      1 NA's in column B detected in row(s) #2.
+             WARNINGS
+            [?]          1 NA's in column B detected in row(s) #2.
         """
         self._check_df(df,
                        condition=lambda x: "" if x is None else x,
                        flag_criteria="NA's in",
-                       flag_tier=Err
+                       flag_tier=Warn
                        )
 
     def fix_whitespace(self, df):
@@ -501,25 +577,22 @@ class Validation():
 
         Examples:
             >>> v = Validation()
-            >>> test_df = pd.DataFrame({"A":["a"," B ","Test Data"],\
-                                        "B":["D"," e","F "]})
+            >>> test_df = pd.DataFrame({"A":["a"," B ","Test Data"],  "B":["D"," e","F "]})
             >>> v.fix_whitespace(test_df)
                        A  B
             0          a  D
             1          B  e
             2  Test_Data  F
             >>> v.report(verbose=4)
+            Validating  . . .
             <BLANKLINE>
              CHECKS PASSED
-            [X]      No whitespace in column B detected.
+            [X]          No whitespace in column B detected.
             <BLANKLINE>
              WARNINGS
-            [?]      1 leading/trailing spaces column A detected in row(s)
-            #1. Leading or trailing spaces will be removed.
-            [?]      2 leading/trailing spaces column B detected in row(s)
-            #1, and #2. Leading/trailing spaces will be removed.
-            [?]      1 whitespace in column A detected in row(s) #2. Whitespace
-            will be converted to '_'
+            [?]          1 leading/trailing spaces column A detected in row(s) #1.  Leading/trailing spaces will be removed.
+            [?]          2 leading/trailing spaces column B detected in row(s)  #1, and #2. Leading/trailing spaces will be removed.
+            [?]          1 whitespace in column A detected in row(s) #2.  Whitespace will be converted to '_'
         """
         stripped_df = self._check_df(df.fillna("").astype(str),
                                      str.strip,
@@ -551,14 +624,14 @@ class Validation():
 
         Examples:
             >>> v = Validation()
-            >>> test_df = pd.DataFrame({"A":["a","3.0","c"],\
-                                        "B":["??.test","test<>!",";test_data"]})
+            >>> test_df = pd.DataFrame({"A":["a","3.0","c"],  "B":["??.test","test<>!",";test_data"]})
             >>> v.fix_alnum(test_df)
                A          B
             0  a       test
             1  3.0     test
             2  c  test_data
             >>> v.report(verbose=4)
+            Validating  . . .
             <BLANKLINE>
              CHECKS PASSED
             [X]      No non-alphanumeric value(s) in column A detected.
@@ -570,7 +643,7 @@ class Validation():
 
         """
         return self._check_df(df,
-                              lambda x: re.sub(r"[^a-zA-Z0-9_ -\.]|\.(?!\d)",
+                              lambda x: re.sub(r"[^a-zA-Z0-9_ -\.]|\.(?!\d)|\!",
                                                r"", str(x)),
                               flag_criteria="non-alphanumeric value(s) in",
                               flag_action="This text should be alphanumeric. "
@@ -597,6 +670,7 @@ class Validation():
             1  B  E
             2  C  F
             >>> v.report(verbose=4)
+            Validating  . . .
             <BLANKLINE>
              WARNINGS
             [?]      2 lower case value(s) in  column A detected in row(s) #0,
@@ -634,6 +708,7 @@ class Validation():
             1  b  e
             2  c  f
             >>> v.report(verbose=4)
+            Validating  . . .
             <BLANKLINE>
              WARNINGS
             [?]      1 upper case value(s) in column A detected in row(s) #1.
@@ -688,22 +763,19 @@ class Validation():
             None
 
         Examples:
-            >>> v = Validation()
-            >>> v._add_condition(pd.Series([False, False, False]),\
-                                 Passing("Passed test"), Err("Failed test"))
-            >>> v._add_condition(pd.Series([False, False, False]),\
-                                 Passing("Passed test 2"), Err("Failed test"))
-            >>> v._add_condition(pd.Series([False, False, True]),\
-                                 Passing("Passed test"), Err("Error test"))
-            >>> v._add_condition(pd.Series([False, False, True]),\
-                                 Passing("Passed test"), Warn("Warn test"))
-            >>> v._add_condition(pd.Series([False, False, True]),\
-                                 Passing(""), Suggest("Suggest test"))
+            >>> v = Validation("Testing Tests")
+            >>> v._add_condition(pd.Series([False, False, False]),  Passing("Passed test"), Err("Failed test"))
+            >>> v._add_condition(pd.Series([False, False, False]),  Passing("Passed test 2"), Err("Failed test"))
+            >>> v._add_condition(pd.Series([False, False, True]),  Passing("Passed test"), Err("Error test"))
+            >>> v._add_condition(pd.Series([False, False, True]),  Passing("Passed test"), Warn("Warn test"))
+            >>> v._add_condition(pd.Series([False, False, True]),  Passing(""), Suggest("Suggest test"))
             >>> v.report(verbose=1)
+            Validating Testing Tests . . .
             <BLANKLINE>
              ERRORS
             [!]      Error test
             >>> v.report(verbose=4)
+            Validating Testing Tests . . .
             <BLANKLINE>
              CHECKS PASSED
             [X]      Passed test
@@ -722,6 +794,8 @@ class Validation():
             print("No validation checks made.")
             return
         within_verbose = self.vchecks[self.vchecks["Level"] <= verbose]
+        if not within_verbose.empty:
+            print(f"Validating {self.name} . . .")
         final_reports = within_verbose.groupby("Title")
         for title in final_reports.groups:
             print("\n", title)

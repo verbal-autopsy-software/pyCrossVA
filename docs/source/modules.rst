@@ -6,7 +6,6 @@ CrossVA
 
    configuration
    mappings
-   tests
    transform
    utils
    validation

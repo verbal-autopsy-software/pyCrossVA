@@ -92,15 +92,14 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#command-line">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#currently-supported">Currently Supported</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#inputs">Inputs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#outputs">Outputs</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#roadmap">Roadmap</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#supporting-more-inputs">Supporting more inputs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#expanding-outputs">Expanding outputs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#expanding-user-facing-features">Expanding user-facing features</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#style">Style</a></li>
@@ -205,20 +204,19 @@ the Global Burden of Disease Study 2010.</p>
 <div class="section" id="crossva">
 <h2>CrossVA<a class="headerlink" href="#crossva" title="Permalink to this headline">¶</a></h2>
 <p>CrossVA is a python package for transforming verbal autopsy data collected using
-the 2016 WHO VA instrument (currently, only version 1.5.1) into a format suitable
-for openVA.</p>
+the 2016 WHO VA instrument (v1.5.1, or v1.4.1), 2012 WHO VA instrument, and
+the PHRMC short questionnaire into a format suitable for openVA.</p>
 <p>The flagship function of this package is the transform() function, which
-prepares raw data from a verbal autopsy questionnaire for use in a
-verbal autopsy algorithm. The user can either choose to use a default mapping,
-or create a custom one of their own design. The default mappings are listed in
-<a class="reference internal" href="#currently-supported">Currently Supported</a> and can be invoked by passing in a tuple as the mapping
-argument in <code class="docutils literal"><span class="pre">(input,</span> <span class="pre">output)</span></code> format.</p>
+prepares raw data for use in a verbal autopsy algorithm. The user can either
+choose to use a default mapping, or create a custom one of their own design. The
+default mappings are listed in <a class="reference internal" href="#currently-supported">Currently Supported</a> and can be invoked by
+passing in a tuple as the mapping argument in <code class="docutils literal"><span class="pre">(&quot;input&quot;,</span> <span class="pre">&quot;output&quot;)</span></code> format.</p>
 </div>
 <div class="section" id="project-status">
 <h2>Project Status<a class="headerlink" href="#project-status" title="Permalink to this headline">¶</a></h2>
 <p>This package is a fleshed out prototype of the framework MTIRE is
 proposing for the open source CrossVA project going forward. This is an
-alpha version (as of Jan 7, 2018) intended to demonstrate full concept
+alpha version (as of April 8, 2019) intended to demonstrate full concept
 and flexibility, not for use in research or verbal autopsy evaluations.</p>
 </div>
 </div>
@@ -241,6 +239,13 @@ read in and process the data before calling the function.</p>
 <span class="n">transform</span><span class="p">((</span><span class="s2">&quot;2016WHOv151&quot;</span><span class="p">,</span> <span class="s2">&quot;InterVA4&quot;</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>There are more details available in <a href="#id1"><span class="problematic" id="id2">`transform function`_</span></a></p>
+</div>
+<div class="section" id="command-line">
+<h1>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h1>
+<p><cite>pycrossva</cite> also contains a command line tool that allows users to invoke the main
+transform function on one or more files from the command line, without having
+to use the <cite>Python</cite> interpreter or write a <cite>Python</cite> script.</p>
 </div>
 <div class="section" id="currently-supported">
 <h1>Currently Supported<a class="headerlink" href="#currently-supported" title="Permalink to this headline">¶</a></h1>
@@ -248,37 +253,23 @@ read in and process the data before calling the function.</p>
 <h2>Inputs<a class="headerlink" href="#inputs" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>2016 WHO Questionnaire from ODK export, v1.5.1</li>
+<li>2016 WHO Questionnaire from ODK export, v1.4.1</li>
+<li>2012 WHO Questionnaire from ODK export</li>
+<li>PHRMC Shortened Questionnaire</li>
 </ul>
-<p>2016 WHO documentation can be found
-<a class="reference external" href="https://www.who.int/healthinfo/statistics/verbalautopsystandards/en/">here.</a></p>
 </div>
 <div class="section" id="outputs">
 <h2>Outputs<a class="headerlink" href="#outputs" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>InSillicoVA</li>
-<li>InterVA</li>
+<li>InterVA4</li>
+<li>InterVA5</li>
 </ul>
 </div>
 </div>
 <div class="section" id="roadmap">
 <h1>Roadmap<a class="headerlink" href="#roadmap" title="Permalink to this headline">¶</a></h1>
-<p>This is an alpha version of package functionality, with only limited support.
-Future versions and updates will include expanding inputs and outputs, as well as
-creating more user-facing features.</p>
-<div class="section" id="supporting-more-inputs">
-<h2>Supporting more inputs<a class="headerlink" href="#supporting-more-inputs" title="Permalink to this headline">¶</a></h2>
-<p>One component of moving to a production version will be to offer additional
-mapping files to support more input formats. The package currently supports
-the 2016 WHO v1.5.1 odk export.</p>
-<p>The following is a list of four additional
-inputs already in our sights:</p>
-<ul class="simple">
-<li>PHRMC short</li>
-<li>PHRMC long</li>
-<li>WHO 2012</li>
-<li>WHO 2016 v1.4.1</li>
-</ul>
-</div>
+<p>This is an alpha version of package functionality, with only limited support.</p>
 <div class="section" id="expanding-outputs">
 <h2>Expanding outputs<a class="headerlink" href="#expanding-outputs" title="Permalink to this headline">¶</a></h2>
 <p>One component of moving to a production version will be to offer additional
@@ -289,37 +280,6 @@ additional outputs for other algorithms to be supported in future versions:</p>
 <ul class="simple">
 <li>Tarrif</li>
 <li>Tarrif 2.0</li>
-<li>InterVA5</li>
-</ul>
-</div>
-<div class="section" id="expanding-user-facing-features">
-<h2>Expanding user-facing features<a class="headerlink" href="#expanding-user-facing-features" title="Permalink to this headline">¶</a></h2>
-<p>Some of the user-facing features in this version are sparser than we would like
-for a production-level package. In this vein, we want to prioritize creating
-both good documentation and intuitive features for the user, so that the package
-is easy to understand and use.</p>
-<ul>
-<li><p class="first">Better error messages</p>
-<blockquote>
-<div><p>Adding exception classes to distinguish between mapping, configuration, and
-data errors, so that it will be more immediately obvious to the user what
-the root cause of the error is.</p>
-</div></blockquote>
-</li>
-<li><p class="first">Improving speed</p>
-<blockquote>
-<div><p>Adding additional validation checks has slowed down the algorithm from its
-original proof of concept speed. We believe this can be further improved
-before the package is in a production version.</p>
-</div></blockquote>
-</li>
-<li><p class="first">More - and more detail - in validation checks</p>
-<blockquote>
-<div><p>Being able to convey to the end-user when the data has unexpected properties
-or an incorrect format will be essential to allow the user to understand and
-correct the issue.</p>
-</div></blockquote>
-</li>
 </ul>
 </div>
 </div>

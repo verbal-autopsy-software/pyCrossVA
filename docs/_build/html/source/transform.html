@@ -87,6 +87,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html#command-line">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#currently-supported">Currently Supported</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#roadmap">Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html#style">Style</a></li>
@@ -172,7 +173,7 @@
 for use with a VA algorithm in OpenVA.</p>
 <dl class="function">
 <dt id="transform.transform">
-<code class="descclassname">transform.</code><code class="descname">transform</code><span class="sig-paren">(</span><em>mapping</em>, <em>raw_data</em>, <em>verbose=2</em>, <em>preserve_na=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/transform.html#transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transform" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">transform.</code><code class="descname">transform</code><span class="sig-paren">(</span><em>mapping</em>, <em>raw_data</em>, <em>verbose=2</em>, <em>preserve_na=True</em>, <em>result_values={'Present': 1</em>, <em>'Absent': 0</em>, <em>'NA': nan}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/transform.html#transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>transforms raw VA data (<cite>raw_data</cite>) into data suitable for use with a VA
 algorithm, according to the specified transformations given in <cite>mapping</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -186,15 +187,23 @@ data file, or a Pandas DataFrame containing configuration data</li>
 <li><strong>raw_data</strong> (<em>string</em><em> or </em><em>Pandas DataFrame</em>) – raw verbal autopsy data to
 process</li>
 <li><strong>verbose</strong> (<em>int</em>) – integer from 0 to 5, controlling how much status detail
-is printed to console. Silent if 0. Defaults to 2.</li>
+is printed to console. Silent if 0. Defaults to 2, which will print
+only errors and warnings.</li>
 <li><strong>preserve_na</strong> (<em>bool</em>) – whether to preserve NAs in data, or to count them
 as FALSE. Overridden with True for InsillicoVA, False for InterVA4
-when mapping is given as a tuple.</li>
+when mapping is given as a tuple. Defaults to TRUE, which allows
+NA values to perpetuate through the data.</li>
+<li><strong>result_values</strong> (<em>dict</em>) – available as a simple customization option if
+user would like values indicating presence, absence, and NAs to
+be mapped to certain values.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the raw data transformed according to specifications
-given in mapping data.</p>
+given in mapping data. Default values are 1 where symptom is present,
+0 where symptom is absent, and if NAs are preserved, they are represented
+in the data as NaNs. If NAs are not preserved, they are considered to be
+false / absent / 0.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Pandas DataFrame</p>
@@ -203,43 +212,123 @@ given in mapping data.</p>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
-<p>You can specify the mapping as (input, output) and the path to csv:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span><span class="p">((</span><span class="s2">&quot;2016WHOv151&quot;</span><span class="p">,</span> <span class="s2">&quot;InterVA4&quot;</span><span class="p">),</span> <span class="s2">&quot;resources/sample_data/mock_data_1.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">5</span><span class="p">,:</span><span class="mi">5</span><span class="p">]</span>
-<span class="go">   AB_POSIT  AB_SIZE  ABD_MASS  ABD_PAIN  ABDOM</span>
-<span class="go">0     False     True     False      True  False</span>
-<span class="go">1     False    False      True     False   True</span>
-<span class="go">2     False    False      True     False  False</span>
-<span class="go">3      True    False     False     False  False</span>
-<span class="go">4     False    False     False      True  False</span>
+<p>You can specify the mapping as (‘input’, ‘output’) and the path to csv
+as a string:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span><span class="p">((</span><span class="s2">&quot;2016WHOv151&quot;</span><span class="p">,</span> <span class="s2">&quot;InterVA4&quot;</span><span class="p">),</span> <span class="s2">&quot;resources/sample_data/2016WHO_mock_data_1.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),[</span><span class="s2">&quot;ACUTE&quot;</span><span class="p">,</span><span class="s2">&quot;CHRONIC&quot;</span><span class="p">,</span><span class="s2">&quot;TUBER&quot;</span><span class="p">]]</span>
+<span class="go">   ACUTE  CHRONIC  TUBER</span>
+<span class="go">0    1.0      0.0    0.0</span>
+<span class="go">1    1.0      0.0    0.0</span>
+<span class="go">2    0.0      1.0    0.0</span>
+<span class="go">3    0.0      1.0    0.0</span>
+<span class="go">4    1.0      0.0    0.0</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span><span class="p">((</span><span class="s2">&quot;2016WHOv151&quot;</span><span class="p">,</span> <span class="s2">&quot;InsillicoVA&quot;</span><span class="p">),</span> <span class="s2">&quot;resources/sample_data/mock_data_1.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">5</span><span class="p">,:</span><span class="mi">5</span><span class="p">]</span>
-<span class="go">  AB_POSIT AB_SIZE ABD_MASS ABD_PAIN  ABDOM</span>
-<span class="go">0    False    True    False     True  False</span>
-<span class="go">1      NaN     NaN     True      NaN   True</span>
-<span class="go">2      NaN   False     True    False    NaN</span>
-<span class="go">3     True   False      NaN    False    NaN</span>
-<span class="go">4      NaN     NaN      NaN     True  False</span>
+<p>You can also give the data and mapping as Pandas DataFrames:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_special_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;resources/sample_data/2016WHO_mock_data_1.csv&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_special_mapping</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;resources/mapping_configuration_files/2016WHOv151_to_InsillicoVA.csv&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span><span class="p">(</span><span class="n">my_special_mapping</span><span class="p">,</span> <span class="n">my_special_data</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),[</span><span class="s2">&quot;ACUTE&quot;</span><span class="p">,</span><span class="s2">&quot;CHRONIC&quot;</span><span class="p">,</span><span class="s2">&quot;TUBER&quot;</span><span class="p">]]</span>
+<span class="go">   ACUTE  CHRONIC  TUBER</span>
+<span class="go">0    1.0      0.0    NaN</span>
+<span class="go">1    1.0      0.0    NaN</span>
+<span class="go">2    0.0      1.0    NaN</span>
+<span class="go">3    0.0      1.0    NaN</span>
+<span class="go">4    1.0      0.0    NaN</span>
 </pre></div>
 </div>
-<p>Or you can give the data and mapping as Pandas DataFrames:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_special_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;resources/sample_data/mock_data_1.csv&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_special_mapping</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;resources/mapping_configuration_files/example_config_1.csv&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span><span class="p">(</span><span class="n">my_special_mapping</span><span class="p">,</span> <span class="n">my_special_data</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">5</span><span class="p">,:</span><span class="mi">5</span><span class="p">]</span>
-<span class="go">  AB_POSIT AB_SIZE AC_BRL AC_CONV AC_COUGH</span>
-<span class="go">0    False    True   True   False     True</span>
-<span class="go">1      NaN     NaN   True   False    False</span>
-<span class="go">2      NaN   False   True    True    False</span>
-<span class="go">3     True   False   True   False     True</span>
-<span class="go">4      NaN     NaN   True    True     True</span>
+<p>Note that by default, <cite>preserve_na</cite> is <cite>True</cite> and NA values will be
+left in. If <cite>preserve_na</cite> is <cite>False</cite>, or if the algorithm does not
+preserve NAs, then NA values will be filled in as 0’s, as they are in
+the first InterVA4 example above.</p>
+<p>The user can also pass in a different mapping dictionary for
+result_values to change the values from their defaults of
+0 (False / Absent), 1 (True / Present), and NaN
+(No data / missing), if they need their results in a different format.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span><span class="p">((</span><span class="s2">&quot;2016WHOv151&quot;</span><span class="p">,</span> <span class="s2">&quot;InterVA4&quot;</span><span class="p">),</span> <span class="s2">&quot;resources/sample_data/2016WHO_mock_data_1.csv&quot;</span><span class="p">,</span> <span class="n">result_values</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Absent&quot;</span><span class="p">:</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;Present&quot;</span><span class="p">:</span><span class="s2">&quot;P&quot;</span><span class="p">,</span><span class="s2">&quot;NA&quot;</span><span class="p">:</span><span class="s2">&quot;Missing&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),[</span><span class="s2">&quot;ACUTE&quot;</span><span class="p">,</span><span class="s2">&quot;CHRONIC&quot;</span><span class="p">,</span><span class="s2">&quot;TUBER&quot;</span><span class="p">]]</span>
+<span class="go">  ACUTE CHRONIC    TUBER</span>
+<span class="go">0     P       A  Missing</span>
+<span class="go">1     P       A  Missing</span>
+<span class="go">2     A       P  Missing</span>
+<span class="go">3     A       P  Missing</span>
+<span class="go">4     P       A  Missing</span>
 </pre></div>
 </div>
-<p>However, the mapping-data relationship must be valid.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bad_mapping</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;resources/mapping_configuration_files/example_config_2.csv&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span><span class="p">(</span><span class="n">bad_mapping</span><span class="p">,</span> <span class="n">my_special_data</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">5</span><span class="p">,:</span><span class="mi">5</span><span class="p">]</span>
+<p>The mapping-data relationship is designed to be as flexible as possible,
+while still emphasizing tracebility and alerting the user to data
+integrity issues.</p>
+<p>Not every source column in the mapping needs to be
+represented in the data. If source columns are missing in the source data,
+then those columns will be created and filled with NA values.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span><span class="p">((</span><span class="s2">&quot;2016WHOv151&quot;</span><span class="p">,</span> <span class="s2">&quot;InsillicoVA&quot;</span><span class="p">),</span> <span class="s2">&quot;resources/sample_data/2016WHO_mock_data_2.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),[</span><span class="s2">&quot;ACUTE&quot;</span><span class="p">,</span><span class="s2">&quot;FEMALE&quot;</span><span class="p">,</span><span class="s2">&quot;MARRIED&quot;</span><span class="p">]]</span>
+<span class="go">Validating Mapping-Data Relationship . . .</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]          3 (&#39;-ageInDaysNeonate&#39;, &#39;-Id10019&#39;, and &#39;-Id10059&#39;) expected source column IDs (listed in mapping file) were not found in the input data columns. Their values will be NA.</span>
+<span class="go">[?]          &#39;-Id10019&#39; is missing, which affects the creation of  column(s) &#39;FEMALE&#39;, and &#39;MALE&#39;</span>
+<span class="go">[?]          &#39;-Id10059&#39; is missing, which affects the creation of  column(s) &#39;MARRIED&#39;</span>
+<span class="go">[?]          &#39;-ageInDaysNeonate&#39; is missing, which affects the creation of  column(s) &#39;DIED_D1&#39;, &#39;DIED_D23&#39;, &#39;DIED_D36&#39;, &#39;DIED_W1&#39;, and &#39;NEONATE&#39;</span>
+<span class="go">   ACUTE  FEMALE  MARRIED</span>
+<span class="go">0    1.0     NaN      NaN</span>
+<span class="go">1    1.0     NaN      NaN</span>
+<span class="go">2    1.0     NaN      NaN</span>
+<span class="go">3    1.0     NaN      NaN</span>
+<span class="go">4    1.0     NaN      NaN</span>
+</pre></div>
+</div>
+<p><cite>transform</cite> will also accept mapping configurations with missing values,
+with new columns that are specified but missing source columns.
+These new columns will be created so that the final result has the correct
+expeted columns for the algorithm, but filled with NA values to indicate
+the lack of information. If <cite>preserve_na</cite> is set to <cite>False</cite>, then the NA
+values will also be <cite>False</cite>.</p>
+<p>This situation is common between certain questionnaire sources and algorithms.
+For example, in the mapping between the PHRMC Short questionnaire
+to InterVA5 mapping, there are 107 InterVA5
+variables that are listed in the mapping configuration to be created,
+but have no corresponding question in PHRMC short.</p>
+<p>For example, variables i004a and i004b have no specifications in the
+mapping below. They are still listed under “New Column Name” so
+CrossVA knows that they should be created in the final result, but
+because they have no logic defined, they will be left as their default
+value of NA.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">phrmc_to_interva5</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;resources/mapping_configuration_files/PHRMCShort_to_InterVA5.csv&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">phrmc_to_interva5</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">5</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<span class="go">  New Column Name Source Column ID Relationship Meta: Notes</span>
+<span class="go">0           i004a              NaN          NaN   Not Asked</span>
+<span class="go">1           i004b              NaN          NaN   Not Asked</span>
+<span class="go">2           i019a          gen_5_2           eq         NaN</span>
+<span class="go">3           i019b          gen_5_2           eq         NaN</span>
+<span class="go">4           i022a         gen_5_4h           ge         NaN</span>
+</pre></div>
+</div>
+<p>The <cite>transform</cite> function will warn the user of this behavior.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span><span class="p">(</span><span class="n">phrmc_to_interva5</span><span class="p">,</span> <span class="s2">&quot;resources/sample_data/PHRMC_mock_data_1.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">5</span><span class="p">,:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">Validating Mapping Configuration . . .</span>
+
+<span class="go"> WARNINGS</span>
+<span class="go">[?]      107 new column(s) listed but not defined in Mapping Configuration detected. These (&#39;i004a&#39;, &#39;i004b&#39;, &#39;i059o&#39;, &#39;i082o&#39;, &#39;i087o&#39;, &#39;i091o&#39;, &#39;i092o&#39;, &#39;i093o&#39;, &#39;i094o&#39;, &#39;i095o&#39;, etc) will be treated as NA.</span>
+<span class="go">   i004a  i004b  i019a  i019b  i022a</span>
+<span class="go">0    NaN    NaN    1.0    0.0    0.0</span>
+<span class="go">1    NaN    NaN    0.0    0.0    0.0</span>
+<span class="go">2    NaN    NaN    0.0    0.0    0.0</span>
+<span class="go">3    NaN    NaN    1.0    0.0    0.0</span>
+<span class="go">4    NaN    NaN    0.0    0.0    0.0</span>
+</pre></div>
+</div>
+<p>However, the mapping-data relationship must be valid. For example, if
+the source column IDs are not unique for the input data - that is,
+if multiple columns in the input data contain the same source ID - then
+validation will fail.</p>
+<p>For example, <cite>bad_data</cite> contains columns named <cite>A-Id10004</cite> and <cite>B-Id10004</cite>,
+but the 2016 WHO mapping is looking for just <cite>-Id10004</cite> as a source ID.
+CrossVA cannot tell which column should be used, so validation fails.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bad_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;resources/sample_data/2016WHO_bad_data_1.csv&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span><span class="p">((</span><span class="s2">&quot;2016WHOv151&quot;</span><span class="p">,</span> <span class="s2">&quot;InsillicoVA&quot;</span><span class="p">),</span> <span class="n">bad_data</span><span class="p">)</span>
+<span class="go">Validating Mapping-Data Relationship . . .</span>
+
+<span class="go"> ERRORS</span>
+<span class="go">[!]      1 source column IDs (&#39;-Id10004&#39;) were found multiple times in the input data. Each source column ID should only occur once as part of an input data column name. It should be a unique identifier at the end of an input data column name. Source column IDs are case sensitive. Please revise your mapping configuration or your input data so that this condition is satisfied.</span>
 <span class="gt">Traceback (most recent call last):</span>
-<span class="gr">ValueError</span>: <span class="n">Configuration from mapping file must be valid before</span>
-<span class="go">transform.</span>
+<span class="gr">ValueError</span>: <span class="n">Configuration from mapping file must be valid before transform.</span>
 </pre></div>
 </div>
 </dd></dl>

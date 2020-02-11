@@ -1,0 +1,788 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycrossva.mappings &mdash; CrossVA 1.0a documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> CrossVA
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0a
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html#simple-usage">Simple Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html#command-line">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html#currently-supported">Currently Supported</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html#roadmap">Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html#style">Style</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html#license">License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Custom Mappings</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration Files</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Under the hood</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/transform.html">transform function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/configuration.html">configuration module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/validation.html">validation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/mappings.html">mappings module</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CrossVA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>pycrossva.mappings</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pycrossva.mappings</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Defines MapCondition class and its subclasses, each represent a single condition</span>
+<span class="sd">that uses a relationship to transform raw data into a boolean column while</span>
+<span class="sd">preserving the NA values.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">utils</span> <span class="k">import</span> <span class="n">english_relationship</span>
+
+
+<div class="viewcode-block" id="MapCondition"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.mappings.MapCondition">[docs]</a><span class="k">class</span> <span class="nc">MapCondition</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Abstract class representing a single mapped condition in the mapping</span>
+<span class="sd">    data, which gives instructions to transform the raw input data into the</span>
+<span class="sd">    form needed for a VA instrument. The main configuration class is composed</span>
+<span class="sd">    of these.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        name (str): the name of the new column to be created</span>
+<span class="sd">        relationship (str): the relationship of the input data to the condition</span>
+<span class="sd">            Should be one of &quot;ge&quot; (greater than or equal to), &quot;gt&quot;</span>
+<span class="sd">            (greater than), &quot;le&quot; (less than or equal to), &quot;lt&quot; (less than),</span>
+<span class="sd">            &quot;eq&quot; (equal to), &quot;ne&quot; (not equal to),</span>
+<span class="sd">            &quot;contains&quot; (if string contains) or &quot;between&quot;</span>
+<span class="sd">            (between the two numbers, inclusive).</span>
+<span class="sd">        preq_column (str or None): name of the pre-requisite column if it exists,</span>
+<span class="sd">            or `None` if no pre-requisite</span>
+<span class="sd">        source (str): the name of the column to be checked</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">condition_row</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inits SingleMapCondition instance with a row of a valid mapping file</span>
+<span class="sd">         (or pd.Series or dictionary containing the correct fields)</span>
+<span class="sd">         to be created.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            condition_row (Pandas Series or dict): that contains five key-value</span>
+<span class="sd">                pairs. Required keys are &quot;New Column Name&quot;, &quot;Relationship&quot;,</span>
+<span class="sd">                &quot;Condition&quot;, &quot;Prerequisite&quot;, and &quot;Source Column ID&quot;. This</span>
+<span class="sd">                should come from a valid mapping file with a Configuration</span>
+<span class="sd">                object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO init checks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">condition</span> <span class="o">=</span> <span class="n">condition_row</span><span class="p">[</span><span class="s2">&quot;Condition&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">condition_row</span><span class="p">[</span><span class="s2">&quot;New Column Name&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relationship</span> <span class="o">=</span> <span class="n">condition_row</span><span class="p">[</span><span class="s2">&quot;Relationship&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preq_column</span> <span class="o">=</span> <span class="n">condition_row</span><span class="p">[</span><span class="s2">&quot;Prerequisite&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_name</span> <span class="o">=</span> <span class="n">condition_row</span><span class="p">[</span><span class="s2">&quot;Source Column ID&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="MapCondition.factory"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.mappings.MapCondition.factory">[docs]</a>    <span class="k">def</span> <span class="nf">factory</span><span class="p">(</span><span class="n">relationship</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;static class factory method, which determines which subclass to</span>
+<span class="sd">        return</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            relationship (str): a relationship in (gt, ge, lt, le, ne, eq,</span>
+<span class="sd">                contains, between) that represents a comparison to be</span>
+<span class="sd">                made to the raw data</span>
+<span class="sd">            condition (str or int): the condition being matched. if</span>
+<span class="sd">                relationship is ambiguous, then this determins if condition</span>
+<span class="sd">                is numerical or string. Defaults to empty string.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            MapCondition: returns specific subclass that corresponds to the</span>
+<span class="sd">            correct relationship</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; MapCondition.factory(&quot;ge&quot;)</span>
+<span class="sd">            &lt;class &#39;__main__.NumMapCondition&#39;&gt;</span>
+
+<span class="sd">            &gt;&gt;&gt; MapCondition.factory(&quot;eq&quot;, 0)</span>
+<span class="sd">            &lt;class &#39;__main__.NumMapCondition&#39;&gt;</span>
+
+<span class="sd">            &gt;&gt;&gt; MapCondition.factory(&quot;eq&quot;)</span>
+<span class="sd">            &lt;class &#39;__main__.StrMapCondition&#39;&gt;</span>
+
+<span class="sd">            &gt;&gt;&gt; MapCondition.factory(&quot;contains&quot;)</span>
+<span class="sd">            &lt;class &#39;__main__.ContainsCondition&#39;&gt;</span>
+
+<span class="sd">            &gt;&gt;&gt; MapCondition.factory(&quot;between&quot;)</span>
+<span class="sd">            &lt;class &#39;__main__.BetweenCondition&#39;&gt;</span>
+
+<span class="sd">            &gt;&gt;&gt; MapCondition.factory(&quot;eqq&quot;)</span>
+<span class="sd">            Traceback (most recent call last):</span>
+<span class="sd">            AssertionError: No defined Condition class for eqq type</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">relationship</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;gt&quot;</span><span class="p">,</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span> <span class="s2">&quot;lt&quot;</span><span class="p">,</span> <span class="s2">&quot;le&quot;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">NumMapCondition</span>
+        <span class="k">if</span> <span class="n">relationship</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;ne&quot;</span><span class="p">,</span> <span class="s2">&quot;eq&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">NumMapCondition</span>
+            <span class="k">return</span> <span class="n">StrMapCondition</span>
+        <span class="k">if</span> <span class="n">relationship</span> <span class="o">==</span> <span class="s2">&quot;contains&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ContainsCondition</span>
+        <span class="k">if</span> <span class="n">relationship</span> <span class="o">==</span> <span class="s2">&quot;between&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">BetweenCondition</span>
+        <span class="k">assert</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;No defined Condition class for &quot;</span> <span class="o">+</span> <span class="n">relationship</span> <span class="o">+</span> <span class="s2">&quot; type&quot;</span></div>
+
+<div class="viewcode-block" id="MapCondition.check"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.mappings.MapCondition.check">[docs]</a>    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prepared_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks the condition against dataframe. Do not check NAs, just add</span>
+<span class="sd">        them back afterward.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            prepared_data (Pandas DataFrame): a dataframe containing a created</span>
+<span class="sd">                column with the name specified in self.source_dtype</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Array: returns a boolean array where the condition is met (as float)</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">        &gt;&gt;&gt; test_df = pd.DataFrame({&quot;source_test_str&quot;: [&quot;test condition&quot;,\</span>
+<span class="sd">                                                        &quot;test condition 2&quot;,\</span>
+<span class="sd">                                                        np.nan],\</span>
+<span class="sd">                                    &quot;source_test_num&quot;: [4, 5, np.nan]})</span>
+<span class="sd">        &gt;&gt;&gt; StrMapCondition({&quot;Condition&quot; : &quot;test condition&quot;,\</span>
+<span class="sd">                             &quot;New Column Name&quot; : &quot;test new column name&quot;,\</span>
+<span class="sd">                             &quot;Relationship&quot; : &quot;eq&quot;, &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                             &quot;Source Column ID&quot; : &quot;source_test&quot;}).check(test_df)</span>
+<span class="sd">        array([ 1., 0., nan])</span>
+
+<span class="sd">        &gt;&gt;&gt; NumMapCondition({&quot;Condition&quot; : 4.5,\</span>
+<span class="sd">                            &quot;New Column Name&quot; : &quot;test new column name&quot;,\</span>
+<span class="sd">                            &quot;Relationship&quot; : &quot;ge&quot;,\</span>
+<span class="sd">                            &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                            &quot;Source Column ID&quot; : &quot;source_test&quot;}).check(test_df)</span>
+<span class="sd">        array([ 0., 1., nan])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">eval_col</span> <span class="o">=</span> <span class="n">prepared_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">source_dtype</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">eval_col</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_run_check</span><span class="p">(</span><span class="n">eval_col</span><span class="p">),</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_run_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eval_col</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;internal method to check the condition on a given column with no NAs</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            eval (Pandas Series): a Pandas Series containing data to evaluate</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Pandas Series: returns a bolean series where the condition is met</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; test = pd.Series([&quot;A&quot;,&quot;B&quot;,&quot;C&quot;])</span>
+<span class="sd">            &gt;&gt;&gt; StrMapCondition({&quot;Condition&quot; : &quot;B&quot;,\</span>
+<span class="sd">                                 &quot;New Column Name&quot; : &quot;test new column name&quot;,\</span>
+<span class="sd">                                 &quot;Relationship&quot; : &quot;eq&quot;, &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                                 &quot;Source Column ID&quot; : &quot;source_test&quot;}\</span>
+<span class="sd">                                )._run_check(test)</span>
+<span class="sd">            0    False</span>
+<span class="sd">            1     True</span>
+<span class="sd">            2    False</span>
+<span class="sd">            dtype: bool</span>
+
+<span class="sd">            &gt;&gt;&gt; test = pd.Series([1, 2, 3])</span>
+<span class="sd">            &gt;&gt;&gt; NumMapCondition({&quot;Condition&quot; : 3,\</span>
+<span class="sd">                                &quot;New Column Name&quot; : &quot;test new column name&quot;,\</span>
+<span class="sd">                                &quot;Relationship&quot; : &quot;ge&quot;,\</span>
+<span class="sd">                                &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                                &quot;Source Column ID&quot; : &quot;source_test&quot;}\</span>
+<span class="sd">                                )._run_check(test)</span>
+<span class="sd">            0    False</span>
+<span class="sd">            1    False</span>
+<span class="sd">            2     True</span>
+<span class="sd">            dtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">eval_col</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationship</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MapCondition.check_prereq"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.mappings.MapCondition.check_prereq">[docs]</a>    <span class="k">def</span> <span class="nf">check_prereq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformed_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;checks for pre-req column status; if there is no pre-req, returns</span>
+<span class="sd">        true, else looks up values of pre-req column from transformed_data</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            transformed_data (Pandas DataFrame): the new dataframe</span>
+<span class="sd">                being created, which contains any pre-req columns</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            boolean or boolean pd.series: representing whether pre-req is</span>
+<span class="sd">                satisfied</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; test_df = pd.DataFrame({&quot;preq_one&quot;: np.repeat(True,5),\</span>
+<span class="sd">                                &quot;preq_two&quot;: np.repeat(False, 5)})</span>
+
+<span class="sd">            If there is no pre-req, simply returns True (1) Pandas can</span>
+<span class="sd">            interpret this in boolean indexing.</span>
+
+<span class="sd">            &gt;&gt;&gt; NumMapCondition({&quot;Condition&quot; : 4.5,\</span>
+<span class="sd">                                 &quot;New Column Name&quot; : &quot;test new column name&quot;,\</span>
+<span class="sd">                                 &quot;Relationship&quot; : &quot;ge&quot;,\</span>
+<span class="sd">                                 &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                                 &quot;Source Column ID&quot; : &quot;source_test&quot;}\</span>
+<span class="sd">                                    ).check_prereq(test_df)</span>
+<span class="sd">            1</span>
+
+<span class="sd">            If there is a pre-req, then returns the value of transformed_data</span>
+<span class="sd">            with that column.</span>
+
+<span class="sd">            &gt;&gt;&gt; NumMapCondition({&quot;Condition&quot; : 4.5,\</span>
+<span class="sd">                                 &quot;New Column Name&quot; : &quot;test new column name&quot;,\</span>
+<span class="sd">                                 &quot;Relationship&quot; : &quot;ge&quot;,\</span>
+<span class="sd">                                 &quot;Prerequisite&quot; : &quot;preq_one&quot;,\</span>
+<span class="sd">                                 &quot;Source Column ID&quot; : &quot;source_test&quot;}\</span>
+<span class="sd">                                    ).check_prereq(test_df)</span>
+<span class="sd">            0    True</span>
+<span class="sd">            1    True</span>
+<span class="sd">            2    True</span>
+<span class="sd">            3    True</span>
+<span class="sd">            4    True</span>
+<span class="sd">            Name: preq_one, dtype: bool</span>
+
+<span class="sd">            &gt;&gt;&gt; NumMapCondition({&quot;Condition&quot; : 4.5,\</span>
+<span class="sd">                                 &quot;New Column Name&quot; : &quot;test new column name&quot;,\</span>
+<span class="sd">                                 &quot;Relationship&quot; : &quot;ge&quot;,\</span>
+<span class="sd">                                 &quot;Prerequisite&quot; : &quot;preq_two&quot;,\</span>
+<span class="sd">                                 &quot;Source Column ID&quot; : &quot;source_test&quot;}\</span>
+<span class="sd">                                    ).check_prereq(test_df)</span>
+<span class="sd">            0    False</span>
+<span class="sd">            1    False</span>
+<span class="sd">            2    False</span>
+<span class="sd">            3    False</span>
+<span class="sd">            4    False</span>
+<span class="sd">            Name: preq_two, dtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preq_column</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">preq_column</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">transformed_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">preq_column</span><span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">possible_values</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot; abstract method stub</span>
+<span class="sd">        generate a non-exhaustive list possible values implied by condition &quot;&quot;&quot;</span>
+        <span class="k">return</span>
+
+<div class="viewcode-block" id="MapCondition.prepare_data"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.mappings.MapCondition.prepare_data">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;prepares raw_data by ensuring dtypes are correct for each comparison</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            raw_data (dataframe): a data frame containing raw data, including</span>
+<span class="sd">                the column given in self.source_name.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Pandas Series: the column in `raw_data` named in self.source_name,\</span>
+<span class="sd">                with the attribute self.prep_func applied to it.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">raw_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">source_name</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">prep_func</span><span class="p">(</span><span class="n">raw_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">source_name</span><span class="p">]),</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MapCondition.describe"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.mappings.MapCondition.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; just a wrapper for the __str__ function &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;console representation for class</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">        &gt;&gt;&gt; NumMapCondition({&quot;Condition&quot; : 4,\</span>
+<span class="sd">                             &quot;New Column Name&quot; : &quot;test new name&quot;,\</span>
+<span class="sd">                             &quot;Relationship&quot; : &quot;ge&quot;,\</span>
+<span class="sd">                             &quot;Prerequisite&quot; : &quot;preq_two&quot;,\</span>
+<span class="sd">                             &quot;Source Column ID&quot; : &quot;source_test&quot;})</span>
+<span class="sd">        &lt;NumMapCondition:	 test new name = [column source_test].ge(4.0)&gt;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;&lt;&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot;:</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;[column &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_name</span> <span class="o">+</span> <span class="s2">&quot;].&quot;</span> <span class="o">+</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">relationship</span> <span class="o">+</span> <span class="s2">&quot;(&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;)&gt;&quot;</span>
+                         <span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;str representation</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; print(NumMapCondition({&quot;Condition&quot; : 4,\</span>
+<span class="sd">                                       &quot;New Column Name&quot; : &quot;test new column name&quot;,\</span>
+<span class="sd">                                       &quot;Relationship&quot; : &quot;ge&quot;,\</span>
+<span class="sd">                                       &quot;Prerequisite&quot; : &quot;preq_two&quot;,\</span>
+<span class="sd">                                       &quot;Source Column ID&quot; : &quot;source_test&quot;}))</span>
+<span class="sd">            NumMapCondition: New column test new column name is true where \</span>
+<span class="sd">            input data column source_test is greater than or equal to 4.0 and \</span>
+<span class="sd">            the new column preq_two is true.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">report_as_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;New column&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                          <span class="s2">&quot;is true where input data column&quot;</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="o">.</span><span class="n">source_name</span><span class="p">,</span>
+                          <span class="n">english_relationship</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relationship</span><span class="p">),</span>
+                          <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="p">)]</span>
+        <span class="n">report_as</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">report_as_list</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">preq_column</span> <span class="ow">is</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">report_as</span> <span class="o">+</span> <span class="s2">&quot; and the new column &quot;</span> <span class="o">+</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preq_column</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; is true.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">report_as</span></div>
+
+
+<div class="viewcode-block" id="StrMapCondition"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.mappings.StrMapCondition">[docs]</a><span class="k">class</span> <span class="nc">StrMapCondition</span><span class="p">(</span><span class="n">MapCondition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;class representing a str condition, inherits from MapCondition</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        source_dtype (str): instance attribute, a copy of the instance</span>
+<span class="sd">            attribute self.source_name with &quot;_str&quot; appended,</span>
+<span class="sd">            to represent the expected dtype</span>
+<span class="sd">        prep_func (function): class attribute, a function to apply before</span>
+<span class="sd">            making a string-based comparison. It preserves null values but</span>
+<span class="sd">            changes all else to str.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">condition_row</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inits StrMapCondition</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            condition_row (Pandas Series or dict): see MapCondition&#39;s __init__</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; StrMapCondition({&quot;Condition&quot; : &quot;test cond&quot;,\</span>
+<span class="sd">                         &quot;New Column Name&quot; : &quot;test new name&quot;,\</span>
+<span class="sd">                         &quot;Relationship&quot; : &quot;eq&quot;,\</span>
+<span class="sd">                         &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                         &quot;Source Column ID&quot; : &quot;source_test&quot;}\</span>
+<span class="sd">                        )</span>
+<span class="sd">            &lt;StrMapCondition:	 test new name = [column source_test].eq(test cond)&gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">condition_row</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_name</span> <span class="o">+</span> <span class="s2">&quot;_str&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prep_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StrMapCondition.possible_values"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.mappings.StrMapCondition.possible_values">[docs]</a>    <span class="k">def</span> <span class="nf">possible_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;generate a non-exhaustive list possible values implied by condition</span>
+
+<span class="sd">        Args:   None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: list containing 4 possible values (empty string, NA, None,</span>
+<span class="sd">                and the self.condition attribute) that might be expected by</span>
+<span class="sd">                this condition</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; StrMapCondition({&quot;Condition&quot; : &quot;test condition&quot;,\</span>
+<span class="sd">                                 &quot;New Column Name&quot; : &quot;test new column name&quot;,\</span>
+<span class="sd">                                 &quot;Relationship&quot; : &quot;eq&quot;,\</span>
+<span class="sd">                                 &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                                 &quot;Source Column ID&quot; : &quot;source_test&quot;}\</span>
+<span class="sd">                                ).possible_values()</span>
+<span class="sd">            [&#39;&#39;, nan, None, &#39;test condition&#39;, &#39;yes&#39;, &#39;no&#39;, &#39;dk&#39;, &#39;ref&#39;]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="p">,</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span> <span class="s2">&quot;dk&quot;</span><span class="p">,</span> <span class="s2">&quot;ref&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="NumMapCondition"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.mappings.NumMapCondition">[docs]</a><span class="k">class</span> <span class="nc">NumMapCondition</span><span class="p">(</span><span class="n">MapCondition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;class representing a numerical condition, inherits from MapCondition</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        source_dtype (str): a copy of the instance attribute self.source_name</span>
+<span class="sd">            with &quot;_num&quot; appended, to represent the expected dtype</span>
+<span class="sd">        prep_func (function): class attr, a function to apply before making a</span>
+<span class="sd">            numerical-based comparison. pd.to_numeric() coerces non-number data</span>
+<span class="sd">            to NaN.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">condition_row</span><span class="p">,</span> <span class="n">cast_cond</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inits NumMapCondition</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            condition_row (Pandas Series or dict): see MapCondition&#39;s __init__</span>
+<span class="sd">            cast_cond (bool): Whether to force self.condition attribute to be a</span>
+<span class="sd">                float. Defaults to True.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; NumMapCondition({&quot;Condition&quot; : 3,\</span>
+<span class="sd">                                 &quot;New Column Name&quot; : &quot;test new name&quot;,\</span>
+<span class="sd">                                 &quot;Relationship&quot; : &quot;ge&quot;,\</span>
+<span class="sd">                                 &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                                 &quot;Source Column ID&quot; : &quot;source_test&quot;})</span>
+<span class="sd">            &lt;NumMapCondition:	 test new name = [column source_test].ge(3.0)&gt;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">condition_row</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cast_cond</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">condition</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">condition_row</span><span class="p">[</span><span class="s2">&quot;Condition&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_name</span> <span class="o">+</span> <span class="s2">&quot;_num&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prep_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="NumMapCondition.possible_values"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.mappings.NumMapCondition.possible_values">[docs]</a>    <span class="k">def</span> <span class="nf">possible_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;generate a non-exhaustive list of possible values implied by</span>
+<span class="sd">        condition</span>
+
+<span class="sd">        Args:   None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: list containing range of possible values. If a greater than</span>
+<span class="sd">                relationship, the list will include ints from self.condition</span>
+<span class="sd">                + 1 to self.condition*2. If a less than relationship, it will</span>
+<span class="sd">                include values from 0 to self.condition. If the condition</span>
+<span class="sd">                includes &quot;equal to&quot;, then self.condition will also be included.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; NumMapCondition({&quot;Condition&quot; : 3,\</span>
+<span class="sd">                          &quot;New Column Name&quot; : &quot;test new name&quot;,\</span>
+<span class="sd">                          &quot;Relationship&quot; : &quot;ge&quot;,\</span>
+<span class="sd">                          &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                          &quot;Source Column ID&quot; : &quot;source_test&quot;}).possible_values()</span>
+<span class="sd">            [4.0, 5.0, 3.0]</span>
+<span class="sd">            &gt;&gt;&gt; NumMapCondition({&quot;Condition&quot; : 3,\</span>
+<span class="sd">                          &quot;New Column Name&quot; : &quot;test new name&quot;,\</span>
+<span class="sd">                          &quot;Relationship&quot; : &quot;lt&quot;,\</span>
+<span class="sd">                          &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                          &quot;Source Column ID&quot; : &quot;source_test&quot;}).possible_values()</span>
+<span class="sd">            [0.0, 1.0, 2.0]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationship</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;g&quot;</span><span class="p">:</span>
+            <span class="n">possible</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">condition</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">possible</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">relationship</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;e&quot;</span><span class="p">:</span>
+            <span class="n">possible</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">possible</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">possible</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="ContainsCondition"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.mappings.ContainsCondition">[docs]</a><span class="k">class</span> <span class="nc">ContainsCondition</span><span class="p">(</span><span class="n">StrMapCondition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Subclass of StrMapCondition that overrides ._run_check() method for the</span>
+<span class="sd">    `contains` relationship</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_run_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eval_col</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;overides _run_check condition of abstract MapCondition.</span>
+<span class="sd">        checks condition against input data to see if input data contains</span>
+<span class="sd">        the substring in the self.condition attribute.</span>
+
+
+<span class="sd">        Args:</span>
+<span class="sd">            input_data (Pandas DataFrame): a prepared dataframe from a CrossVA</span>
+<span class="sd">                instance containing a column named self.source_dtype</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            boolean Pandas Series: a Pandas Series that is true where the</span>
+<span class="sd">                column named in self.source_dtype contains the substring in</span>
+<span class="sd">                self.condition</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; test_df = pd.DataFrame({&quot;source_test_1_str&quot;: [&quot;test condition&quot;,\</span>
+<span class="sd">                                                            &quot;test condition 2&quot;],\</span>
+<span class="sd">                                        &quot;source_test_2_str&quot;: [&quot;test test&quot;,\</span>
+<span class="sd">                                                            &quot;test condition&quot;]})</span>
+<span class="sd">            &gt;&gt;&gt; ContainsCondition({&quot;Condition&quot; : &quot;test condition&quot;,\</span>
+<span class="sd">                             &quot;New Column Name&quot; : &quot;test new column name&quot;,\</span>
+<span class="sd">                             &quot;Relationship&quot; : &quot;contains&quot;,\</span>
+<span class="sd">                             &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                             &quot;Source Column ID&quot; : &quot;source_test_1&quot;}).check(test_df)</span>
+<span class="sd">             array([1., 1.])</span>
+
+<span class="sd">            &gt;&gt;&gt; ContainsCondition({&quot;Condition&quot; : &quot;test condition&quot;,\</span>
+<span class="sd">                             &quot;New Column Name&quot; : &quot;test new column name&quot;,\</span>
+<span class="sd">                             &quot;Relationship&quot; : &quot;contains&quot;,\</span>
+<span class="sd">                             &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                             &quot;Source Column ID&quot; : &quot;source_test_2&quot;}).check(test_df)</span>
+<span class="sd">            array([0., 1.])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">eval_col</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BetweenCondition"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.mappings.BetweenCondition">[docs]</a><span class="k">class</span> <span class="nc">BetweenCondition</span><span class="p">(</span><span class="n">NumMapCondition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Subclass of NumMapCondition that overrides __init__ and .check() methods</span>
+<span class="sd">    for the `between` relationship</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        low (float): a float representing the lowest acceptable value (incl)</span>
+<span class="sd">        high (float): a float representing the highest acceptable value (incl)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">condition_row</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inits between condition. Same as NumMapCondition init, but do not</span>
+<span class="sd">        cast condition_row[&quot;condition&quot;] to a float, instead split it at &quot; to &quot;</span>
+<span class="sd">        and convert the first and second elements to floats.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            condition_row (Pandas Series or dict): see MapCondition&#39;s __init__</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; BetweenCondition({&quot;Condition&quot; : &quot;3 to 5&quot;,\</span>
+<span class="sd">                              &quot;New Column Name&quot; : &quot;test new column name&quot;,\</span>
+<span class="sd">                              &quot;Relationship&quot; : &quot;between&quot;,\</span>
+<span class="sd">                              &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                              &quot;Source Column ID&quot; : &quot;source_test_1&quot;})</span>
+<span class="sd">            &lt;BetweenCondition:	 test new column name = [column</span>
+<span class="sd">            source_test_1].between(3 to 5)&gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">condition_row</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">low</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">high</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; to &quot;</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">_run_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eval_col</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;checks condition against input data to see if condition is true.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            input_data (Pandas DataFrame): a prepared dataframe from a CrossVA</span>
+<span class="sd">                instance containing a column named self.source_dtype</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            array: true (1) where the column named in</span>
+<span class="sd">                self.source_dtype has a number between self.low and self.high,</span>
+<span class="sd">                inclusive</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; test_df = pd.DataFrame({&quot;source_test_1_num&quot;: [1,2,3], \</span>
+<span class="sd">                                        &quot;source_test_2_num&quot;: [4,5,6]})</span>
+<span class="sd">            &gt;&gt;&gt; BetweenCondition({&quot;Condition&quot; : &quot;3 to 5&quot;,\</span>
+<span class="sd">                              &quot;New Column Name&quot; : &quot;test new column name&quot;,\</span>
+<span class="sd">                              &quot;Relationship&quot; : &quot;between&quot;,\</span>
+<span class="sd">                              &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                              &quot;Source Column ID&quot; : &quot;source_test_1&quot;}).check(test_df)</span>
+<span class="sd">            array([0., 0., 1.])</span>
+
+<span class="sd">            &gt;&gt;&gt; BetweenCondition({&quot;Condition&quot; : &quot;3 to 5&quot;,\</span>
+<span class="sd">                              &quot;New Column Name&quot; : &quot;test new column name&quot;,\</span>
+<span class="sd">                              &quot;Relationship&quot; : &quot;between&quot;,\</span>
+<span class="sd">                              &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                              &quot;Source Column ID&quot; : &quot;source_test_2&quot;}).check(test_df)</span>
+<span class="sd">            array([1., 1., 0.])</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">eval_col</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">low</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">high</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BetweenCondition.possible_values"><a class="viewcode-back" href="../../source/pycrossva.html#pycrossva.mappings.BetweenCondition.possible_values">[docs]</a>    <span class="k">def</span> <span class="nf">possible_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;generate a non-exhaustive list of possible values implied by the</span>
+<span class="sd">        condition</span>
+
+<span class="sd">        Args:   None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: a list of integers between self.low - 1 and self.high + 2</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; BetweenCondition({&quot;Condition&quot; : &quot;3 to 5&quot;,\</span>
+<span class="sd">                                      &quot;New Column Name&quot; : &quot;test new column name&quot;,\</span>
+<span class="sd">                                      &quot;Relationship&quot; : &quot;between&quot;,\</span>
+<span class="sd">                                      &quot;Prerequisite&quot; : None,\</span>
+<span class="sd">                                      &quot;Source Column ID&quot; : &quot;source_test_2&quot;}\</span>
+<span class="sd">                    ).possible_values()</span>
+<span class="sd">            [2.0, 3.0, 4.0, 5.0, 6.0]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">low</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">high</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">optionflags</span><span class="o">=</span><span class="n">doctest</span><span class="o">.</span><span class="n">NORMALIZE_WHITESPACE</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, MITRE
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../../',
+              VERSION:'1.0a',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

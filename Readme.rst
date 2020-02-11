@@ -122,6 +122,20 @@ Examples:
     2012WHO 'path/to/my/data.csv' data prepared for InterVA4 and written to csv at 'my/current/directory/InterVA4_from_mydata_042319.csv'
 
 
+Running Tests
+-------------
+
+To run unit tests, first make sure all requirements are installed
+
+    pip install -r requirements.txt
+
+Also make sure that pytest is installed
+
+    pip install pytest
+
+Finally, run the tests
+
+    python setup.py install && cd pycrossva && python -m pytest --doctest-modules
 
 Currently Supported
 --------------------

@@ -304,6 +304,7 @@ i355a,,-Id10355,"(Id10355) Was the child the first, second, or later in the birt
 i356o,,-Id10356,(Id10356) Is the mother still alive?,eq,yes,,1521,
 i357o,,-Id10357,"(Id10357) Did the mother die before, during or after the delivery?",eq,during_delivery,,1527,
 i357o,,-Id10357,"(Id10357) Did the mother die before, during or after the delivery?",eq,after_delivery,,1526,
+i358a, Did the child's mother die in the baby's first year of life?,,,,,,
 i360a,,-Id10360,(Id10360) Where was the deceased born?,eq,other_health_facility,,1539,
 i360a,,-Id10360,(Id10360) Where was the deceased born?,eq,hospital,,1538,
 i360b,,-Id10360,(Id10360) Where was the deceased born?,eq,home,,1547,

@@ -302,6 +302,7 @@ i355a," If the child was part of a multiple birth, was it born first?mult fir",-
 i356o, Is the child's mother still alive?moth aliv,-Id10356,(Id10356) Is the mother still alive?,eq,yes,,
 i357o, Did the child's mother die during or shortly after the delivery?moth d del,-Id10357,"(Id10357) Did the mother die before, during or after the delivery?",eq,during_delivery,,
 i357o, Did the child's mother die during or shortly after the delivery?moth d del,-Id10357,"(Id10357) Did the mother die before, during or after the delivery?",eq,after_delivery,,
+i358a, Did the child's mother die in the baby's first year of life?,,,,,,
 i360a, Was the baby born in a health facility or clinic?born fac,-Id10360,(Id10360) Where was the deceased born?,eq,other_health_facility,,
 i360a, Was the baby born in a health facility or clinic?born fac,-Id10360,(Id10360) Where was the deceased born?,eq,hospital,,
 i360b, Was the baby born at home?born home,-Id10360,(Id10360) Where was the deceased born?,eq,home,,

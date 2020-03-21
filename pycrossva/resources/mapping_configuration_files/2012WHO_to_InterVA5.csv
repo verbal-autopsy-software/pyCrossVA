@@ -339,6 +339,7 @@ i355a," If the child was part of a multiple birth, was it born first?mult fir",,
 i356o, Is the child's mother still alive?moth aliv,,,,,,not found in 2012 questionnaire
 i357o, Did the child's mother die during or shortly after the delivery?moth d del,,,,,,Close to (3C200) Did she die within 24 hours after delivery?
 i357o, Was the baby born in a health facility or clinic?born fac,,,,,,Close to (3C200) Did she die within 24 hours after delivery?
+i358a, Did the child's mother die in the baby's first year of life?,,,,,,
 i362o," At birth, was the baby of usual size?bwt norm",,,,,,not found in 2012 questionnaire
 i364o," At birth, was the baby very much smaller than usual, (weighing under 1 kg)?bwt vsmall",,,,,,"Close to (3D190) WAS the baby smaller than NORMAL, WEIGHING under 2.5 KG?"
 i368o," Were there any complications in the late part of the pregnancy (defined as the last 3 months), but before labour?cmp bf lab",,,,,,not found in 2012 questionnaire

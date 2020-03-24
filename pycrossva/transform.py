@@ -134,8 +134,8 @@ def transform(mapping, raw_data, verbose=2, preserve_na=True,
         >>> phrmc_to_interva5 = pd.read_csv('resources/mapping_configuration_files/PHRMCShort_to_InterVA5.csv')
         >>> phrmc_to_interva5.iloc[:5,[0,2,4,-1]]
           New Column Name Source Column ID Relationship Meta: Notes
-        0           i004a              NaN          NaN   Not Asked
-        1           i004b              NaN          NaN   Not Asked
+        0           i004a              NaN          NaN   Not asked
+        1           i004b              NaN          NaN   Not asked
         2           i019a          gen_5_2           eq         NaN
         3           i019b          gen_5_2           eq         NaN
         4           i022a         gen_5_4h           ge         NaN
@@ -146,7 +146,20 @@ def transform(mapping, raw_data, verbose=2, preserve_na=True,
         Validating Mapping Configuration . . .
         <BLANKLINE>
          WARNINGS
-        [?]      107 new column(s) listed but not defined in Mapping Configuration detected. These ('i004a', 'i004b', 'i059o', 'i082o', 'i087o', 'i091o', 'i092o', 'i093o', 'i094o', 'i095o', etc) will be treated as NA.
+        [?] 	 124 new column(s) listed but not defined in Mapping Configuration detected. These ('i004a', 'i004b', 'i059o', 'i082o', 'i087o', 'i091o', 'i092o', 'i093o', 'i094o', 'i095o', etc) will be treated as NA.
+        Validating Mapping-Data Relationship . . .
+        <BLANKLINE>
+         WARNINGS
+        [?] 	 9 (5.7%) expected source column IDs listed in mapping file ('child_6_2', 'child_4_4', 'child_4_20', 'child_4_7a', 'child_4_40', 'child_4_28', 'child_4_30', 'child_1_5a', and 'child_5_1') were not found in the input data columns. Their values will be NA.
+        [?] 	 'child_1_5a' is missing, which affects the creation of  column(s) 'i358a'
+        [?] 	 'child_4_20' is missing, which affects the creation of  column(s) 'i171o'
+        [?] 	 'child_4_28' is missing, which affects the creation of  column(s) 'i208o'
+        [?] 	 'child_4_30' is missing, which affects the creation of  column(s) 'i233o'
+        [?] 	 'child_4_4' is missing, which affects the creation of  column(s) 'i150a'
+        [?] 	 'child_4_40' is missing, which affects the creation of  column(s) 'i200o'
+        [?] 	 'child_4_7a' is missing, which affects the creation of  column(s) 'i183o'
+        [?] 	 'child_5_1' is missing, which affects the creation of  column(s) 'i418o'
+        [?] 	 'child_6_2' is missing, which affects the creation of  column(s) 'i130o'
            i004a  i004b  i019a  i019b  i022a
         0    NaN    NaN    1.0    0.0    0.0
         1    NaN    NaN    0.0    0.0    0.0

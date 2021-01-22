@@ -73,7 +73,7 @@ i127o, Was there any diagnosis by a health professional of HIV/AIDS? dia HIV,Id1
 i128o, Did (s)he have a recent positive test by a health professional for malaria? dia mal+,Id10128,(Id10128) Did (s)he have a recent positive test by a health professional for malaria?,eq,yes,,
 i129o, Did (s)he have a recent negative test by a health professional for malaria? dia mal-,Id10129,(Id10129) Did (s)he have a recent negative test by a health professional for malaria?,eq,yes,,
 i130o, Was there any diagnosis by a health professional of dengue fever? dia deng,Id10130,(Id10130) Was there any diagnosis by a health professional of dengue fever?,eq,yes,,
-i131o,60 )Was there any diagnosis by a health professional of measles? dia meas,Id10131,(Id10131) Was there any diagnosis by a health professional of measles?,eq,yes,,
+i131o, Was there any diagnosis by a health professional of measles? dia meas,Id10131,(Id10131) Was there any diagnosis by a health professional of measles?,eq,yes,,
 i132o, Was there any diagnosis by a health professional of high blood pressure? dia hypt,Id10132,(Id10132) Was there any diagnosis by a health professional of high blood pressure?,eq,yes,,
 i133o, Was there any diagnosis by a health professional of heart disease? dia cvd,Id10133,(Id10133) Was there any diagnosis by a health professional of heart disease?,eq,yes,,
 i134o, Was there any diagnosis by a health professional of diabetes? dia diab,Id10134,(Id10134) Was there any diagnosis by a health professional of diabetes?,eq,yes,,

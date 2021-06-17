@@ -19,7 +19,7 @@ SUPPORTED_OUTPUTS = ["InterVA5", "InterVA4", "InsillicoVA"]
 
 
 def transform(mapping, raw_data, verbose=2, preserve_na=True,
-              result_values={"Present": 1, "Absent": 0, "NA": np.nan}):
+              result_values={"Present": "y", "Absent": "n", "NA": np.nan}):
     """transforms raw VA data (`raw_data`) into data suitable for use with a VA
     algorithm, according to the specified transformations given in `mapping`.
 
@@ -253,7 +253,7 @@ def transform(mapping, raw_data, verbose=2, preserve_na=True,
     # leave alone - the default values are what we actually have, so we don't
     # need to do any mapping if they have not specified an alternative.
 
-    defaults = {"Present": 1, "Absent": 0, "NA": np.nan}
+    defaults = {"Present": "y", "Absent": "n", "NA": np.nan}
     if result_values != defaults:
         actual_mapping = {value: result_values[key] for key,
                           value in defaults.items()}

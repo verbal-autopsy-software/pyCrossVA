@@ -1,5 +1,5 @@
-.. image:: https://travis-ci.org/verbal-autopsy-software/pyCrossVA.svg?branch=master
-    :target: https://travis-ci.org/verbal-autopsy-software/pyCrossVA
+.. image:: https://travis-ci.com/verbal-autopsy-software/pyCrossVA.svg?branch=master
+    :target: https://travis-ci.com/verbal-autopsy-software/pyCrossVA
 
 Background
 ----------

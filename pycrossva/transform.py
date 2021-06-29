@@ -18,7 +18,7 @@ SUPPORTED_INPUTS = ["2016WHOv151", "2016WHOv141", "2012WHO",
 SUPPORTED_OUTPUTS = ["InterVA5", "InterVA4", "InsillicoVA"]
 
 
-def transform(mapping, raw_data, verbose=2, preserve_na=True,
+def transform(mapping, raw_data, raw_data_id=None, verbose=2, preserve_na=True,
               result_values={"Present": "y", "Absent": "n", "NA": np.nan}):
     """transforms raw VA data (`raw_data`) into data suitable for use with a VA
     algorithm, according to the specified transformations given in `mapping`.
@@ -29,6 +29,7 @@ def transform(mapping, raw_data, verbose=2, preserve_na=True,
             data file, or a Pandas DataFrame containing configuration data
         raw_data (string or Pandas DataFrame): raw verbal autopsy data to
             process
+        raw_data_id (string): column name with record ID
         verbose (int): integer from 0 to 5, controlling how much status detail
             is printed to console. Silent if 0. Defaults to 2, which will print
             only errors and warnings.
@@ -258,6 +259,14 @@ def transform(mapping, raw_data, verbose=2, preserve_na=True,
         actual_mapping = {value: result_values[key] for key,
                           value in defaults.items()}
         final_data = final_data.replace(actual_mapping)
+    if not (raw_data_id is None):
+        try:
+            final_data.insert(loc=0,
+                              column='ID', 
+                              value=input_data[raw_data_id])
+        except KeyError:
+            raise ValueError((f"Could not find column named {raw_data_id}"
+                              "in raw_data."))
 
     if preserve_na:
         return final_data

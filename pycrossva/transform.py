@@ -259,14 +259,19 @@ def transform(mapping, raw_data, raw_data_id=None, verbose=2, preserve_na=True,
         actual_mapping = {value: result_values[key] for key,
                           value in defaults.items()}
         final_data = final_data.replace(actual_mapping)
-    if not (raw_data_id is None):
+    if raw_data_id is not None:
         try:
             final_data.insert(loc=0,
-                              column='ID', 
+                              column="ID",
                               value=input_data[raw_data_id])
         except KeyError:
             raise ValueError((f"Could not find column named {raw_data_id}"
                               "in raw_data."))
+    else:
+        final_data.reset_index(inplace=True)
+        final_data.rename(columns={"index": "ID"}, inplace=True)
+        final_data["ID"] = final_data["ID"] + 1
+
 
     if preserve_na:
         return final_data

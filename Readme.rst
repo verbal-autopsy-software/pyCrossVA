@@ -1,3 +1,6 @@
+pyCrossVA
+=========
+
 .. image:: https://badge.fury.io/py/pycrossva.svg
     :target: https://badge.fury.io/py/pycrossva
 .. image:: http://readthedocs.org/projects/pycrossva/badge/
@@ -31,7 +34,7 @@ From `Wikipedia <https://en.wikipedia.org/wiki/Verbal_autopsy>`_:
   the Global Burden of Disease Study 2010.
 
 pyCrossVA
-^^^^^^^^
+^^^^^^^^^
 
 pyCrossVA is a python package for transforming verbal autopsy data collected using
 the 2016 WHO VA instrument (v1.5.1, or v1.4.1), 2012 WHO VA instrument, and

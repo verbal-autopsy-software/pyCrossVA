@@ -223,16 +223,22 @@ class Validation():
             >>> v._add_condition(pd.Series([False, False, False]),  Passing("Passed test"), Err("Failed test"))
             >>> v._add_condition(pd.Series([False, False, True]),  Passing("Passed test"), Err("Failed test"))
             >>> v.vchecks
-              Bullet  Level      Message     Tier          Title
-            0    [X]    4.0  Passed test  Passing  CHECKS PASSED
-            1    [!]    1.0  Failed test    Error         ERRORS
+                 Tier  Bullet  Level          Title      Message
+            0 Passing     [X]      4  CHECKS PASSED  Passed test
+            1   Error     [!]      1         ERRORS  Failed test
         """
         if flagged_series.sum() > 0:
-            self.vchecks = self.vchecks.append(fail_check.expand(),
-                                               ignore_index=True)
+            # self.vchecks = self.vchecks.append(fail_check.expand(),
+            #                                    ignore_index=True)
+            fail_check_expanded = pd.DataFrame(fail_check.expand()).T
+            self.vchecks = pd.concat([self.vchecks, fail_check_expanded],
+                                     ignore_index=True)
         else:
-            self.vchecks = self.vchecks.append(pass_check.expand(),
-                                               ignore_index=True)
+            # self.vchecks = self.vchecks.append(pass_check.expand(),
+            #                                    ignore_index=True)
+            pass_check_expanded = pd.DataFrame(pass_check.expand()).T
+            self.vchecks = pd.concat([self.vchecks, pass_check_expanded],
+                                     ignore_index=True)
 
     def no_duplicates(self, my_series):
         """ adds a validation check as `Err` if any items in my_series are
@@ -272,8 +278,11 @@ class Validation():
         for source, affected_list in missing_grped.iteritems():
             msg = (f"'{source}' is missing, which affects the creation of "
                    f" column(s) {report_list(affected_list, paren=False)}")
-            self.vchecks = self.vchecks.append(Warn(msg).expand(),
-                                               ignore_index=True)
+            # self.vchecks = self.vchecks.append(Warn(msg).expand(),
+            #                                    ignore_index=True)
+            warn_expanded = pd.DataFrame(Warn(msg).expand()).T
+            self.vchecks = pd.concat([self.vchecks, warn_expanded],
+                                     ignore_index=True)
 
     def must_contain(self, given, required, passing_msg="", fail=Err):
         """adds a validation check where `given` must contain every item in

@@ -152,7 +152,7 @@ Inputs
 Outputs
 ^^^^^^^^
 
-* InSillicoVA
+* InSilicoVA
 * InterVA4
 * InterVA5
 
@@ -166,7 +166,7 @@ Expanding outputs
 
 One component of moving to a production version will be to offer additional
 mapping files to support more output formats. The package currently supports
-mapping to the InterVA4 and InsillicoVA format.
+mapping to the InterVA4 and InSilicoVA format.
 
 The following is a list of
 additional outputs for other algorithms to be supported in future versions:

@@ -15,7 +15,7 @@ from pycrossva.utils import flexible_read
 
 SUPPORTED_INPUTS = ["2016WHOv151", "2016WHOv141", "2012WHO",
                     "2021WHO", "PHRMCShort"]
-SUPPORTED_OUTPUTS = ["InterVA5", "InterVA4", "InsillicoVA"]
+SUPPORTED_OUTPUTS = ["InterVA5", "InterVA4", "InSilicoVA"]
 
 
 def transform(mapping, raw_data, raw_data_id=None, verbose=2, preserve_na=True,
@@ -34,7 +34,7 @@ def transform(mapping, raw_data, raw_data_id=None, verbose=2, preserve_na=True,
             is printed to console. Silent if 0. Defaults to 2, which will print
             only errors and warnings.
         preserve_na (bool): whether to preserve NAs in data, or to count them
-            as FALSE. Overridden with True for InsillicoVA, False for InterVA4
+            as FALSE. Overridden with True for InSilicoVA, False for InterVA4
             when mapping is given as a tuple. Defaults to TRUE, which allows
             NA values to perpetuate through the data.
         result_values (dict): available as a simple customization option if
@@ -63,7 +63,7 @@ def transform(mapping, raw_data, raw_data_id=None, verbose=2, preserve_na=True,
         You can also give the data and mapping as Pandas DataFrames:
 
         >>> my_special_data = pd.read_csv("resources/sample_data/2016WHO_mock_data_1.csv")
-        >>> my_special_mapping = pd.read_csv("resources/mapping_configuration_files/2016WHOv151_to_InsillicoVA.csv")
+        >>> my_special_mapping = pd.read_csv("resources/mapping_configuration_files/2016WHOv151_to_InSilicoVA.csv")
         >>> transform(my_special_mapping, my_special_data).loc[range(5),["ACUTE","CHRONIC","TUBER"]]
            ACUTE  CHRONIC  TUBER
         0      y        n      .
@@ -98,7 +98,7 @@ def transform(mapping, raw_data, raw_data_id=None, verbose=2, preserve_na=True,
         represented in the data. If source columns are missing in the source data,
         then those columns will be created and filled with NA values.
 
-        >>> transform(("2016WHOv151", "InsillicoVA"), "resources/sample_data/2016WHO_mock_data_2.csv").loc[range(5),["ACUTE","FEMALE","MARRIED"]]
+        >>> transform(("2016WHOv151", "InSilicoVA"), "resources/sample_data/2016WHO_mock_data_2.csv").loc[range(5),["ACUTE","FEMALE","MARRIED"]]
         Validating Mapping-Data Relationship . . .
         <BLANKLINE>
          WARNINGS
@@ -161,12 +161,12 @@ def transform(mapping, raw_data, raw_data_id=None, verbose=2, preserve_na=True,
         [?] 	 'child_4_7a' is missing, which affects the creation of  column(s) 'i183o'
         [?] 	 'child_5_1' is missing, which affects the creation of  column(s) 'i418o'
         [?] 	 'child_6_2' is missing, which affects the creation of  column(s) 'i130o'
-           i004a  i004b  i019a  i019b  i022a
-        0      .      .      y      n      n
-        1      .      .      n      n      n
-        2      .      .      n      n      n
-        3      .      .      y      n      n
-        4      .      .      n      n      n
+           ID  i004a  i004b  i019a  i019b
+        0   1      .      .      y      n
+        1   2      .      .      n      n
+        2   3      .      .      n      n
+        3   4      .      .      y      n
+        4   5      .      .      n      n
 
         However, the mapping-data relationship must be valid. For example, if
         the source column IDs are not unique for the input data - that is,
@@ -178,7 +178,7 @@ def transform(mapping, raw_data, raw_data_id=None, verbose=2, preserve_na=True,
         CrossVA cannot tell which column should be used, so validation fails.
 
         >>> bad_data = pd.read_csv("resources/sample_data/2016WHO_bad_data_1.csv")
-        >>> transform(("2016WHOv151", "InsillicoVA"), bad_data)
+        >>> transform(("2016WHOv151", "InSilicoVA"), bad_data)
         Validating Mapping-Data Relationship . . .
         <BLANKLINE>
          ERRORS
@@ -194,10 +194,10 @@ def transform(mapping, raw_data, raw_data_id=None, verbose=2, preserve_na=True,
         if len(mapping) == 2:
             if mapping[0] in SUPPORTED_INPUTS:
                 if mapping[1] in SUPPORTED_OUTPUTS:
-                    preserve_na = mapping[1] == "InsillicoVA"  # overides given
+                    preserve_na = mapping[1] == "InSilicoVA"  # overides given
                     if mapping[1] == "InterVA4":
                         # treat as Insillico w/o NA
-                        mapping = (mapping[0], "InsillicoVA")
+                        mapping = (mapping[0], "InSilicoVA")
 
                     expected_filename = (f"{internal_path}"
                                          f"{mapping[0]}_to_"

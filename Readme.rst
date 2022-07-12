@@ -30,10 +30,10 @@ From `Wikipedia <https://en.wikipedia.org/wiki/Verbal_autopsy>`_:
   India, China's national program to document causes of death in rural areas, and
   the Global Burden of Disease Study 2010.
 
-CrossVA
+pyCrossVA
 ^^^^^^^^
 
-CrossVA is a python package for transforming verbal autopsy data collected using
+pyCrossVA is a python package for transforming verbal autopsy data collected using
 the 2016 WHO VA instrument (v1.5.1, or v1.4.1), 2012 WHO VA instrument, and
 the PHRMC short questionnaire into a format suitable for openVA.
 
@@ -46,6 +46,8 @@ passing in a tuple as the mapping argument in ``("input", "output")`` format.
 
 Project Status
 ^^^^^^^^^^^^^^
+pycrossva
+=========
 
 This package is a fleshed out prototype of the framework MTIRE is
 proposing for the open source CrossVA project going forward. This is an

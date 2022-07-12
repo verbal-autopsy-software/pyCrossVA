@@ -1,5 +1,9 @@
-.. image:: https://travis-ci.com/verbal-autopsy-software/pyCrossVA.svg?branch=master
-    :target: https://travis-ci.com/verbal-autopsy-software/pyCrossVA
+.. image:: https://img.shields.io/pypi/pycrossva
+    :target: https://pypi.org/project/pycrossva
+.. image:: http://readthedocs.org/projects/pycrossva/badge/
+    :target: http://pycrossva.readthedocs.io/
+.. image:: https://ci.appveyor.com/api/projects/status/d1b842ik4c95x47h?svg=true
+    :target: https://ci.appveyor.com/project/jarathomas/pycrossva
 
 Background
 ----------

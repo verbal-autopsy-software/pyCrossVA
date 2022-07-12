@@ -19,4 +19,14 @@ setup(name='pycrossva',
       },
       keywords="verbal autopsy data preparation",
       install_requires=['numpy', 'pandas', 'Click'],
-      zip_safe=False)
+      classifiers=[
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.6",
+          "Programming Language :: Python :: 3.7",
+          "Programming Language :: Python :: 3.8",
+          "Programming Language :: Python :: 3.9",
+          "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+          "Operating System :: POSIX :: Linux",
+      ],
+      zip_safe=False,
+)

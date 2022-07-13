@@ -15,8 +15,6 @@ stack: python $PYTHON
 
 install:
 - pip install tox
-- cd /home/appveyor/projects/pycrossva/
-- pip install -r requirements.txt
 
 test_script:
 - tox

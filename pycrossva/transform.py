@@ -265,7 +265,7 @@ def transform(mapping, raw_data, raw_data_id=None, verbose=2, preserve_na=True,
                               column="ID",
                               value=input_data[raw_data_id])
         except KeyError:
-            raise ValueError((f"Could not find column named {raw_data_id}"
+            raise ValueError((f"Could not find column named {raw_data_id} "
                               "in raw_data."))
     else:
         final_data.reset_index(inplace=True)

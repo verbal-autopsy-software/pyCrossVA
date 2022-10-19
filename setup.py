@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 here = os.path.abspath(os.path.dirname(__file__))
 
 setup(name='pycrossva',
-      version='0.90',
+      version='0.91',
       description='prepare data from WHO and PHRMC instruments for verbal autopsy algorithms',
       url='https://github.com/verbal-autopsy-software/pyCrossVA',
       license='GNU General Public License v3.0',

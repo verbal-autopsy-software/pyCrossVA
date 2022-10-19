@@ -1,8 +1,8 @@
 pyCrossVA
 =========
 
-.. image:: https://badge.fury.io/py/pycrossva.svg
-    :target: https://badge.fury.io/py/pycrossva
+.. image:: https://img.shields.io/pypi/pyversions/pycrossva
+    :target: https://pypi.org/project/pycrossva
 .. image:: http://readthedocs.org/projects/pycrossva/badge/
     :target: http://pycrossva.readthedocs.io/
 .. image:: https://ci.appveyor.com/api/projects/status/d1b842ik4c95x47h?svg=true

@@ -17,7 +17,7 @@ i022e, Was s(he) aged 1 to 4 years at death? 1 to 4 (child),age_child_years,[Ent
 i022e, Was s(he) aged 1 to 4 years at death? 1 to 4 (child),ageInYears,Calculated field: int(${ageInDays} div 365.25),between,1 to 4,,
 i022f, Was s(he) aged 1 to 11 months at death? 1-11 months (child or neonate?),age_child_years,[Enter child's age in months:],lt,1,,
 i022f, Was s(he) aged 1 to 11 months at death? 1-11 months (child or neonate?),age_child_months,[Enter child's age in months:],between,1 to 11,,
-i022f, Was s(he) aged 1 to 11 months at death? 1-11 months (child or neonate?),ageInDays,Calculated field: int(${ageInYearsRemain} div 30.4),between,28 to 265,,
+i022f, Was s(he) aged 1 to 11 months at death? 1-11 months (child or neonate?),ageInDays,Calculated field: int(${ageInYearsRemain} div 30.4),between,28 to 365,,
 i022g, Was s(he) aged < 1 month (28 days) at death? 0 - 27 days (neonate),ageInDaysNeonate,"Calculated field: if(${ageInDays} = 'NaN' or string-length(${ageInDays}) = 0, ${age_neonate_days}, ${ageInDays})",le,28,,
 i022h, Was s(he) a live baby who died within 24 hours of birth? day0 iv5Names[12],ageInDaysNeonate,"Calculated field: if(${ageInDays} = 'NaN' or string-length(${ageInDays}) = 0, ${age_neonate_days}, ${ageInDays})",lt,1,,
 i022i, Was s(he) a baby who died between 24 and 48 hours of birth? day1 iv5Names[13],ageInDaysNeonate,"Calculated field: if(${ageInDays} = 'NaN' or string-length(${ageInDays}) = 0, ${age_neonate_days}, ${ageInDays})",between,1 to 2,,

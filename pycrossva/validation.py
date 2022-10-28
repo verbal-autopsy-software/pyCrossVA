@@ -275,7 +275,7 @@ class Validation():
                 None
         """
 
-        for source, affected_list in missing_grped.iteritems():
+        for source, affected_list in missing_grped.items():
             msg = (f"'{source}' is missing, which affects the creation of "
                    f" column(s) {report_list(affected_list, paren=False)}")
             # self.vchecks = self.vchecks.append(Warn(msg).expand(),
@@ -533,7 +533,7 @@ class Validation():
 
         """
         df = df.copy()
-        for name, aseries in df.iteritems():
+        for name, aseries in df.items():
             applied = aseries.apply(condition)
             self.flag_rows(applied.ne(aseries),
                            flag_criteria + " column " + str(name),

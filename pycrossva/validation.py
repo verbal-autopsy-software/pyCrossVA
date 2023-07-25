@@ -831,7 +831,7 @@ def report_row(flag_where):
     """
     flagged = flag_where[flag_where.fillna(False)]
     # if flagged.index.is_numeric():
-    if pd.api.types.is_any_real_numeric_dtype(flagged.index):
+    if pd.api.types.is_numeric_dtype(flagged.index):
         unformatted_report = report_list(flagged.index.tolist(), paren=False)
         return re.sub(r"'(\d+)'", r"#\1", unformatted_report)
     return report_list(flagged.index.tolist(), paren=False)

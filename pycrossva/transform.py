@@ -18,7 +18,8 @@ SUPPORTED_INPUTS = ["2016WHOv151", "2016WHOv141", "2012WHO",
 SUPPORTED_OUTPUTS = ["InterVA5", "InterVA4", "InSilicoVA"]
 
 
-def transform(mapping, raw_data, raw_data_id=None, verbose=2, preserve_na=True,
+def transform(mapping, raw_data, raw_data_id=None, lower=False,
+              verbose=2, preserve_na=True,
               result_values={"Present": "y", "Absent": "n", "NA": "."}):
     """transforms raw VA data (`raw_data`) into data suitable for use with a VA
     algorithm, according to the specified transformations given in `mapping`.
@@ -30,6 +31,8 @@ def transform(mapping, raw_data, raw_data_id=None, verbose=2, preserve_na=True,
         raw_data (string or Pandas DataFrame): raw verbal autopsy data to
             process
         raw_data_id (string): column name with record ID
+        lower (bool): whether the column names in the data should be
+            case-sensitive.
         verbose (int): integer from 0 to 5, controlling how much status detail
             is printed to console. Silent if 0. Defaults to 2, which will print
             only errors and warnings.
@@ -234,6 +237,10 @@ def transform(mapping, raw_data, raw_data_id=None, verbose=2, preserve_na=True,
     config = Configuration(config_data=mapping_data,
                            verbose=verbose,
                            process_strings=False)
+    if lower:
+        config.config_data["Source Column ID"] = config.config_data[
+            "Source Column ID"].str.lower()
+        config.source_columns = config.source_columns.str.lower()
 
     # if the configuration isn't valid, or if the data isn't valid for the
     # config file, then raise error
@@ -244,6 +251,8 @@ def transform(mapping, raw_data, raw_data_id=None, verbose=2, preserve_na=True,
 
     # TODO adds args to init based on data type?
     input_data = flexible_read(raw_data)
+    if lower:
+        input_data.columns = input_data.columns.str.lower()
     cross_va = CrossVA(input_data, config)
     if not cross_va.validate(verbose=verbose):
         return
@@ -261,9 +270,14 @@ def transform(mapping, raw_data, raw_data_id=None, verbose=2, preserve_na=True,
         final_data = final_data.replace(actual_mapping)
     if raw_data_id is not None:
         try:
-            final_data.insert(loc=0,
-                              column="ID",
-                              value=input_data[raw_data_id])
+            if lower:
+                final_data.insert(loc=0,
+                                  column="ID",
+                                  value=input_data[raw_data_id.lower()])
+            else:
+                final_data.insert(loc=0,
+                                  column="ID",
+                                  value=input_data[raw_data_id])
         except KeyError:
             raise ValueError((f"Could not find column named {raw_data_id} "
                               "in raw_data."))

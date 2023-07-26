@@ -250,7 +250,7 @@ def transform(mapping, raw_data, raw_data_id=None, lower=False,
                           "before transform."))
 
     # TODO adds args to init based on data type?
-    input_data = flexible_read(raw_data)
+    input_data = flexible_read(raw_data).copy()
     if lower:
         input_data.columns = input_data.columns.str.lower()
     cross_va = CrossVA(input_data, config)

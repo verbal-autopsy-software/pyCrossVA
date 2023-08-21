@@ -8,15 +8,16 @@ setup(name="pycrossva",
       description="prepare data from WHO and PHRMC instruments for verbal autopsy algorithms",
       url="https://github.com/verbal-autopsy-software/pyCrossVA",
       license="GNU General Public License v3.0",
-      packages=find_packages(),
+      packages=[
+          "pycrossva",
+          "pycrossva.resources.mapping_configuration_files",
+          "pycrossva.resources.sample_data",
+          "pycrossva.scripts",
+      ],
       entry_points='''
                     [console_scripts]
                     pycrossva-transform=pycrossva.scripts.pycrossva_transform:main
                     ''',
-      include_package_data=True,
-      package_data={
-          "pycrossva": ["resources/mapping/*", "resources/sample_data/*"],
-      },
       keywords="verbal autopsy data preparation",
       install_requires=["numpy", "pandas", "Click"],
       classifiers=[
@@ -29,4 +30,4 @@ setup(name="pycrossva",
           "Operating System :: POSIX :: Linux",
       ],
       zip_safe=False,
-)
+      )

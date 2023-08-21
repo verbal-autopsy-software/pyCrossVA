@@ -13,9 +13,8 @@ import numpy as np
 from pycrossva.configuration import Configuration, CrossVA
 from pycrossva.utils import flexible_read
 
-SUPPORTED_INPUTS = ["2016WHOv151", "2016WHOv141", "2012WHO",
-                    "2021WHO", "PHRMCShort"]
-SUPPORTED_OUTPUTS = ["InterVA5", "InterVA4", "InSilicoVA"]
+SUPPORTED_INPUTS = ["2016WHOv151", "2016WHOv141", "2012WHO", "PHRMCShort"]
+SUPPORTED_OUTPUTS = ["InterVA5", "InterVA4", "InSilicoVA", "InSilicoVA_2012"]
 
 
 def transform(mapping, raw_data, raw_data_id=None, lower=False,
@@ -66,7 +65,7 @@ def transform(mapping, raw_data, raw_data_id=None, lower=False,
         You can also give the data and mapping as Pandas DataFrames:
 
         >>> my_special_data = pd.read_csv("resources/sample_data/2016WHO_mock_data_1.csv")
-        >>> my_special_mapping = pd.read_csv("resources/mapping_configuration_files/2016WHOv151_to_InSilicoVA.csv")
+        >>> my_special_mapping = pd.read_csv("resources/mapping_configuration_files/2016WHOv151_to_InterVA4.csv")
         >>> transform(my_special_mapping, my_special_data).loc[range(5),["ACUTE","CHRONIC","TUBER"]]
            ACUTE  CHRONIC  TUBER
         0      y        n      .
@@ -101,7 +100,7 @@ def transform(mapping, raw_data, raw_data_id=None, lower=False,
         represented in the data. If source columns are missing in the source data,
         then those columns will be created and filled with NA values.
 
-        >>> transform(("2016WHOv151", "InSilicoVA"), "resources/sample_data/2016WHO_mock_data_2.csv").loc[range(5),["ACUTE","FEMALE","MARRIED"]]
+        >>> transform(("2016WHOv151", "InterVA4"), "resources/sample_data/2016WHO_mock_data_2.csv").loc[range(5),["ACUTE","FEMALE","MARRIED"]]
         Validating Mapping-Data Relationship . . .
         <BLANKLINE>
          WARNINGS
@@ -181,7 +180,7 @@ def transform(mapping, raw_data, raw_data_id=None, lower=False,
         CrossVA cannot tell which column should be used, so validation fails.
 
         >>> bad_data = pd.read_csv("resources/sample_data/2016WHO_bad_data_1.csv")
-        >>> transform(("2016WHOv151", "InSilicoVA"), bad_data)
+        >>> transform(("2016WHOv151", "InterVA4"), bad_data)
         Validating Mapping-Data Relationship . . .
         <BLANKLINE>
          ERRORS
@@ -197,11 +196,12 @@ def transform(mapping, raw_data, raw_data_id=None, lower=False,
         if len(mapping) == 2:
             if mapping[0] in SUPPORTED_INPUTS:
                 if mapping[1] in SUPPORTED_OUTPUTS:
-                    preserve_na = mapping[1] == "InSilicoVA"  # overides given
-                    if mapping[1] == "InterVA4":
-                        # treat as Insillico w/o NA
-                        mapping = (mapping[0], "InSilicoVA")
-
+                    # preserve_na = mapping[1] == "InSilicoVA"  # overides given
+                    # if mapping[1] == "InterVA4":
+                    #     # treat as Insillico w/o NA
+                    #     mapping = (mapping[0], "InSilicoVA")
+                    preserve_na = mapping[1] in ("InSilicoVA",
+                                                 "InSilicoVA_2012")
                     expected_filename = (f"{internal_path}"
                                          f"{mapping[0]}_to_"
                                          f"{mapping[1]}.csv")

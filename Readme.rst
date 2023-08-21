@@ -20,7 +20,7 @@ data.
 
   from pycrossva.transform import transform
 
-  transform(("2016WHOv151", "InterVA4"), "path/to/data.csv")
+  transform(("2016WHOv151", "InterVA5"), "path/to/data.csv")
 
 You can also call the transform function on a Pandas DataFrame, if you wanted to
 read in and process the data before calling the function.
@@ -31,7 +31,7 @@ read in and process the data before calling the function.
 
   input_data = pd.read_csv("path/to/data.csv")
   input_data = some_special_function(input_data)
-  final_data = transform(("2016WHOv151", "InterVA4"), input_data)
+  final_data = transform(("2016WHOv151", "InterVA5"), input_data)
 
 The transform function returns a Pandas DataFrame object. To write the Pandas DataFrame
 to a csv, you can do:
@@ -114,7 +114,6 @@ Currently Supported
 Inputs
 ^^^^^^^
 
-* 2021 WHO Questionnaire from ODK export
 * 2016 WHO Questionnaire from ODK export, v1.5.1
 * 2016 WHO Questionnaire from ODK export, v1.4.1
 * 2012 WHO Questionnaire from ODK export
@@ -124,6 +123,7 @@ Outputs
 ^^^^^^^^
 
 * InSilicoVA
+* InSilicoVA_2012
 * InterVA4
 * InterVA5
 

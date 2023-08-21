@@ -55,7 +55,7 @@ column is NA, then the result will be NA, instead of a boolean.
   * The first row indicates that where the column 'Id10337' is equal to other in the input data,
     then 'DEL_ELSE' is true in the output data.
 
-  * The first row indicates that where the column 'Id10337' is equal to
+  * The second row indicates that where the column 'Id10337' is equal to
     'on_route_to_hospital_or_facility' in the input data,
     then DEL_ELSE is true in the output data.
 

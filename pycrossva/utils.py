@@ -10,9 +10,10 @@ import os
 import pandas as pd
 import numpy as np
 
+
 def report_list(alist, limit=10, paren=True):
     """Converts alist into a user-friendly string for clearer error messages.
-    Each element is reported single quotes and seperated by commas, with the
+    Each element is reported single quotes and separated by commas, with the
     last element preceded by " and ".
     When limit is shorter than the list, cuts the list at the limit,
     omits the 'and', and ends with 'etc' to indicate incompleteness.
@@ -104,12 +105,15 @@ def flexible_read(path_or_df):
         return_df = pd.DataFrame(path_or_df)
     return return_df
 
+
 def detect_format(output_format, data):
     """Detects the format of the input data, determining the closest match
 
     Args:
-        output_format (string): The output format, needed for loading the configuration files to test each
-        data (Pandas DataFrame): The data being processed where we wish to determine the most likely format
+        output_format (string): The output format, needed for loading the
+        configuration files to test each
+        data (Pandas DataFrame): The data being processed where we wish to
+        determine the most likely format
 
     Returns:
         str: the best matching format for the input data
@@ -120,24 +124,28 @@ def detect_format(output_format, data):
     '2016WHOv141'
     """
 
-    # Go through all of the SUPPORTED_INPUTS and for each determine
+    # Go through all SUPPORTED_INPUTS and for each determine
     # the proportion of inputs that are present in the input data and
     # choose the best match (the one with the highest proportion)
 
     from pycrossva.transform import SUPPORTED_INPUTS
     from pycrossva.configuration import Configuration, CrossVA
 
-    config_file_path = os.path.join(os.path.split(__file__)[0], "resources/mapping_configuration_files/")
+    config_file_path = os.path.join(os.path.split(__file__)[0],
+                                    "resources/mapping_configuration_files/")
 
     proportions = {}
 
     for input_format in SUPPORTED_INPUTS:
-        translation_file = (f"{config_file_path}{input_format}_to_{output_format}.csv")
+        translation_file = (
+            f"{config_file_path}{input_format}_to_{output_format}.csv")
         if os.path.isfile(translation_file):
 
-            # Get a list of the column IDs of the data file that are in the mapping file
+            # Get a list of the column IDs of the data file that are in the
+            # mapping file
             mapping_data = pd.read_csv(translation_file)
-            mapping_config = Configuration(config_data=mapping_data, process_strings=False)
+            mapping_config = Configuration(config_data=mapping_data,
+                                           process_strings=False)
             cross_va = CrossVA(data, mapping_config)
             mapped_data_column_ids = cross_va.data.columns
 
@@ -149,6 +157,7 @@ def detect_format(output_format, data):
 
     # Return the supported input that has the highest proportion
     return max(proportions, key=proportions.get)
+
 
 def english_relationship(rel):
     """Returns abbreviated relationship as full english phrase.

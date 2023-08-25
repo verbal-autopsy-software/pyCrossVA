@@ -106,7 +106,7 @@ Also make sure that pytest is installed
 
 Finally, run the tests
 
-    python setup.py install && cd pycrossva && python -m pytest --doctest-modules
+    pip install . && cd pycrossva && python -m pytest --doctest-modules
 
 Currently Supported
 --------------------

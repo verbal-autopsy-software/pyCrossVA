@@ -13,7 +13,7 @@ import numpy as np
 from pycrossva.configuration import Configuration, CrossVA
 from pycrossva.utils import flexible_read
 
-SUPPORTED_INPUTS = ["2016WHOv151", "2016WHOv141", "2012WHO", "PHRMCShort"]
+SUPPORTED_INPUTS = ["2016WHOv151", "2016WHOv141", "2012WHO", "PHMRCShort"]
 SUPPORTED_OUTPUTS = ["InterVA5", "InterVA4", "InSilicoVA", "InSilicoVA_2012"]
 
 
@@ -123,10 +123,10 @@ def transform(mapping, raw_data, raw_data_id=None, lower=False,
         values will also be `False`.
 
         This situation is common between certain questionnaire sources and algorithms.
-        For example, in the mapping between the PHRMC Short questionnaire
+        For example, in the mapping between the PHMRC Short questionnaire
         to InterVA5 mapping, there are 107 InterVA5
         variables that are listed in the mapping configuration to be created,
-        but have no corresponding question in PHRMC short.
+        but have no corresponding question in PHMRC short.
 
         For example, variables i004a and i004b have no specifications in the
         mapping below. They are still listed under "New Column Name" so
@@ -134,7 +134,7 @@ def transform(mapping, raw_data, raw_data_id=None, lower=False,
         because they have no logic defined, they will be left as their default
         value of NA.
 
-        >>> phrmc_to_interva5 = pd.read_csv('resources/mapping_configuration_files/PHRMCShort_to_InterVA5.csv')
+        >>> phrmc_to_interva5 = pd.read_csv('resources/mapping_configuration_files/PHMRCShort_to_InterVA5.csv')
         >>> phrmc_to_interva5.iloc[:5,[0,2,4,-1]]
           New Column Name Source Column ID Relationship Meta: Notes
         0           i004a              NaN          NaN   Not asked
@@ -145,7 +145,7 @@ def transform(mapping, raw_data, raw_data_id=None, lower=False,
 
         The `transform` function will warn the user of this behavior.
 
-        >>> transform(phrmc_to_interva5, "resources/sample_data/PHRMC_mock_data_1.csv").iloc[:5,:5]
+        >>> transform(phrmc_to_interva5, "resources/sample_data/PHMRC_mock_data_1.csv").iloc[:5,:5]
         Validating Mapping Configuration . . .
         <BLANKLINE>
          WARNINGS

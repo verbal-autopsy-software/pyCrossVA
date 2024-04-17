@@ -16,7 +16,7 @@ class Configuration():
     """ Configuration class details the relationship between a set of input
     data and output data. It is composed of MapConditions that
     transform an input data source (2012 WHO, 2016 WHO 141, 2016 WHO 151,
-    PHRMC SHORT) into a different data form (PHRMC SHORT, InSilicoVA,
+    PHMRC SHORT) into a different data form (PHMRC SHORT, InSilicoVA,
     InterVA4, InterVA5, or Tarrif2) for verbal autopsy.
 
     Attributes:

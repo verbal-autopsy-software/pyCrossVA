@@ -10,6 +10,8 @@ environment:
     PYTHON: "3.10"
   - TOXENV: py311
     PYTHON: "3.11"
+  - TOXENV: py312
+    PYTHON: "3.11"
 
 stack: python $PYTHON
 

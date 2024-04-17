@@ -1,11 +1,13 @@
 pyCrossVA
 =========
 
-.. image:: https://img.shields.io/pypi/pyversions/pycrossva
+|pypi| |docs| |test|
+
+.. |pypi| image:: https://img.shields.io/pypi/pyversions/pycrossva
     :target: https://pypi.org/project/pycrossva
-.. image:: http://readthedocs.org/projects/pycrossva/badge/
+.. |docs| image:: http://readthedocs.org/projects/pycrossva/badge/
     :target: http://pycrossva.readthedocs.io/
-.. image:: https://ci.appveyor.com/api/projects/status/d1b842ik4c95x47h?svg=true
+.. |test| image:: https://ci.appveyor.com/api/projects/status/d1b842ik4c95x47h?svg=true
     :target: https://ci.appveyor.com/project/jarathomas/pycrossva
 
 

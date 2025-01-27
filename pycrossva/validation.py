@@ -13,7 +13,7 @@ from pycrossva.utils import report_list
 
 
 class VCheck(metaclass=ABCMeta):
-    """Abstract class fior a single validation check"""
+    """Abstract class for a single validation check"""
 
     def __init__(self, message):
         """Inits VCheck class
@@ -70,7 +70,7 @@ class VCheck(metaclass=ABCMeta):
     @abstractmethod
     def level(self):
         """abstract property, must be overriden.
-        Should be int ,representing VCheck tier"""
+        Should be int, representing VCheck tier"""
         return
 
     @property
@@ -189,7 +189,7 @@ class Passing(VCheck):
         return "CHECKS PASSED"
 
 
-class Validation():
+class Validation:
     """Validation object represents an organized dataframe of validation checks
 
     Attributes:
@@ -198,7 +198,7 @@ class Validation():
     """
 
     def __init__(self, name=""):
-        """inits Validation class"""
+        """Inits Validation class"""
         self.vchecks = pd.DataFrame()
         self.name = name
 

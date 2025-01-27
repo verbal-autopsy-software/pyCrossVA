@@ -12,7 +12,7 @@ from pycrossva.utils import report_list
 from pycrossva.validation import Validation, Err, Warn
 
 
-class Configuration():
+class Configuration:
     """ Configuration class details the relationship between a set of input
     data and output data. It is composed of MapConditions that
     transform an input data source (2012 WHO, 2016 WHO 141, 2016 WHO 151,
@@ -331,7 +331,7 @@ class Configuration():
                               limit=5))
 
 
-class CrossVA():
+class CrossVA:
     """Class representing raw VA data, and how to map it to an algorithm
 
     Attributes:

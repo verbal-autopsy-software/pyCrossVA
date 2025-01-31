@@ -224,6 +224,10 @@ class Configuration:
         if self.process_strings:
             ws_col.append("Condition")
             lowercase_col.append("Condition")
+        # Future version of pandas will not set item of incompatible dtype
+        # (convert to object to avoid error)
+        na_col = self.config_data.isna().any().index.to_list()
+        self.config_data[na_col] = self.config_data[na_col].astype(object)
         self.config_data.fillna("na", inplace=True)  # fill NAs for str ops
 
         # Remove whitespace
@@ -476,6 +480,10 @@ class CrossVA:
         if self.mapping.process_strings:
             # strip whitespace and replace non-trailing/leading with underscore
             # for str operation convenience
+            # Future version of pandas will not set item of incompatible dtype
+            # (convert to object to avoid error)
+            na_col = self.data.isna().any().index.to_list()
+            self.data[na_col] = self.data[na_col].astype(object)
             self.data.fillna("NA", inplace=True)
             self.data = self.validation.fix_whitespace(self.data)
             # make all characters lowercase

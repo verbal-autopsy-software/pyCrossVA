@@ -402,7 +402,7 @@ class Validation:
         fail_msg = " ".join([str((comparison).sum()), "values in",
                              str(given.name),
                              "were invalid", report_list(
-                                 given[(comparison)]) + ".",
+                given[(comparison)]) + ".",
                              "These must be", definition, "to be valid."])
         self._add_condition(comparison, Passing(passing_msg),
                             Err(fail_msg))
@@ -479,12 +479,35 @@ class Validation:
         passing_msg = " ".join(["No", flag_criteria, "detected."])
         fail_msg = " ".join([str(flag_where.sum()), flag_criteria,
                              "detected in row(s)", report_row(
-                                 flag_where) + ".",
+                flag_where) + ".",
                              flag_action])
 
         self._add_condition(flag_where, Passing(passing_msg),
                             flag_tier(fail_msg))
 
+    """Adds a validation check flagging the rows in every column of `df`
+        that are `None`
+
+        Args:
+            df (Pandas DataFrame): a Pandas DataFrame with columns that should
+                have no NA values
+
+        Returns:
+            None
+
+        Examples:
+            >>> v = Validation()
+            >>> test_df = pd.DataFrame({"A":["a","B","c"], "B":["D","e",None]})
+            >>> v.check_na(test_df)
+            >>> v.report(verbose=4)
+            Validating  . . .
+            <BLANKLINE>
+             CHECKS PASSED
+            [X]          No NA's in column A detected.
+            <BLANKLINE>
+             WARNINGS
+            [?]          1 NA's in column B detected in row(s) #2.
+        """
     def _check_df(self, df, condition, flag_criteria, flag_action="",
                   flag_tier=Warn):
         """Adds a validation check flagging the rows in every column of `df`
@@ -543,29 +566,6 @@ class Validation:
         return df
 
     def check_na(self, df):
-        """Adds a validation check flagging the rows in every column of `df`
-        that are `None`
-
-        Args:
-            df (Pandas DataFrame): a Pandas DataFrame with columns that should
-                have no NA values
-
-        Returns:
-            None
-
-        Examples:
-            >>> v = Validation()
-            >>> test_df = pd.DataFrame({"A":["a","B","c"], "B":["D","e",None]})
-            >>> v.check_na(test_df)
-            >>> v.report(verbose=4)
-            Validating  . . .
-            <BLANKLINE>
-             CHECKS PASSED
-            [X]          No NA's in column A detected.
-            <BLANKLINE>
-             WARNINGS
-            [?]          1 NA's in column B detected in row(s) #2.
-        """
         self._check_df(df,
                        condition=lambda x: "" if x is None else x,
                        flag_criteria="NA's in",
@@ -606,9 +606,9 @@ class Validation:
         stripped_df = self._check_df(df.fillna("").astype(str),
                                      str.strip,
                                      flag_criteria="leading/trailing "
-                                     "spaces",
+                                                   "spaces",
                                      flag_action="Leading/trailing spaces "
-                                     "will be removed.")
+                                                 "will be removed.")
         # pass stripped_df to check_df with a regex expression to replace
         # remaining whitespace with underscores, except for the " to "
         # construction
@@ -656,7 +656,7 @@ class Validation:
                                                r"", str(x)),
                               flag_criteria="non-alphanumeric value(s) in",
                               flag_action="This text should be alphanumeric. "
-                              "Non-alphanumeric characters will be removed."
+                                          "Non-alphanumeric characters will be removed."
                               )
 
     def fix_lowcase(self, df):
@@ -694,8 +694,8 @@ class Validation:
                               lambda x: x.upper(),
                               flag_criteria="lower case value(s) in ",
                               flag_action="Convention to have this text be "
-                              "uppercase. Lower case text will be made "
-                              "uppercase.")
+                                          "uppercase. Lower case text will be made "
+                                          "uppercase.")
 
     def fix_upcase(self, df):
         """Adds a validation check flagging the rows in every column of `df`
@@ -731,8 +731,8 @@ class Validation:
                               lambda x: x.lower(),
                               flag_criteria="upper case value(s) in",
                               flag_action="Convention is to have this text be "
-                              "lowercase. Upper case text will be made"
-                              " lowercase.")
+                                          "lowercase. Upper case text will be made"
+                                          " lowercase.")
 
     def is_valid(self):
         """Checks to see if instance is valid.
@@ -757,7 +757,7 @@ class Validation:
         """
         if self.vchecks.empty:
             return False
-        return (self.vchecks["Tier"] == "Error").sum() == 0
+        return bool( (self.vchecks["Tier"] == "Error").sum() == 0 )
 
     def report(self, verbose=2):
         """Prints the checks in the vchecks attribute

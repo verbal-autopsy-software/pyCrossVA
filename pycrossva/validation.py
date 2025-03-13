@@ -253,20 +253,22 @@ class Validation:
         comparison = my_series.duplicated()
         passing_msg = ("Source column IDs do not match more than one column in"
                        " input data.")
-        fail_msg = (f"{comparison.sum()} source column IDs {report_list(my_series[comparison])}"
+        fail_msg = (f"{comparison.sum()} source column IDs"
+                    f" {report_list(my_series[comparison])}"
                     " were found multiple times in the input data. Each source"
-                    " column ID should only occur once as part of an input data"
-                    " column name. It should be a unique identifier at"
+                    " column ID should only occur once as part of an input"
+                    " data column name. It should be a unique identifier at"
                     " the end of an input data column name. Source column IDs"
-                    " are case sensitive. Please revise your mapping configuration"
-                    " or your input data so that this condition is satisfied.")
+                    " are case sensitive. Please revise your mapping "
+                    " configuration or your input data so that this condition"
+                    "is satisfied.")
         self._add_condition(my_series.duplicated(), Passing(passing_msg),
                             Err(fail_msg))
 
     def affected_by_absence(self, missing_grped):
-        """ adds a validation check as `Warn` describing the items in missing_grped,
-        which detail the impact that missing columns have on newly created
-        mappings.
+        """ adds a validation check as `Warn` describing the items in
+        missing_grped, which detail the impact that missing columns have on
+        newly created mappings.
             missing_grped (Pandas Series): series where the index is the name
                 of the missing source column, and the values are a list of
                 affected values.
@@ -657,7 +659,8 @@ class Validation:
                                                r"", str(x)),
                               flag_criteria="non-alphanumeric value(s) in",
                               flag_action="This text should be alphanumeric. "
-                                          "Non-alphanumeric characters will be removed."
+                                          "Non-alphanumeric characters will "
+                                          "be removed."
                               )
 
     def fix_lowcase(self, df):

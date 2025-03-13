@@ -17,7 +17,7 @@ class Configuration:
     data and output data. It is composed of MapConditions that
     transform an input data source (2012 WHO, 2016 WHO 141, 2016 WHO 151,
     PHMRC SHORT) into a different data form (PHMRC SHORT, InSilicoVA,
-    InterVA4, InterVA5, or Tarrif2) for verbal autopsy.
+    InterVA4, InterVA5, or Tariff2) for verbal autopsy.
 
     Attributes:
         given_columns (Pandas Series): columns of mapping dataframe.
@@ -48,7 +48,8 @@ class Configuration:
                                   'Source Column ID',
                                   'Source Column Documentation',
                                   'Relationship',
-                                  'Condition', 'Prerequisite',
+                                  'Condition',
+                                  'Prerequisite',
                                   ],
                                  name="expected columns")
 
@@ -227,7 +228,7 @@ class Configuration:
         # Future version of pandas will not set item of incompatible dtype
         # (convert to object to avoid error)
         na_col = self.config_data.isna().any().index.to_list()
-        self.config_data[na_col] = self.config_data[na_col].astype(object)
+        self.config_data.loc[:, na_col] = self.config_data[na_col].astype(object)
         self.config_data.fillna("na", inplace=True)  # fill NAs for str ops
 
         # Remove whitespace
@@ -254,7 +255,9 @@ class Configuration:
         # Check and note if there are missing sources/conditions/rel
         # ie if we expect any of these sources to be absent
         defined_no_source = (np.all(self.config_data[["Source Column ID",
-                                                      "Relationship", "Condition"]].isnull(), axis=1)
+                                                      "Relationship",
+                                                      "Condition"]].isnull(),
+                                    axis=1)
                              & self.config_data["New Column Name"].notnull())
 
         self.validation.flag_elements(
@@ -351,7 +354,7 @@ class CrossVA:
             is silent.
     """
 
-    def __init__(self, raw_data, mapping_config, na_values=["dk", "ref", ""],
+    def __init__(self, raw_data, mapping_config, na_values=("dk", "ref", ""),
                  verbose=2):
         """Inits CrossVA class
 
@@ -423,9 +426,9 @@ class CrossVA:
                                   " CrossVA instance"))
 
         # Create empty dataframe with the list of columns given in mapping
-        # If the new columns listed in the mapping have no definition (ie source,
-        # relationship, and condition) then they will keep their default value
-        # as NA.
+        # If the new columns listed in the mapping have no definition (ie
+        # source, relationship, and condition) then they will keep their
+        # default value as NA.
         transformed_data = pd.DataFrame(index=np.arange(len(self.data)),
                                         columns=self.mapping.new_columns,
                                         dtype=float)
@@ -483,7 +486,7 @@ class CrossVA:
             # Future version of pandas will not set item of incompatible dtype
             # (convert to object to avoid error)
             na_col = self.data.isna().any().index.to_list()
-            self.data[na_col] = self.data[na_col].astype(object)
+            self.data.loc[:, na_col] = self.data[na_col].astype(object)
             self.data.fillna("NA", inplace=True)
             self.data = self.validation.fix_whitespace(self.data)
             # make all characters lowercase

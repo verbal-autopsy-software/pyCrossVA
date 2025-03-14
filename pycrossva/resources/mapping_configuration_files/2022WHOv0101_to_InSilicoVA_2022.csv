@@ -253,7 +253,7 @@ i262a,Did (s)he have difficulty or pain swallowing for at least one week? swa 1+
 i262c,Did swallowing become impossible? imp swa,Id10262_c,(Id10262_c) Did swallowing become impossible?,eq,yes,,
 i265o,Did (s)he have yellow discoloration of the eyes? yellow eyes,Id10265,(Id10265) Did (s)he have yellow discoloration of the eyes?,eq,yes,,
 i266a,Did (s)he have the yellow discolouration for less than 2 weeks? yell 2+w,Id10266,"(Id10266) For how many days did (s)he have the yellow discoloration? Calculation: if(${Id10266_units}='days', ${Id10266_a},${Id10266_b}*30)",le,14,,
-i266b,Did (s)he have the yellow discolouration for at least 2 weeks but less than 6 months? yell 2w+ < 6m,Id10266,"(Id10266) For how many days did (s)he have the yellow discoloration? Calculation: if(${Id10266_units}='days', ${Id10266_a},${Id10266_b}*30)",between,14 to179,,
+i266b,Did (s)he have the yellow discolouration for at least 2 weeks but less than 6 months? yell 2w+ < 6m,Id10266,"(Id10266) For how many days did (s)he have the yellow discoloration? Calculation: if(${Id10266_units}='days', ${Id10266_a},${Id10266_b}*30)",between,14 to 179,,
 i266c,Did (s)he have the yellow discolouration for at least 6 months? yell 6+m,Id10266,"(Id10266) For how many days did (s)he have the yellow discoloration? Calculation: if(${Id10266_units}='days', ${Id10266_a},${Id10266_b}*30)",ge,180,,
 i267o,Did her/his hair change in color to a reddish or yellowish color? hair,Id10267,(Id10267) Did her/his hair change in color to a reddish or yellowish color?,eq,yes,,
 i268o,"Did (s)he look pale or have pale palms, eyes or nail beds? pale",Id10268,"(Id10268)  Did (s)he look pale or have pale palms, eyes or nail beds?",eq,yes,,

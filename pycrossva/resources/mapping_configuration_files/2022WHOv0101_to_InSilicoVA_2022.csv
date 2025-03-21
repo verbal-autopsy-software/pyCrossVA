@@ -1,4 +1,4 @@
-New Column Name,New Column Documentation,Source Column ID,Source Column Documentation,Relationship,Condition,Prerequisite,Meta: Notes
+New Column Name,New Column Documentation,Source Column ID,Source Column Documentation,Relationship,Condition,Prerequisite,Temporary
 i004a,Did (s)he die during the wet season? d wet,Id10004,(Id10004) [During which season did (s)he die?],eq,wet,,
 i004b,Did (s)he die during the dry season? d dry,Id10004,(Id10004) [During which season did (s)he die?],eq,dry,,
 i019a,Was he male? male,Id10019,(Id10019) What was the sex of the deceased?,eq,male,,
@@ -356,10 +356,16 @@ i405o,Was the umbilical cord delivered first?,Id10405,(Id10405) Was the umbilica
 i406o,Was the baby blue in colour at birth?,Id10406,(Id10406) Was the baby blue in colour at birth?,eq,yes,,
 i411o,Did (s)he drink alcohol?,Id10411,(Id10411) Did (s)he drink alcohol?,eq,yes,,
 i413o,Did s/he ever smoke tobacco?,Id10413,(Id10413) Did s/he ever smoke tobacco?,eq,yes,,
-i413a,Did s(h)e smoke tobacco for at least 3 months?,Id10413_d,,eq,yes,,
+i413months,(Id10413_a) For how long did s/he smoke tobacco? ,Id10413_a,(Id10413_a) For how long did s/he smoke tobacco? ,eq,months,,1
+i413d,How many (months/years),Id10413_d,(Id10413_d) How many (months/years),ge,3,i413months,
+i413years,(Id10413_a) For how long did s/he smoke tobacco? ,Id10413_a,(Id10413_a) For how long did s/he smoke tobacco? ,eq,years,,1
+i413d,How many (months/years),Id10413_d,(Id10413_d) How many (months/years),ge,1,i413years,
 i413b,Did s/he ever smoke daily?,Id10413_b,(Id10413_b) Did s/he ever smoke daily?,eq,yes,,
 i414o,Did s/he ever chew and/or sniff tobacco?,Id10414,(Id10414) Did s/he ever chew and/or sniff tobacco?,eq,yes,,
-i414a,Did s(h)e chew and/or sniff tobacco for at least 3 months?,Id10414_d,,eq,yes,,
+i414months,Did s(h)e chew and/or sniff tobacco for at least 3 months?,Id10414_a,(Id10414_a) For how long did s/he chew and/or sniff  tobacco? ,eq,months,,1
+i414d,How many (months/years),Id10414_d,(Id10414_d) How many (months/years),ge,3,i414months,
+i414years,Did s(h)e chew and/or sniff tobacco for at least 3 months?,Id10414_a,(Id10414_a) For how long did s/he chew and/or sniff  tobacco? ,eq,years,,1
+i414d,How many (months/years),Id10414_d,(Id10414_d) How many (months/years),ge,1,i414years,
 i414b,Did s/he ever chew and/or sniff tobacco daily?,Id10414_b,(Id10414_b) Did s/he ever chew and/or sniff tobacco daily?,eq,yes,,
 i418o,Did (s)he receive any treatment for the illness that led to death?,Id10418,(Id10418) Did (s)he receive any treatment for the illness that led to death?,eq,yes,,
 i419o,Did (s)he receive oral rehydration salts?,Id10419,(Id10419) Did (s)he receive oral rehydration salts?,eq,yes,,

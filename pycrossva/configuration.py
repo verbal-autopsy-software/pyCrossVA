@@ -103,6 +103,9 @@ class Configuration:
                                       "New Column Name column")
         self.source_columns = plain_info(config_data["Source Column ID"],
                                          "Source Column ID column")
+        if "Temporary" in config_data.columns:
+            self.temporary = config_data.loc[config_data.Temporary == 1,
+                                             "New Column Name"]
         self.verbose = verbose
         self.validation = Validation("Mapping Configuration")
 
@@ -136,11 +139,13 @@ class Configuration:
              <NumMapCondition:     AC_COUGH = [column Id10154].lt(21.0)>]
 
         """
-        self.config_data["Standalone"] = self.config_data["Prerequisite"].isnull()
+        self.config_data["Standalone"] = self.config_data[
+            "Prerequisite"].isnull()
         # Sort first so that columns w/o prereqs are processed first
-        return [MapCondition.factory(row["Relationship"], row["Condition"])(row)
-                for i, row in self.config_data.sort_values("Standalone",
-                                                           ascending=False).iterrows()]
+        return [
+            MapCondition.factory(row["Relationship"], row["Condition"])(row)
+            for i, row in self.config_data.sort_values("Standalone",
+                                                       ascending=False).iterrows()]
 
     def validate(self, verbose=None):
         """Prepares and validates the Configuration object's mapping conditions.
@@ -228,7 +233,8 @@ class Configuration:
         # Future version of pandas will not set item of incompatible dtype
         # (convert to object to avoid error)
         na_col = self.config_data.isna().any().index.to_list()
-        self.config_data.loc[:, na_col] = self.config_data[na_col].astype(object)
+        self.config_data.loc[:, na_col] = self.config_data[na_col].astype(
+            object)
         self.config_data.fillna("na", inplace=True)  # fill NAs for str ops
 
         # Remove whitespace
@@ -281,11 +287,11 @@ class Configuration:
         # check for non-number conditions with numerical relationships
         invalid_num = (self.config_data["Relationship"].isin(
             ["gt", "ge", "le", "lt"]) &
-            (pd.to_numeric(self.config_data["Condition"],
-                           errors="coerce").isnull()))
+                       (pd.to_numeric(self.config_data["Condition"],
+                                      errors="coerce").isnull()))
         self.validation.flag_rows(invalid_num,
                                   flag_criteria="row(s) containing a numerical"
-                                  + " relationship with non-number condition",
+                                                + " relationship with non-number condition",
                                   flag_tier=Err)
 
         # check all prerequisite columns are also defined in configuration
@@ -455,6 +461,10 @@ class CrossVA:
                 transformed_data[condition.name].add(new_val,
                                                      fill_value=0))
 
+        if hasattr(self.mapping, "temporary"):
+            transformed_data = transformed_data.drop(self.mapping.temporary,
+                                                     axis=1)
+
         return transformed_data
 
     def validate(self, verbose=None):
@@ -500,7 +510,7 @@ class CrossVA:
         self.validation.must_contain(self.data.columns.rename(
             "the input data columns"),
             self.mapping.source_columns.rename(
-            "expected source column IDs listed in mapping file"),
+                "expected source column IDs listed in mapping file"),
             passing_msg=col_msg,
             fail=Warn)
 
@@ -529,8 +539,7 @@ class CrossVA:
                 dict_of_cols[mapping_condition.source_dtype] = \
                     mapping_condition.prepare_data(self.data)
             self.prepared_data = pd.concat([self.prepared_data,
-                                            pd.DataFrame(
-                                                dict_of_cols)],
+                                            pd.DataFrame(dict_of_cols)],
                                            axis=1)
 
         self.validation.report(verbose)
@@ -539,4 +548,5 @@ class CrossVA:
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod(optionflags=doctest.NORMALIZE_WHITESPACE)

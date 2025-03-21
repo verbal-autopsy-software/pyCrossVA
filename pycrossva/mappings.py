@@ -214,7 +214,8 @@ class MapCondition(ABC):
                 the column given in self.source_name.
 
         Returns:
-            Pandas Series: the column in `raw_data` named in self.source_name,  with the attribute self.prep_func applied to it.
+            Pandas Series: the column in `raw_data` named in self.source_name,
+            with the attribute self.prep_func applied to it.
 
         """
         return np.where(raw_data[self.source_name].notnull(),

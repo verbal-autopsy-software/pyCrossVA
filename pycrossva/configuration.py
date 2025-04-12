@@ -360,7 +360,8 @@ class CrossVA:
             is silent.
     """
 
-    def __init__(self, raw_data, mapping_config, na_values=("dk", "ref", ""),
+    def __init__(self, raw_data, mapping_config,
+                 na_values=("dk", "ref", "", "DK", "Ref"),
                  verbose=2):
         """Inits CrossVA class
 

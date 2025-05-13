@@ -1,14 +1,14 @@
 pyCrossVA
 =========
 
-|pypi| |docs| |test|
+..  |pypi| |docs| |test|
 
-.. |pypi| image:: https://img.shields.io/pypi/pyversions/pycrossva
-    :target: https://pypi.org/project/pycrossva
-.. |docs| image:: http://readthedocs.org/projects/pycrossva/badge/
-    :target: http://pycrossva.readthedocs.io/
-.. |test| image:: https://ci.appveyor.com/api/projects/status/d1b842ik4c95x47h?svg=true
-    :target: https://ci.appveyor.com/project/jarathomas/pycrossva
+  .. |pypi| image:: https://img.shields.io/pypi/pyversions/pycrossva
+      :target: https://pypi.org/project/pycrossva
+  .. |docs| image:: http://readthedocs.org/projects/pycrossva/badge/
+      :target: http://pycrossva.readthedocs.io/
+  .. |test| image:: https://ci.appveyor.com/api/projects/status/d1b842ik4c95x47h?svg=true
+      :target: https://ci.appveyor.com/project/jarathomas/pycrossva
 
 
 Simple Usage - Python

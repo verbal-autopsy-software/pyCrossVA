@@ -23,6 +23,9 @@ data.
   from pycrossva.transform import transform
 
   transform(("2016WHOv151", "InterVA5"), "path/to/data.csv")
+  # for the 2022 WHO VA instrument & pre-release test version of InSilicoVA_2022
+  # (algorithm has not been tested or validated; use InSilicoVA_2022 at your own risk)
+  transform(("2022WHOv0101", "InSilicoVA_2022"), "path/to/data.csv")
 
 You can also call the transform function on a Pandas DataFrame, if you wanted to
 read in and process the data before calling the function.
@@ -43,8 +46,9 @@ to a csv, you can do:
   final_data.to_csv("filename.csv")
 
 pyCrossVA is a python package for transforming verbal autopsy data collected using
-the 2016 WHO VA instrument (v1.5.1, or v1.4.1), 2012 WHO VA instrument, and
-the PHRMC short questionnaire into a format suitable for openVA.
+the 2022 WHO VA instrument (v01.01), the 2016 WHO VA instrument (v1.5.1, or v1.4.1),
+2012 WHO VA instrument, and the PHRMC short questionnaire into a format suitable for
+openVA.
 
 The flagship function of this package is the transform() function, which
 prepares raw data for use in a verbal autopsy algorithm. The user can either
@@ -110,13 +114,14 @@ Finally, run the tests
 
     pip install . && cd pycrossva && python -m pytest --doctest-modules
 
+
 Currently Supported
 --------------------
 
 Inputs
 ^^^^^^^
 
-* 2022 WHO Questionnaire from ODK export, v1.1
+* 2022 WHO Questionnaire from ODK export, v1.1 (only for pre-release test version of InSilicoVA_2022)
 * 2016 WHO Questionnaire from ODK export, v1.5.1
 * 2016 WHO Questionnaire from ODK export, v1.4.1
 * 2012 WHO Questionnaire from ODK export
@@ -125,10 +130,13 @@ Inputs
 Outputs
 ^^^^^^^^
 
+* InSilicoVA_2022: pre-release test version 
+  + this algorithm has not been tested or validated; use at your own risk (see `InSilicoVA2022 <https://github.com/verbal-autopsy-software/InSilicoVA2022>`_)
 * InSilicoVA
 * InSilicoVA_2012
 * InterVA4
 * InterVA5
+
 
 Roadmap
 -------
@@ -148,11 +156,13 @@ additional outputs for other algorithms to be supported in future versions:
 * Tariff
 * Tariff 2.0
 
+
 Style
 -----
 
 This package was written using google style guide for Python and PEP8 standards.
 Tests have been written using doctest.
+
 
 Background
 ----------

@@ -23,7 +23,7 @@ data.
   from pycrossva.transform import transform
 
   transform(("2016WHOv151", "InterVA5"), "path/to/data.csv")
-  # for the 2022 WHO VA instrument & pre-release test version of InSilicoVA_2022
+  # use the following code for the 2022 WHO VA instrument & pre-release test version of InSilicoVA_2022
   # (algorithm has not been tested or validated; use InSilicoVA_2022 at your own risk)
   transform(("2022WHOv0101", "InSilicoVA_2022"), "path/to/data.csv")
 
@@ -130,8 +130,10 @@ Inputs
 Outputs
 ^^^^^^^^
 
-* InSilicoVA_2022: pre-release test version 
+* InSilicoVA_2022: pre-release test version
+
   + this algorithm has not been tested or validated; use at your own risk (see `InSilicoVA2022 <https://github.com/verbal-autopsy-software/InSilicoVA2022>`_)
+
 * InSilicoVA
 * InSilicoVA_2012
 * InterVA4

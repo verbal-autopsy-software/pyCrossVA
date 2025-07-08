@@ -13,7 +13,7 @@ from pycrossva.utils import report_list
 
 
 class VCheck(metaclass=ABCMeta):
-    """Abstract class fior a single validation check"""
+    """Abstract class for a single validation check"""
 
     def __init__(self, message):
         """Inits VCheck class
@@ -55,28 +55,28 @@ class VCheck(metaclass=ABCMeta):
     @property
     @abstractmethod
     def tier(self):
-        """abstract property, must be overriden.
+        """abstract property, must be overridden.
         Should be str, representing name of VCheck tier"""
         return
 
     @property
     @abstractmethod
     def bullet(self):
-        """abstract property, must be overriden.
+        """abstract property, must be overridden.
         Should be a str, representing a bullet point"""
         return
 
     @property
     @abstractmethod
     def level(self):
-        """abstract property, must be overriden.
-        Should be int ,representing VCheck tier"""
+        """abstract property, must be overridden.
+        Should be int, representing VCheck tier"""
         return
 
     @property
     @abstractmethod
     def title(self):
-        """abstract property, must be overriden.
+        """abstract property, must be overridden.
         Should be str, representing title of VCheck type"""
         return
 
@@ -189,7 +189,7 @@ class Passing(VCheck):
         return "CHECKS PASSED"
 
 
-class Validation():
+class Validation:
     """Validation object represents an organized dataframe of validation checks
 
     Attributes:
@@ -198,7 +198,7 @@ class Validation():
     """
 
     def __init__(self, name=""):
-        """inits Validation class"""
+        """Inits Validation class"""
         self.vchecks = pd.DataFrame()
         self.name = name
 
@@ -253,20 +253,22 @@ class Validation():
         comparison = my_series.duplicated()
         passing_msg = ("Source column IDs do not match more than one column in"
                        " input data.")
-        fail_msg = (f"{comparison.sum()} source column IDs {report_list(my_series[comparison])}"
+        fail_msg = (f"{comparison.sum()} source column IDs"
+                    f" {report_list(my_series[comparison])}"
                     " were found multiple times in the input data. Each source"
-                    " column ID should only occur once as part of an input data"
-                    " column name. It should be a unique identifier at"
+                    " column ID should only occur once as part of an input"
+                    " data column name. It should be a unique identifier at"
                     " the end of an input data column name. Source column IDs"
-                    " are case sensitive. Please revise your mapping configuration"
-                    " or your input data so that this condition is satisfied.")
+                    " are case sensitive. Please revise your mapping "
+                    " configuration or your input data so that this condition"
+                    "is satisfied.")
         self._add_condition(my_series.duplicated(), Passing(passing_msg),
                             Err(fail_msg))
 
     def affected_by_absence(self, missing_grped):
-        """ adds a validation check as `Warn` describing the items in missing_grped,
-        which detail the impact that missing columns have on newly created
-        mappings.
+        """ adds a validation check as `Warn` describing the items in
+        missing_grped, which detail the impact that missing columns have on
+        newly created mappings.
             missing_grped (Pandas Series): series where the index is the name
                 of the missing source column, and the values are a list of
                 affected values.
@@ -351,7 +353,7 @@ class Validation():
             <BLANKLINE>
             ERRORS
             [!]      2 extraneous example(s) found in example input
-            ('b', and 'c') Extraneous example(s) will be ommitted.
+            ('b', and 'c') Extraneous example(s) will be omitted.
             """
         # comparison is true (fails) when an  item in `given` isn't in
         # `relevant`
@@ -361,7 +363,7 @@ class Validation():
                              "found in", str(given.name),
                              report_list(given[comparison], limit=5),
                              "Extraneous", value_type + "(s)",
-                             "will be ommitted."])
+                             "will be omitted."])
         passing_msg = " ".join(["No extraneous", value_type, "found in",
                                 str(given.name) + "."])
         self._add_condition(comparison, Passing(passing_msg),
@@ -401,8 +403,8 @@ class Validation():
                                 "are valid."])
         fail_msg = " ".join([str((comparison).sum()), "values in",
                              str(given.name),
-                             "were invalid", report_list(
-                                 given[(comparison)]) + ".",
+                             "were invalid",
+                             report_list(given[(comparison)]) + ".",
                              "These must be", definition, "to be valid."])
         self._add_condition(comparison, Passing(passing_msg),
                             Err(fail_msg))
@@ -479,7 +481,7 @@ class Validation():
         passing_msg = " ".join(["No", flag_criteria, "detected."])
         fail_msg = " ".join([str(flag_where.sum()), flag_criteria,
                              "detected in row(s)", report_row(
-                                 flag_where) + ".",
+                flag_where) + ".",
                              flag_action])
 
         self._add_condition(flag_where, Passing(passing_msg),
@@ -544,28 +546,29 @@ class Validation():
 
     def check_na(self, df):
         """Adds a validation check flagging the rows in every column of `df`
-        that are `None`
+            that are `None`
 
-        Args:
-            df (Pandas DataFrame): a Pandas DataFrame with columns that should
-                have no NA values
+            Args:
+                df (Pandas DataFrame): a Pandas DataFrame with columns that should
+                    have no NA values
 
-        Returns:
-            None
+            Returns:
+                None
 
-        Examples:
-            >>> v = Validation()
-            >>> test_df = pd.DataFrame({"A":["a","B","c"], "B":["D","e",None]})
-            >>> v.check_na(test_df)
-            >>> v.report(verbose=4)
-            Validating  . . .
-            <BLANKLINE>
-             CHECKS PASSED
-            [X]          No NA's in column A detected.
-            <BLANKLINE>
-             WARNINGS
-            [?]          1 NA's in column B detected in row(s) #2.
-        """
+            Examples:
+                >>> v = Validation()
+                >>> test_df = pd.DataFrame({"A":["a","B","c"], "B":["D","e",None]})
+                >>> v.check_na(test_df)
+                >>> v.report(verbose=4)
+                Validating  . . .
+                <BLANKLINE>
+                 CHECKS PASSED
+                [X]          No NA's in column A detected.
+                <BLANKLINE>
+                 WARNINGS
+                [?]          1 NA's in column B detected in row(s) #2.
+            """
+
         self._check_df(df,
                        condition=lambda x: "" if x is None else x,
                        flag_criteria="NA's in",
@@ -606,9 +609,9 @@ class Validation():
         stripped_df = self._check_df(df.fillna("").astype(str),
                                      str.strip,
                                      flag_criteria="leading/trailing "
-                                     "spaces",
+                                                   "spaces",
                                      flag_action="Leading/trailing spaces "
-                                     "will be removed.")
+                                                 "will be removed.")
         # pass stripped_df to check_df with a regex expression to replace
         # remaining whitespace with underscores, except for the " to "
         # construction
@@ -656,7 +659,8 @@ class Validation():
                                                r"", str(x)),
                               flag_criteria="non-alphanumeric value(s) in",
                               flag_action="This text should be alphanumeric. "
-                              "Non-alphanumeric characters will be removed."
+                                          "Non-alphanumeric characters will "
+                                          "be removed."
                               )
 
     def fix_lowcase(self, df):
@@ -694,8 +698,8 @@ class Validation():
                               lambda x: x.upper(),
                               flag_criteria="lower case value(s) in ",
                               flag_action="Convention to have this text be "
-                              "uppercase. Lower case text will be made "
-                              "uppercase.")
+                                          "uppercase. Lower case text will be "
+                                          "made uppercase.")
 
     def fix_upcase(self, df):
         """Adds a validation check flagging the rows in every column of `df`
@@ -731,8 +735,8 @@ class Validation():
                               lambda x: x.lower(),
                               flag_criteria="upper case value(s) in",
                               flag_action="Convention is to have this text be "
-                              "lowercase. Upper case text will be made"
-                              " lowercase.")
+                                          "lowercase. Upper case text will be "
+                                          "made lowercase.")
 
     def is_valid(self):
         """Checks to see if instance is valid.
@@ -757,7 +761,7 @@ class Validation():
         """
         if self.vchecks.empty:
             return False
-        return (self.vchecks["Tier"] == "Error").sum() == 0
+        return bool( (self.vchecks["Tier"] == "Error").sum() == 0 )
 
     def report(self, verbose=2):
         """Prints the checks in the vchecks attribute

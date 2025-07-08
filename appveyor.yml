@@ -2,8 +2,6 @@ image: ubuntu2004
 
 environment:
   matrix:
-  - TOXENV: py38
-    PYTHON: "3.8"
   - TOXENV: py39
     PYTHON: "3.9"
   - TOXENV: py310
@@ -12,6 +10,8 @@ environment:
     PYTHON: "3.11"
   - TOXENV: py312
     PYTHON: "3.12"
+  - TOXENV: py313
+    PYTHON: "3.13"
 
 stack: python $PYTHON
 

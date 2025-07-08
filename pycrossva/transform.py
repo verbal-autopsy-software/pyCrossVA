@@ -13,8 +13,10 @@ import numpy as np
 from pycrossva.configuration import Configuration, CrossVA
 from pycrossva.utils import flexible_read
 
-SUPPORTED_INPUTS = ["2016WHOv151", "2016WHOv141", "2012WHO", "PHMRCShort"]
-SUPPORTED_OUTPUTS = ["InterVA5", "InterVA4", "InSilicoVA", "InSilicoVA_2012"]
+SUPPORTED_INPUTS = ["2016WHOv151", "2016WHOv141", "2012WHO", "PHMRCShort",
+                    "2022WHOv0101"]
+SUPPORTED_OUTPUTS = ["InterVA5", "InterVA4", "InSilicoVA", "InSilicoVA_2012",
+                     "InSilicoVA_2022"]
 
 
 def transform(mapping, raw_data, raw_data_id=None, lower=False,
@@ -215,7 +217,7 @@ def transform(mapping, raw_data, raw_data_id=None, lower=False,
 
                 else:
                     raise ValueError(("Output not supported. Expected one of "
-                                      f"{supported_outputs}, but received "
+                                      f"{SUPPORTED_OUTPUTS}, but received "
                                       f"'{mapping[1]}'"))
             else:
                 raise ValueError(("Input not supported. Expected one of "
@@ -229,9 +231,9 @@ def transform(mapping, raw_data, raw_data_id=None, lower=False,
         mapping_data = flexible_read(mapping)
 
     if mapping_data.empty:  # this shouldn't happen; if it does, raise
-        raise ValueError(("No valid mapping data provided to transform. Should be"
-                          " either a tuple in form (input, output), a path to csv"
-                          " or a Pandas DataFrame."))
+        raise ValueError(("No valid mapping data provided to transform. Should"
+                          " be either a tuple in form (input, output), a path"
+                          " to csv or a Pandas DataFrame."))
 
     # init configuration obj from given mapping data
     config = Configuration(config_data=mapping_data,

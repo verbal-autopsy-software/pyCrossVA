@@ -64,7 +64,7 @@ class MapCondition(ABC):
                 contains, between) that represents a comparison to be
                 made to the raw data
             condition (str or int): the condition being matched. if
-                relationship is ambiguous, then this determins if condition
+                relationship is ambiguous, then this determines if condition
                 is numerical or string. Defaults to empty string.
 
         Returns:
@@ -136,7 +136,7 @@ class MapCondition(ABC):
             eval (Pandas Series): a Pandas Series containing data to evaluate
 
         Returns:
-            Pandas Series: returns a bolean series where the condition is met
+            Pandas Series: returns a boolean series where the condition is met
 
         Examples:
             >>> test = pd.Series(["A","B","C"])
@@ -201,7 +201,7 @@ class MapCondition(ABC):
 
     @property
     @abstractmethod
-    def possible_values():
+    def possible_values(self):
         """ abstract method stub
         generate a non-exhaustive list possible values implied by condition """
         return
@@ -214,7 +214,8 @@ class MapCondition(ABC):
                 the column given in self.source_name.
 
         Returns:
-            Pandas Series: the column in `raw_data` named in self.source_name,  with the attribute self.prep_func applied to it.
+            Pandas Series: the column in `raw_data` named in self.source_name,
+            with the attribute self.prep_func applied to it.
 
         """
         return np.where(raw_data[self.source_name].notnull(),
@@ -370,7 +371,7 @@ class ContainsCondition(StrMapCondition):
     """
 
     def _run_check(self, eval_col):
-        """overides _run_check condition of abstract MapCondition.
+        """overrides _run_check condition of abstract MapCondition.
         checks condition against input data to see if input data contains
         the substring in the self.condition attribute.
 

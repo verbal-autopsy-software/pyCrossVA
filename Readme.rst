@@ -26,6 +26,7 @@ data.
   # use the following code for the 2022 WHO VA instrument & pre-release test version of InSilicoVA_2022
   # (algorithm has not been tested or validated; use InSilicoVA_2022 at your own risk)
   transform(("2022WHOv0101", "InSilicoVA_2022"), "path/to/data.csv")
+  transform(("2022WHOv0101", "InterVA_2022"), "path/to/data.csv")
 
 You can also call the transform function on a Pandas DataFrame, if you wanted to
 read in and process the data before calling the function.
@@ -133,6 +134,10 @@ Outputs
 * InSilicoVA_2022: pre-release test version
 
   + this algorithm has not been tested or validated; use at your own risk (see `InSilicoVA2022 <https://github.com/verbal-autopsy-software/InSilicoVA2022>`_)
+
+* InterVA_2022: pre-release test version
+
+  + this algorithm has not been tested or validated; use at your own risk (see `InterVA2022 <https://github.com/verbal-autopsy-software/InterVA2022>`_)
 
 * InSilicoVA
 * InSilicoVA_2012

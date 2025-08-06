@@ -13,6 +13,7 @@ i022d,Was (s)he aged 5-14 years at death? 5  to 14,age_adult,[Enter adult's age 
 i022d,Was (s)he aged 5-14 years at death? 5 to 14,age_child_years,[Enter child's age in years:],between,5 to 14,,
 i022e,Was (s)he aged 1 to 4 years at death? 1 to 4,ageInYears,Calculation: int(${ageInDays} div 365.25),between,1 to 4,,
 i022e,Was (s)he aged 1 to 4 years at death? 1 to 4,age_child_years,[Enter child's age in years:],between,1 to 4,,
+i022e,Was (s)he aged 1 to 4 years at death? 1 to 4,age_child_months,[Enter child's age in years:],between,12 to 48,,
 i022f,Was (s)he aged 1 to 11 months at death? 1 to 11m,ageInDays,Calculation: (${Id10023} - ${Id10021}),between,28 to 365,,
 i022f,Was (s)he aged 1 to 11 months at death? 1 to 11m,age_child_days,[Enter child's age in days:],between,28 to 365,,
 i022f,Was (s)he aged 1 to 11 months at death? 1 to 11m,age_child_months,[Enter child's age in months:],between,1 to 11,,
